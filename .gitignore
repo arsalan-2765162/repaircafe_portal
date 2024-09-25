@@ -1,0 +1,27 @@
+# Python Files
+*.pyc
+
+# Compiled Documents
+*.pdf
+*.ps
+
+# Logs
+*.log
+
+# Backup and temp files
+*.bak
+*.tmp
+
+# Compiled objects
+*.o
+*.out
+
+# Version control metadata
+.DS_Store
+.gitignore
+
+# System Files
+Thumbs.db
+
+# Ignore coverage reports
+coverage/
