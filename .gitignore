@@ -1,6 +1,14 @@
 # Python Files
 *.pyc
 
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
 # Compiled Documents
 *.pdf
 *.ps
