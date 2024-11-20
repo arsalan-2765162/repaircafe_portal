@@ -1,20 +1,22 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar Navigation</title>
-    <link rel="stylesheet" href="navbar.css">
-    <script src="navbar.js"></script>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <script src="{% static 'js/navbar.js' %}" defer></script>
 </head>
 <body>
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="sidebarbutton">
-    <a href="{% url 'RepairCafe:view_queue' queue.slug %}" class="btn btn-primary">Queue</a>
+        <a href="{% url 'RepairCafe:main_queue'%}" class="btn btn-primary">Queue</a>
   </div>
   <div class="sidebarbutton">
-    <a href="#">Waitlist</a>
+    <a href="{% url 'RepairCafe:waiting_list'%}">Waitlist</a>
+
   </div>
   <div class="sidebarbutton">
     <a href="#">Stats</a>
@@ -26,8 +28,9 @@
 
 <div id="main">
   <button class="openbtn" onclick="openNav()">&#9776;</button>
-  <h2>Collapsed Sidebar</h2>
-  <p>Content...</p>
+  {% block content %}
+  {% endblock %}
 </div>
 </body>
 </html>
+

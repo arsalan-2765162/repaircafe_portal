@@ -6,10 +6,6 @@ from django.contrib.auth.models import User
 class Queue(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256,default="This is a Queue")
-    slug = models.SlugField(unique=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
 
     def __str__(self):
         return self.name
@@ -61,7 +57,7 @@ class Ticket(models.Model):
                 ticket_above.save()
             self.position -= 1
             self.save()
-            
+
 
 
 
