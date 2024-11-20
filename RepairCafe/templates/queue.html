@@ -1,0 +1,26 @@
+{% extends 'RepairCafe/navbar.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue</title>
+</head>
+<table>
+    <tr>
+        <th>Position</th>
+        <th>Repair Number</th>
+        <th>Item Name</th>
+        <th>Actions</th>
+    </tr>
+    {% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.position }}</td>
+        <td> ticket.repairNumber</td>
+        <td>{{ ticket.itemName }}</td>
+        <td>
+            <a href="{%url 'move_ticket' ticket.id 'up' &}"
+        </td>
+    </tr>
+    {% endfor %}
+</table>

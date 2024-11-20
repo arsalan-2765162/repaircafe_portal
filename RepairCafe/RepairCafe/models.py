@@ -5,6 +5,13 @@ from django.contrib.auth.models import User
 
 class Queue(models.Model):
     name = models.CharField(max_length=128)
+    description = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.name
+    
+    def get_tickets(self):
+        return self.ticket_set.order_by('position')
 
 class Customer(models.Model):
     NAME_MAX_LENGTH = 128
@@ -32,8 +39,24 @@ class Ticket(models.Model):
     position = models.IntegerField(default = 0)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT)
+    
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
+    
+    def add_to_queue(self, queue):
+        self.queue = queue
+        max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position_max'] or 0
+        self.position = max_position + 1
+        self.save()
+
+    def move_up(self):
+        if self.position > 1:
+            ticket_above = Ticket.objects.filter(queue=self.queue, position=self.position - 1).first()
+            if ticket_above:
+                ticket_above.position += 1
+                ticket_above.save()
+            self.position -= 1
+            self.save()
 
 
 
