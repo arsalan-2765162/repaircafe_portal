@@ -1,9 +1,9 @@
-stages:
-    - deploy
+image: alpine
 
-deploy_job:
-    stage: deploy
-    script:
-        - ssh arsalanh@ssh.pythonanywhere.com 'cd /home/arsalanh/sh28-main && git pull origin main && workon repaircafevenv && pip install -r requirements.txt && python manage.py migrate && touch /var/www/arsalanh_pythonanywhere_com_wgsi.py'
-    only:
-        - main
+stages:
+    - build
+    - deploy
+    - test
+
+
+
