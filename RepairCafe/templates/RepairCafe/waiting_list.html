@@ -10,9 +10,11 @@
     {% endif %}
     <h1>Tickets</h1>
     {% if Tickets %}
-        {% for t in Tickets %}
-            <p>{{t.repair_number}} {{t.itemName}} {{ t.position }}</p>
-        {% endfor %}
+    {% for t in Tickets %}
+        <p>Repair_Number:{{t.repairNumber}} </p>
+        <p style="text-indent: 2em;">ItemName:{{t.itemName}} </p>
+        <p style="text-indent: 2em;">  Position:{{ t.position }}</p>
+    {% endfor %}
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
