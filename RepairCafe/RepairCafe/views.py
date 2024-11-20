@@ -4,10 +4,10 @@ from .models import Ticket, Queue
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
-def view_queue(request,name):
+def view_queue(request,queue_name_slug):
     context_dict={}
     try:
-        queue = Queue.objects.get(name=name)
+        queue = Queue.objects.get(slug=queue_name_slug)
         context_dict['Queue']=queue
     except Queue.DoesNotExist:
         context_dict['Queue']=None
@@ -18,4 +18,6 @@ def move_ticket(request, ticket_id, direction):
     if direction == 'up':
         ticket.move_up()
     return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
+
+def show_navbar(request):
 

@@ -5,5 +5,5 @@ app_name = 'RepairCafe'
 
 urlpatterns = [
         path('', views.index, name='index'),
-        path('queue', views.view_queue, name='view_queue'),
+        path('queue/<slug:queue_name_slug>', views.view_queue, name='view_queue'),
 ]
