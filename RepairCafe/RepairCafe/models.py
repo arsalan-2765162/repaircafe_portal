@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Queue(models.Model):
     name = models.CharField(max_length=128)
-    description = models.CharField(max_length=256)
+    description = models.CharField(max_length=256,default="This is a Queue")
 
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class Ticket(models.Model):
     repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
     position = models.IntegerField(default = 0)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE)
-    customer = models.OneToOneField(Customer, on_delete=models.PROTECT)
+    customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
     
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
