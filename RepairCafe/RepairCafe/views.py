@@ -19,5 +19,5 @@ def move_ticket(request, ticket_id, direction):
         ticket.move_up()
     return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
 
-def show_navbar(request):
+#def show_navbar(request):
 
