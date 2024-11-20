@@ -57,6 +57,7 @@ class Ticket(models.Model):
                 ticket_above.save()
             self.position -= 1
             self.save()
+            
 
 
 
