@@ -31,7 +31,7 @@ class Ticket(models.Model):
     repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
     position = models.IntegerField(default = 0)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE)
-    customer = models.OneToOneField(Customer)
+    customer = models.OneToOneField(Customer, on_delete=models.PROTECT)
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
 
