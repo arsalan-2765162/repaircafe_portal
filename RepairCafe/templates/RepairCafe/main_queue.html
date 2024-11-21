@@ -1,0 +1,21 @@
+{% extends 'RepairCafe/navbar.html' %}
+
+{% block content %}
+    <h1>Main Queue</h1>
+    {% if Queue %}
+        <p>Queue Name: {{ Queue.name }}</p>
+        <p>Queue Description: {{ Queue.description }}</p>
+    {% else %}
+        <p>No Queue object found.</p>
+    {% endif %}
+    <h1>Tickets</h1>
+    {% if Tickets %}
+        {% for t in Tickets %}
+            <p>Repair_Number:{{t.repairNumber}} </p>
+            <p style="text-indent: 2em;">ItemName:{{t.itemName}} </p>
+            <p style="text-indent: 2em;">  Position:{{ t.position }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No tickets Exist</p>
+    {% endif %}
+{% endblock %}

@@ -6,8 +6,9 @@ django.setup()
 from RepairCafe.models import Ticket, Customer, Repairer, Queue
 
 def populate():
-    def add_queue(name):
+    def add_queue(name, description):
         queue = Queue.objects.get_or_create(name=name)[0]
+        queue.description = description  # Add the description
         queue.save()
         return queue
 
@@ -34,13 +35,29 @@ def populate():
         repairer.save()
         return repairer
 
-    # Sample data
-    queues = ['Main Queue', 'Waiting List','Repair Completed']
+    # Queue descriptions
+    queue_data = {
+        'Main Queue': "The queue for tickets that have been accepted.",
+        'Waiting List': "The queue for tickets to be checked by the check-in person before adding to the Main Queue.",
+        'Repair Completed': "The queue for tickets with completed repairs."
+    }
+
     tickets_data = [
+        # Main Queue tickets
         {'repairNumber': '1', 'itemName': 'Washing Machine', 'itemCategory': 'ELEC', 'itemDescription': 'Needs new motor', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Main Queue'},
         {'repairNumber': '2', 'itemName': 'T-Shirt', 'itemCategory': 'TEXT', 'itemDescription': 'Small tear on sleeve', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Main Queue'},
-        {'repairNumber': '3', 'itemName': 'Hammer', 'itemCategory': 'TOOLS', 'itemDescription': 'Broken handle', 'repairStatus': 'COMPLETED', 'position': 3, 'queue': 'Repair Completed'}
+        {'repairNumber': '4', 'itemName': 'Laptop', 'itemCategory': 'ELEC', 'itemDescription': 'Screen flickers intermittently', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
+        {'repairNumber': '5', 'itemName': 'Blender', 'itemCategory': 'ELEC', 'itemDescription': 'Motor won’t start', 'repairStatus': 'WAITING', 'position': 4, 'queue': 'Main Queue'},
+
+        # Waiting List tickets
+        {'repairNumber': '6', 'itemName': 'Jacket', 'itemCategory': 'TEXT', 'itemDescription': 'Broken zipper', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Waiting List'},
+        {'repairNumber': '7', 'itemName': 'Table Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Damaged wire', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Waiting List'},
+        {'repairNumber': '8', 'itemName': 'Garden Shears', 'itemCategory': 'TOOLS', 'itemDescription': 'Rusty blade', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Waiting List'},
+
+        # Repair Completed queue
+        {'repairNumber': '3', 'itemName': 'Hammer', 'itemCategory': 'TOOLS', 'itemDescription': 'Broken handle', 'repairStatus': 'COMPLETED', 'position': 1, 'queue': 'Repair Completed'}
     ]
+
     customers_data = [
         {'firstName': 'John', 'lastName': 'Doe'},
         {'firstName': 'Jane', 'lastName': 'Smith'}
@@ -51,7 +68,7 @@ def populate():
     ]
 
     # Adding Queue objects
-    queue_objects = {queue: add_queue(queue) for queue in queues}
+    queue_objects = {queue: add_queue(queue, description) for queue, description in queue_data.items()}
 
     # Adding Ticket objects (ensure the queue is correctly passed)
     for ticket_data in tickets_data:
@@ -69,7 +86,7 @@ def populate():
 
     # Printing the results
     for queue in Queue.objects.all():
-        print(f'Queue: {queue.name}')
+        print(f'Queue: {queue.name} - {queue.description}')
         for ticket in Ticket.objects.filter(queue=queue):
             print(f'  - Ticket: {ticket.repairNumber} - {ticket.itemName}')
         print()
