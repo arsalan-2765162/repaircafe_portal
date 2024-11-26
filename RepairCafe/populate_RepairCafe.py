@@ -39,32 +39,39 @@ def populate():
     queue_data = {
         'Main Queue': "The queue for tickets that have been accepted.",
         'Waiting List': "The queue for tickets to be checked by the check-in person before adding to the Main Queue.",
-        'Repair Completed': "The queue for tickets with completed repairs."
     }
 
     tickets_data = [
         # Main Queue tickets
-        {'repairNumber': '1', 'itemName': 'Washing Machine', 'itemCategory': 'ELEC', 'itemDescription': 'Needs new motor', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Main Queue'},
-        {'repairNumber': '2', 'itemName': 'T-Shirt', 'itemCategory': 'TEXT', 'itemDescription': 'Small tear on sleeve', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Main Queue'},
-        {'repairNumber': '4', 'itemName': 'Laptop', 'itemCategory': 'ELEC', 'itemDescription': 'Screen flickers intermittently', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
-        {'repairNumber': '5', 'itemName': 'Blender', 'itemCategory': 'ELEC', 'itemDescription': 'Motor won’t start', 'repairStatus': 'WAITING', 'position': 4, 'queue': 'Main Queue'},
+        {'repairNumber': '1', 'itemName': 'Washing Machine', 'itemCategory': 'ELEC', 'itemDescription': 'Needs new motor', 'repairStatus': 'COMPLETED', 'position': 1, 'queue': 'Main Queue'},
+        {'repairNumber': '2', 'itemName': 'T-Shirt', 'itemCategory': 'TEXT', 'itemDescription': 'Small tear on sleeve', 'repairStatus': 'COMPLETED', 'position': 2, 'queue': 'Main Queue'},
+        {'repairNumber': '3', 'itemName': 'Laptop', 'itemCategory': 'ELEC', 'itemDescription': 'Screen flickers intermittently', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
+        {'repairNumber': '4', 'itemName': 'Blender', 'itemCategory': 'ELEC', 'itemDescription': 'Motor won’t start', 'repairStatus': 'INCOMPLETE', 'position': 4, 'queue': 'Main Queue'},
+        {'repairNumber': '5', 'itemName': 'Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Light won’t turn on', 'repairStatus': 'WAITING', 'position': 5, 'queue': 'Main Queue'},
+        {'repairNumber': '6', 'itemName': 'Drill', 'itemCategory': 'TOOLS', 'itemDescription': 'Does not turn on', 'repairStatus': 'WAITING', 'position': 6, 'queue': 'Main Queue'},
+        {'repairNumber': '7', 'itemName': 'Hair Dryer', 'itemCategory': 'ELEC', 'itemDescription': 'Not turning on', 'repairStatus': 'WAITING', 'position': 7, 'queue': 'Main Queue'},
+        {'repairNumber': '8', 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': 8, 'queue': 'Main Queue'},
+        {'repairNumber': '9', 'itemName': 'Jumper', 'itemCategory': 'TEXT', 'itemDescription': 'Tear on sleeve', 'repairStatus': 'WAITING', 'position': 9, 'queue': 'Main Queue'},
+        {'repairNumber': '10', 'itemName': 'Coffee Maker', 'itemCategory': 'ELEC', 'itemDescription': 'Water not heating', 'repairStatus': 'WAITING', 'position': 10, 'queue': 'Main Queue'},
 
         # Waiting List tickets
-        {'repairNumber': '6', 'itemName': 'Jacket', 'itemCategory': 'TEXT', 'itemDescription': 'Broken zipper', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Waiting List'},
-        {'repairNumber': '7', 'itemName': 'Table Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Damaged wire', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Waiting List'},
-        {'repairNumber': '8', 'itemName': 'Garden Shears', 'itemCategory': 'TOOLS', 'itemDescription': 'Rusty blade', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Waiting List'},
-
-        # Repair Completed queue
-        {'repairNumber': '3', 'itemName': 'Hammer', 'itemCategory': 'TOOLS', 'itemDescription': 'Broken handle', 'repairStatus': 'COMPLETED', 'position': 1, 'queue': 'Repair Completed'}
+        {'repairNumber': '11', 'itemName': 'Jacket', 'itemCategory': 'TEXT', 'itemDescription': 'Broken zipper', 'repairStatus': 'WAITING_TO_JOIN', 'position': 1, 'queue': 'Waiting List'},
+        {'repairNumber': '12', 'itemName': 'Table Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Damaged wire', 'repairStatus': 'WAITING_TO_JOIN', 'position': 2, 'queue': 'Waiting List'},
+        {'repairNumber': '13', 'itemName': 'Garden Shears', 'itemCategory': 'TOOLS', 'itemDescription': 'Rusty blade', 'repairStatus': 'WAITING_TO_JOIN', 'position': 3, 'queue': 'Waiting List'},
+        {'repairNumber': '14', 'itemName': 'Curtains', 'itemCategory': 'TEXT', 'itemDescription': 'Stitching torn', 'repairStatus': 'WAITING_TO_JOIN', 'position': 4, 'queue': 'Waiting List'},
+        {'repairNumber': '15', 'itemName': 'Sewing Machine', 'itemCategory': 'TOOLS', 'itemDescription': 'Needle not moving', 'repairStatus': 'WAITING_TO_JOIN', 'position': 5, 'queue': 'Waiting List'},
     ]
 
     customers_data = [
         {'firstName': 'John', 'lastName': 'Doe'},
-        {'firstName': 'Jane', 'lastName': 'Smith'}
+        {'firstName': 'Jane', 'lastName': 'Smith'},
+        {'firstName': 'Robert', 'lastName': 'Brown'},
+        {'firstName': 'Emily', 'lastName': 'Davis'}
     ]
     repairers_data = [
         {'firstName': 'Alice', 'lastName': 'Johnson'},
-        {'firstName': 'Bob', 'lastName': 'Williams'}
+        {'firstName': 'Bob', 'lastName': 'Williams'},
+        {'firstName': 'Eve', 'lastName': 'Clark'}
     ]
 
     # Adding Queue objects

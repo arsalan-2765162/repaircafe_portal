@@ -16,14 +16,16 @@ def main_queue(request):
         form = TicketFilterForm(request.GET or None)
         print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
-            print("entering hereee")
             status_filter = form.cleaned_data.get('repairStatus')
-            print(status_filter)
             category_filter = form.cleaned_data.get('itemCategory')
             if status_filter and status_filter != 'ALL':
                 ticket_list = ticket_list.filter(repairStatus=status_filter)
             if category_filter and category_filter != 'ALL':
                 ticket_list = ticket_list.filter(itemCategory=category_filter)
+        else:
+            ticket_list=ticket_list.filter(repairStatus='WAITING')
+
+        
         
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
@@ -36,9 +38,19 @@ def waiting_list(request):
     context_dict={}
     try:
         queue = Queue.objects.get(name="Waiting List")
-        ticket_list = Ticket.objects.filter(queue=queue).order_by('position')
+        ticket_list = Ticket.objects.filter(queue=queue,repairStatus='WAITING_TO_JOIN').order_by('position')
+
+        form = TicketFilterForm(request.GET or None)
+        print("Form is valid:", form.is_valid())  # This will print if the form is valid
+        if form.is_valid():
+            category_filter = form.cleaned_data.get('itemCategory')
+            if category_filter and category_filter != 'ALL':
+                ticket_list = ticket_list.filter(itemCategory=category_filter)
+        
+        
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
+        context_dict['form']=form
     except Queue.DoesNotExist:
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)

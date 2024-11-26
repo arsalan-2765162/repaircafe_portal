@@ -20,7 +20,7 @@
             <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
             <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
             <p style="text-indent: 2em;">Position:{{ t.position }}</p>
-            <p style="text-indent: 2em;">Repair Status:{{ t.repairStatus }}</p>
+            <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
         {% endfor %}
     {% else %}
         <p>No tickets Exist</p>

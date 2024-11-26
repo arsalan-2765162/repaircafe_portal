@@ -8,6 +8,10 @@ class TicketFilterForm(forms.Form):
                                      ,initial='WAITING')
     itemCategory = forms.ChoiceField(choices=CATEGORY_CHOICES, required=False, label="Item Category")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        status_choices = [choice for choice in Ticket.REPAIR_STATUS_CHOICES if choice[0] != 'WAITING_TO_JOIN']
+        self.fields['repairStatus'].choices = [('ALL', 'All')] + status_choices
     class Meta:
         model = Ticket
         fields = ()
