@@ -24,6 +24,7 @@ class Ticket(models.Model):
     MAX_ITEM_NAME_LENGTH = 128
     MAX_ITEM_DESC_LENGTH = 256
     REPAIR_STATUS_CHOICES = [('WAITING','Waiting'),
+                             ('WAITING_TO_JOIN','Waiting to Join Queue'),
                       ('COMPLETED','Completed'),
                       ('NEED_PAT','Needs PAT tested'),
                       ('INCOMPLETE','Incomplete')]
@@ -36,8 +37,8 @@ class Ticket(models.Model):
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
     repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
-    position = models.IntegerField(default = 0)
-    queue = models.ForeignKey(Queue,on_delete=models.CASCADE)
+    position = models.IntegerField(default=None,null=True,blank=True,)
+    queue = models.ForeignKey(Queue,on_delete=models.CASCADE,default=None,null=True,blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
     
     def __str__(self):

@@ -8,12 +8,19 @@
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
+    <h2>Filter Options</h2>
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
     <h1>Tickets</h1>
     {% if Tickets %}
         {% for t in Tickets %}
             <p>Repair_Number:{{t.repairNumber}} </p>
-            <p style="text-indent: 2em;">ItemName:{{t.itemName}} </p>
-            <p style="text-indent: 2em;">  Position:{{ t.position }}</p>
+            <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
+            <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
+            <p style="text-indent: 2em;">Position:{{ t.position }}</p>
+            <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
         {% endfor %}
     {% else %}
         <p>No tickets Exist</p>
