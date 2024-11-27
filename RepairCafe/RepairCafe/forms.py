@@ -15,3 +15,13 @@ class TicketFilterForm(forms.Form):
     class Meta:
         model = Ticket
         fields = ()
+
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['repairNumber', 'itemName', 'itemCategory', 'position', 'repairStatus']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['readonly'] = True

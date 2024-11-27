@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Queue
-from .forms import TicketFilterForm
+from .forms import TicketFilterForm, TicketForm
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
@@ -25,11 +25,13 @@ def main_queue(request):
         else:
             ticket_list=ticket_list.filter(repairStatus='WAITING')
 
-        
+        #populate the list of forms used to display all tickets in the queue
+        ticketForms = [TicketForm(instance=ticket) for ticket in ticket_list]
+        context_dict['TicketForms']=ticketForms
         
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
-        context_dict['form']=form
+        context_dict['FilterForm']=form
     except Queue.DoesNotExist:
         context_dict['Queue']=None
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
@@ -47,10 +49,13 @@ def waiting_list(request):
             if category_filter and category_filter != 'ALL':
                 ticket_list = ticket_list.filter(itemCategory=category_filter)
         
+        #populate the list of forms used to display all tickets in waiting list
+        waitingForms = [TicketForm(instance=ticket) for ticket in ticket_list]
+        context_dict['TicketForms'] = waitingForms
         
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
-        context_dict['form']=form
+        context_dict['WaitingForm']=form
     except Queue.DoesNotExist:
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
