@@ -27,11 +27,10 @@
             {% for form in TicketForms %}
                 <form Class="ticket-form">
                     <fieldset>
-                        <legend>Ticket {{ forloop.counter }}</legend>
+                        <legend>Ticket {{ form.position.value }}</legend>
                         <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
                         <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
                         <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
-                        <p><strong>Position:</strong> {{ form.position.value }}</p>
                         <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
                     </fieldset>
                 </form>
