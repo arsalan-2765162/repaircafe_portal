@@ -43,16 +43,16 @@ def populate():
 
     tickets_data = [
         # Main Queue tickets
-        {'repairNumber': '1', 'itemName': 'Washing Machine', 'itemCategory': 'ELEC', 'itemDescription': 'Needs new motor', 'repairStatus': 'COMPLETED', 'position': 1, 'queue': 'Main Queue'},
-        {'repairNumber': '2', 'itemName': 'T-Shirt', 'itemCategory': 'TEXT', 'itemDescription': 'Small tear on sleeve', 'repairStatus': 'COMPLETED', 'position': 2, 'queue': 'Main Queue'},
-        {'repairNumber': '3', 'itemName': 'Laptop', 'itemCategory': 'ELEC', 'itemDescription': 'Screen flickers intermittently', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
-        {'repairNumber': '4', 'itemName': 'Blender', 'itemCategory': 'ELEC', 'itemDescription': 'Motor won’t start', 'repairStatus': 'INCOMPLETE', 'position': 4, 'queue': 'Main Queue'},
-        {'repairNumber': '5', 'itemName': 'Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Light won’t turn on', 'repairStatus': 'WAITING', 'position': 5, 'queue': 'Main Queue'},
-        {'repairNumber': '6', 'itemName': 'Drill', 'itemCategory': 'TOOLS', 'itemDescription': 'Does not turn on', 'repairStatus': 'WAITING', 'position': 6, 'queue': 'Main Queue'},
-        {'repairNumber': '7', 'itemName': 'Hair Dryer', 'itemCategory': 'ELEC', 'itemDescription': 'Not turning on', 'repairStatus': 'WAITING', 'position': 7, 'queue': 'Main Queue'},
-        {'repairNumber': '8', 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': 8, 'queue': 'Main Queue'},
-        {'repairNumber': '9', 'itemName': 'Jumper', 'itemCategory': 'TEXT', 'itemDescription': 'Tear on sleeve', 'repairStatus': 'WAITING', 'position': 9, 'queue': 'Main Queue'},
-        {'repairNumber': '10', 'itemName': 'Coffee Maker', 'itemCategory': 'ELEC', 'itemDescription': 'Water not heating', 'repairStatus': 'WAITING', 'position': 10, 'queue': 'Main Queue'},
+        {'repairNumber': '1', 'itemName': 'Washing Machine', 'itemCategory': 'ELEC', 'itemDescription': 'Needs new motor', 'repairStatus': 'COMPLETED', 'position': None, 'queue': 'Main Queue'},
+        {'repairNumber': '2', 'itemName': 'T-Shirt', 'itemCategory': 'TEXT', 'itemDescription': 'Small tear on sleeve', 'repairStatus': 'COMPLETED', 'position': None, 'queue': 'Main Queue'},
+        {'repairNumber': '3', 'itemName': 'Laptop', 'itemCategory': 'ELEC', 'itemDescription': 'Screen flickers intermittently', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Main Queue'},
+        {'repairNumber': '4', 'itemName': 'Blender', 'itemCategory': 'ELEC', 'itemDescription': 'Motor won’t start', 'repairStatus': 'INCOMPLETE', 'position': None, 'queue': 'Main Queue'},
+        {'repairNumber': '5', 'itemName': 'Lamp', 'itemCategory': 'ELEC', 'itemDescription': 'Light won’t turn on', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Main Queue'},
+        {'repairNumber': '6', 'itemName': 'Drill', 'itemCategory': 'TOOLS', 'itemDescription': 'Does not turn on', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
+        {'repairNumber': '7', 'itemName': 'Hair Dryer', 'itemCategory': 'ELEC', 'itemDescription': 'Not turning on', 'repairStatus': 'WAITING', 'position': 4, 'queue': 'Main Queue'},
+        {'repairNumber': '8', 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': 5, 'queue': 'Main Queue'},
+        {'repairNumber': '9', 'itemName': 'Jumper', 'itemCategory': 'TEXT', 'itemDescription': 'Tear on sleeve', 'repairStatus': 'WAITING', 'position': 6, 'queue': 'Main Queue'},
+        {'repairNumber': '10', 'itemName': 'Coffee Maker', 'itemCategory': 'ELEC', 'itemDescription': 'Water not heating', 'repairStatus': 'WAITING', 'position': 7, 'queue': 'Main Queue'},
 
         # Waiting List tickets
         {'repairNumber': '11', 'itemName': 'Jacket', 'itemCategory': 'TEXT', 'itemDescription': 'Broken zipper', 'repairStatus': 'WAITING_TO_JOIN', 'position': 1, 'queue': 'Waiting List'},

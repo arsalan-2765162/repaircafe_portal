@@ -17,10 +17,21 @@
     <h1>Tickets</h1>
     {% if Tickets %}
     {% for t in Tickets %}
+        <div>
         <p>Repair_Number:{{t.repairNumber}} </p>
         <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
         <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
         <p style="text-indent: 2em;">Position:{{ t.position }}</p>
+        {% if t.repairStatus == 'WAITING_TO_JOIN' %}
+            <form method="post" action="{% url 'RepairCafe:accept_ticket' t.repairNumber %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Accept Ticket
+                </button>
+        {% else %}
+                <p>Ticket cannot be accepted</p>
+        {% endif %}
+    </div>
     {% endfor %}
     {% else %}
         <p>No tickets Exist</p>

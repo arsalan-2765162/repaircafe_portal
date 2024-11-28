@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Queue
 from .forms import TicketFilterForm
+from django.urls import reverse
+from django.contrib import messages
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
@@ -61,5 +63,23 @@ def move_ticket(request, ticket_id, direction):
         ticket.move_up()
     return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
 
-#def show_navbar(request):
+def accept_ticket(request,repairNumber):
+    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    if ticket.repairStatus == 'WAITING_TO_JOIN':
+        ticket.accept_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} has been accepted")
+    else:
+        messages.error(request,"Error, ticket not accepted")
+    return redirect(reverse('RepairCafe:waiting_list'))
+
+def repair_ticket(request,repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if ticket.repairStatus == "WAITING":
+        ticket.repair_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} is now being repaired")
+    else:
+        messages.error(request, f"Ticket {ticket.repairNumber} cannot be accepted as it is not in WAITING status.")
+    return redirect ('RepairCafe:main_queue')
+        
+    
 

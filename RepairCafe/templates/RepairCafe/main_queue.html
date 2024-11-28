@@ -21,6 +21,14 @@
             <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
             <p style="text-indent: 2em;">Position:{{ t.position }}</p>
             <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
+        {% if t.repairStatus == "WAITING" %}
+            <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Accept Repair
+                </button>
+            </form>
+        {% endif %}
         {% endfor %}
     {% else %}
         <p>No tickets Exist</p>
