@@ -10,18 +10,39 @@
     {% endif %}
     <h2>Filter Options</h2>
     <form method="get">
-        {{ form.as_p }}
+        {{ FilterForm.as_p }}
         <button type="submit">Filter</button>
     </form>
     <h1>Tickets</h1>
     {% if Tickets %}
-        {% for t in Tickets %}
+        <!-- {% for t in Tickets %}
             <p>Repair_Number:{{t.repairNumber}} </p>
             <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
             <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
             <p style="text-indent: 2em;">Position:{{ t.position }}</p>
             <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
-        {% if t.repairStatus == "WAITING" %}
+        {% endfor %} -->
+
+        <div class="ticket-feed">
+            {% for form in TicketForms %}
+                <form Class="ticket-form">
+                    <fieldset>
+                        <legend>Ticket {{ form.position.value }}</legend>
+                        <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
+                        <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
+                        <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
+                        <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
+                        {% if form.repairStatus.value == "WAITING" %}
+                        <form action="{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}" method="post">
+                            {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">
+                                    Accept Repair
+                                </button>
+                            </form>
+                        {% endif %}
+                    </fieldset>
+                </form>
+            {% if t.repairStatus == "WAITING" %}
             <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">
@@ -30,6 +51,8 @@
             </form>
         {% endif %}
         {% endfor %}
+        </div>
+
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}

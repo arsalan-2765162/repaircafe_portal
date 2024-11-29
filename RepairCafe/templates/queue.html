@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queue</title>
 </head>
-<table>
-    <tr>
+<!-- <table>
+   <tr>
         <th>Position</th>
         <th>Repair Number</th>
         <th>Item Name</th>
@@ -23,4 +23,21 @@
         </td>
     </tr>
     {% endfor %}
-</table>
+</table> -->
+
+{% block content %}
+    <div class="ticket-feed">
+        {% for form in TicketForms %}
+            <form Class="ticket-form">
+                <fieldset>
+                    <legend>Ticket {{ forloop.counter }}</legend>
+                    <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
+                    <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
+                    <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
+                    <p><strong>Position:</strong> {{ form.position.value }}</p>
+                    <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
+                </fieldset>
+            </form>
+        {% endfor %}
+    </div>
+{% endblock %}

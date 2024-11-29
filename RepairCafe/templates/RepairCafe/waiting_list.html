@@ -10,28 +10,29 @@
     {% endif %}
     <h2>Filter Options</h2>
     <form method="get">
-        {{ form.itemCategory.label_tag }}
-        {{ form.itemCategory }}
+        {{ WaitingForm.itemCategory.label_tag }}
+        {{ WaitingForm.itemCategory }}
         <button type="submit">Filter</button>
     </form>
     <h1>Tickets</h1>
     {% if Tickets %}
-    {% for t in Tickets %}
-        <div>
-        <p>Repair_Number:{{t.repairNumber}} </p>
-        <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
-        <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
-        <p style="text-indent: 2em;">Position:{{ t.position }}</p>
-        {% if t.repairStatus == 'WAITING_TO_JOIN' %}
-            <form method="post" action="{% url 'RepairCafe:accept_ticket' t.repairNumber %}">
+    {% for form in TicketForms %}
+    <form Class="ticket-form">
+        <fieldset>
+            <legend>Ticket {{ form.position.value }}</legend>
+            <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
+            <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
+            {% if form.repairStatus.value == 'WAITING_TO_JOIN' %}
+            <form method="post" action="{% url 'RepairCafe:accept_ticket' form.repairNumber.value %}">
                 {% csrf_token %}
                 <button type="submit">
                     Accept Ticket
                 </button>
-        {% else %}
-                <p>Ticket cannot be accepted</p>
-        {% endif %}
-    </div>
+            {% else %}
+                    <p>Ticket cannot be accepted</p>
+            {% endif %}
+        </fieldset>
+    </form>
     {% endfor %}
     {% else %}
         <p>No tickets Exist</p>
