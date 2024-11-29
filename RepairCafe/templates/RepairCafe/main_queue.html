@@ -1,5 +1,5 @@
 {% extends 'RepairCafe/navbar.html' %}
-
+{% load static %}
 {% block content %}
     <h1>Main Queue</h1>
     {% if Queue %}
@@ -23,16 +23,19 @@
             <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
         {% endfor %} -->
 
-        <div class="ticket-feed">
+        <div>
             {% for form in TicketForms %}
-                <form Class="ticket-form">
-                    <fieldset>
-                        <legend>Ticket {{ form.position.value }}</legend>
-                        <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
-                        <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
-                        <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
-                        <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
-                    </fieldset>
+                <form class="ticket-form">
+                    
+                        
+                        <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
+                        <img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">
+                        <p><h2>Repair #{{ form.repairNumber.value }}: {{ form.itemName.value }}</h2></p>
+                        <p><h2>Category: {{ form.itemCategory.value }}</h2></p>
+                        <p><h2>Repair Status: {{ form.repairStatus.value }}</h2></p>
+                        <p id="dropdownparagraph"><h2>Repair Description: {{ form.itemDescription.value }}</h2></p>
+                        
+                    
                 </form>
             {% endfor %}
         </div>

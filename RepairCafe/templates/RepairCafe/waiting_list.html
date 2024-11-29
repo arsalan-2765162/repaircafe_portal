@@ -18,11 +18,11 @@
     {% if Tickets %}
     {% for form in TicketForms %}
     <form Class="ticket-form">
-        <fieldset>
+        
             <legend>Ticket {{ form.position.value }}</legend>
             <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
             <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
-        </fieldset>
+        
     </form>
     {% endfor %}
     {% else %}
