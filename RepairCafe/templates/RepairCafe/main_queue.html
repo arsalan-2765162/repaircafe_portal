@@ -25,7 +25,6 @@
 
         <div class="ticket-feed">
             {% for form in TicketForms %}
-                <form Class="ticket-form">
                     <fieldset>
                         <legend>Ticket {{ form.position.value }}</legend>
                         <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
@@ -41,7 +40,6 @@
                             </form>
                         {% endif %}
                     </fieldset>
-                </form>
             {% if t.repairStatus == "WAITING" %}
             <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
                 {% csrf_token %}
