@@ -29,11 +29,12 @@
                     
                         
                         <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
-                        <img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">
+                        <p><h2>Queue Position #{{ form.position.value }}</h2></p>
                         <p><h2>Repair #{{ form.repairNumber.value }}: {{ form.itemName.value }}</h2></p>
-                        <p><h2>Category: {{ form.itemCategory.value }}</h2></p>
-                        <p><h2>Repair Status: {{ form.repairStatus.value }}</h2></p>
-                        <p id="dropdownparagraph"><h2>Repair Description: {{ form.itemDescription.value }}</h2></p>
+                        <img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">
+                       <p id="dropdownrepairdescription"><h2>Repair Description: {{ form.itemDescription.value }}</h2></p>
+                       
+                       
                         
                     
                 </form>

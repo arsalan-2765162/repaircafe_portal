@@ -88,7 +88,10 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
   .ticket-feed {margin:15px;}
 
-  .ticket-form {margin-top:15px; margin-bottom:15px;border-radius:12px; background-color:#e86312;}
-  .ticket-form img {float:left; margin:5px; width:118px; height:118px; }
+
+  .ticket-form {margin-top:15px; margin-bottom:15px;border-radius:12px; background-color:#e86312; overflow: auto;}
+  .ticket-form img { margin:5px; width:118px; height:118px; float: left; }
   .ticket-form h2 {text-align:center; font-size:22px; color:white;font-family:'Inter', sans-serif; margin:10px;}
-  #dropdownbutton{float:right; width:50px; height:50px; margin-top: 50px; margin-right: 30px; vertical-align: middle; }
+  #dropdownbutton{float:right; width:50px; height:50px; margin-right:30px; margin-bottom: 30px;}
+  
+
