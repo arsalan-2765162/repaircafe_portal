@@ -14,6 +14,13 @@
         <button type="submit">Filter</button>
     </form>
     <h1>Tickets</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
     {% if Tickets %}
         <!-- {% for t in Tickets %}
             <p>Repair_Number:{{t.repairNumber}} </p>
@@ -25,23 +32,22 @@
 
         <div class="ticket-feed">
             {% for form in TicketForms %}
-                <form Class="ticket-form">
-                    <fieldset>
-                        <legend>Ticket {{ form.position.value }}</legend>
-                        <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
-                        <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
-                        <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
-                        <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
-                        {% if form.repairStatus.value == "WAITING" %}
-                        <form action="{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}" method="post">
-                            {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">
-                                    Accept Repair
-                                </button>
-                            </form>
-                        {% endif %}
-                    </fieldset>
-                </form>
+                <fieldset>
+                    <legend>Ticket {{ form.repairNumber.value }}</legend>
+                    <p><strong>Repair Number:</strong> {{ form.repairNumber.value }}</p>
+                    <p><strong>Position:</strong> {{ form.position.value }}</p>
+                    <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
+                    <p><strong>Category:</strong> {{ form.instance.get_itemCategory_display }}</p>
+                    <p><strong>Repair Status: </strong> {{ form.instance.get_repairStatus_display }}</p>
+                    {% if form.repairStatus.value == "WAITING" %}
+                    <form action="{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}" method="post">
+                        {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">
+                                Accept Repair
+                            </button>
+                        </form>
+                    {% endif %}
+                </fieldset>
             {% if t.repairStatus == "WAITING" %}
             <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
                 {% csrf_token %}
