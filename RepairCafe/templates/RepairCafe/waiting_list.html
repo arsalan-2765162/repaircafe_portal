@@ -22,6 +22,15 @@
             <legend>Ticket {{ form.position.value }}</legend>
             <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
             <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
+            {% if form.repairStatus.value == 'WAITING_TO_JOIN' %}
+            <form method="post" action="{% url 'RepairCafe:accept_ticket' form.repairNumber.value %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Accept Ticket
+                </button>
+            {% else %}
+                    <p>Ticket cannot be accepted</p>
+            {% endif %}
         </fieldset>
     </form>
     {% endfor %}

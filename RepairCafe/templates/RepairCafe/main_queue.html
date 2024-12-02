@@ -32,9 +32,25 @@
                         <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
                         <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
                         <p><strong>Repair Status: </strong> {{ form.repairStatus.value }}</p>
+                        {% if form.repairStatus.value == "WAITING" %}
+                        <form action="{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}" method="post">
+                            {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">
+                                    Accept Repair
+                                </button>
+                            </form>
+                        {% endif %}
                     </fieldset>
                 </form>
-            {% endfor %}
+            {% if t.repairStatus == "WAITING" %}
+            <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Accept Repair
+                </button>
+            </form>
+        {% endif %}
+        {% endfor %}
         </div>
 
     {% else %}

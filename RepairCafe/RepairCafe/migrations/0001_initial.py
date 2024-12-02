@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('itemName', models.CharField(max_length=128)),
                 ('itemCategory', models.CharField(choices=[('ELEC', 'Electrical'), ('TEXT', 'Clothing & Textiles'), ('TOOLS', 'tools & equipment')], max_length=128)),
                 ('itemDescription', models.CharField(max_length=256)),
-                ('repairStatus', models.CharField(choices=[('WAITING', 'Waiting'), ('WAITING_TO_JOIN', 'Waiting to Join Queue'), ('COMPLETED', 'Completed'), ('NEED_PAT', 'Needs PAT tested'), ('INCOMPLETE', 'Incomplete')], default='WAITING', max_length=128)),
+                ('repairStatus', models.CharField(choices=[('WAITING', 'Waiting'), ('WAITING_TO_JOIN', 'Waiting to Join Queue'), ('COMPLETED', 'Completed'), ('NEED_PAT', 'Needs PAT tested'), ('INCOMPLETE', 'Incomplete'), ('BEING_REPAIRED', 'Currently being Repaired')], default='WAITING', max_length=128)),
                 ('position', models.IntegerField(blank=True, default=None, null=True)),
                 ('customer', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='RepairCafe.Customer')),
                 ('queue', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='RepairCafe.Queue')),
