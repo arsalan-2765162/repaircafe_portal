@@ -1,5 +1,5 @@
 {% extends 'RepairCafe/navbar.html' %}
-
+{% load static %} 
 {% block content %}
     <h1>Waiting List</h1>
     {% if Queue %}
@@ -23,22 +23,27 @@
     </ul>
   {% endif %}
     {% if Tickets %}
+    <div class = "ticket-feed">
     {% for form in TicketForms %}
-        <fieldset>
-            <legend>Ticket {{ form.position.value }}</legend>
-            <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
-            <p><strong>Category:</strong> {{ form.instance.get_itemCategory_display }}</p>
+    <div class ="ticket-form">
+            <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
+            <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
+            <p><h2>Repair Request: {{ form.itemName.value }}</h2></p>
+            <p><h2>Issue: {{ form.itemDescription.value }}</h2></p>
+            <p><h2>Visitor Details: [Customer info should go here: their name, number and email]</h2></p>
             {% if form.repairStatus.value == 'WAITING_TO_JOIN' %}
             <form method="post" action="{% url 'RepairCafe:accept_ticket' form.repairNumber.value %}">
                 {% csrf_token %}
-                <button type="submit">
+                <button type="submit" class="btn btn-primary">
                     Accept Ticket
                 </button>
             {% else %}
                     <p>Ticket cannot be accepted</p>
             {% endif %}
-        </fieldset>
+    </div>
+
     {% endfor %}
+    </div>  
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
