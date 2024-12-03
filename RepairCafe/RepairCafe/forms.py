@@ -19,7 +19,7 @@ class TicketFilterForm(forms.Form):
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['repairNumber', 'itemName', 'itemCategory', 'position', 'repairStatus','itemDescription']
+        fields = ['repairNumber', 'itemName', 'itemCategory', 'position', 'repairStatus', 'itemDescription']
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
