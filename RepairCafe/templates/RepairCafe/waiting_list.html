@@ -15,15 +15,29 @@
         <button type="submit">Filter</button>
     </form>
     <h1>Tickets</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
     {% if Tickets %}
     {% for form in TicketForms %}
-    <form Class="ticket-form">
-        
+        <fieldset>
             <legend>Ticket {{ form.position.value }}</legend>
             <p><strong>Item Name:</strong> {{ form.itemName.value }}</p>
-            <p><strong>Category:</strong> {{ form.itemCategory.value }}</p>
-        
-    </form>
+            <p><strong>Category:</strong> {{ form.instance.get_itemCategory_display }}</p>
+            {% if form.repairStatus.value == 'WAITING_TO_JOIN' %}
+            <form method="post" action="{% url 'RepairCafe:accept_ticket' form.repairNumber.value %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Accept Ticket
+                </button>
+            {% else %}
+                    <p>Ticket cannot be accepted</p>
+            {% endif %}
+        </fieldset>
     {% endfor %}
     {% else %}
         <p>No tickets Exist</p>

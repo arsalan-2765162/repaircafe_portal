@@ -27,7 +27,8 @@ class Ticket(models.Model):
                              ('WAITING_TO_JOIN','Waiting to Join Queue'),
                       ('COMPLETED','Completed'),
                       ('NEED_PAT','Needs PAT tested'),
-                      ('INCOMPLETE','Incomplete')]
+                      ('INCOMPLETE','Incomplete'),
+                      ('BEING_REPAIRED','Currently being Repaired')]
     ITEM_CATEGORY_CHOICES = [('ELEC','Electrical'),
                              ('TEXT','Clothing & Textiles'),
                              ('TOOLS','tools & equipment'),]
@@ -50,6 +51,22 @@ class Ticket(models.Model):
         self.position = max_position + 1
         self.save()
 
+    def accept_ticket(self):
+        waiting_list = self.queue
+        main_queue=Queue.objects.get(name="Main Queue")
+        self.repairStatus = "WAITING"
+        self.queue = main_queue
+        max_posistion = Ticket.objects.filter(queue=main_queue).aggregate(models.Max('position'))['position__max'] or 0
+        old_position = self.position
+        self.position = max_posistion + 1
+        self.save()
+
+        #decrement posistions for tickets in waiting list
+        Ticket.objects.filter(queue=waiting_list,
+                                  position__isnull=False,
+                                    position__gt=old_position
+                                    ).update(position=models.F('position') - 1)
+
     def move_up(self):
         if self.position > 1:
             ticket_above = Ticket.objects.filter(queue=self.queue, position=self.position - 1).first()
@@ -58,6 +75,20 @@ class Ticket(models.Model):
                 ticket_above.save()
             self.position -= 1
             self.save()
+    
+    def repair_ticket(self):
+        if self.repairStatus=='WAITING':
+            self.repairStatus ='BEING_REPAIRED'
+            old_position = self.position
+            self.position = None
+            self.save()
+            #decremenent posistion for tickets in main queue
+            Ticket.objects.filter(queue=self.queue,
+                                  position__isnull=False,
+                                    position__gt=old_position
+                                    ).update(position=models.F('position') - 1)
+        else:
+            raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
 
 
 

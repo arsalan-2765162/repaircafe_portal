@@ -14,6 +14,13 @@
         <button type="submit">Filter</button>
     </form>
     <h1>Tickets</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
     {% if Tickets %}
         <!-- {% for t in Tickets %}
             <p>Repair_Number:{{t.repairNumber}} </p>
@@ -25,18 +32,24 @@
 
         <div>
             {% for form in TicketForms %}
-                <form class="ticket-form">
-                    
-                        
+                    <fieldset>
                         <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
                         <img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">
                         <p><h2>Repair #{{ form.repairNumber.value }}: {{ form.itemName.value }}</h2></p>
-                        <p><h2>Category: {{ form.itemCategory.value }}</h2></p>
-                        <p><h2>Repair Status: {{ form.repairStatus.value }}</h2></p>
+                        <p><h2>Position:  {{ form.position.value }}</h2></p>
+                        <p><h2>Category: {{ form.instance.get_itemCategory_display }}</h2></p>
+                        <p><h2>Repair Status: {{ form.instance.get_repairStatus_display }}</h2></p>
+                        {% if t.repairStatus == "WAITING" %}
+                        <form action="{% url 'RepairCafe:repair_ticket' t.repairNumber %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">
+                                Accept Repair
+                            </button>
+                        </form>
+                        {% endif %}
                         <p id="dropdownparagraph"><h2>Repair Description: {{ form.itemDescription.value }}</h2></p>
-                        
-                    
-                </form>
+                    </fieldset>
+
             {% endfor %}
         </div>
 

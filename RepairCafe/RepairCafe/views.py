@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Queue
-from .forms import TicketFilterForm, TicketForm
+from .forms import TicketFilterForm,TicketForm
+from django.urls import reverse
+from django.contrib import messages
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
@@ -16,7 +18,7 @@ def main_queue(request):
         form = TicketFilterForm(request.GET or None)
         print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
-            status_filter = form.cleaned_data.get('repairStatus')
+            status_filter = form.cleaned_data.get('repairStatus') or 'WAITING'
             category_filter = form.cleaned_data.get('itemCategory')
             if status_filter and status_filter != 'ALL':
                 ticket_list = ticket_list.filter(repairStatus=status_filter)
@@ -66,5 +68,23 @@ def move_ticket(request, ticket_id, direction):
         ticket.move_up()
     return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
 
-#def show_navbar(request):
+def accept_ticket(request,repairNumber):
+    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    if ticket.repairStatus == 'WAITING_TO_JOIN':
+        ticket.accept_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been accepted")
+    else:
+        messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not accepted")
+    return redirect(reverse('RepairCafe:waiting_list'))
+
+def repair_ticket(request,repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if ticket.repairStatus == "WAITING":
+        ticket.repair_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired")
+    else:
+        messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
+    return redirect ('RepairCafe:main_queue')
+        
+    
 
