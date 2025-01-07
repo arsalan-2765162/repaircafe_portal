@@ -18,6 +18,20 @@ document.addEventListener("DOMContentLoaded", function () {
         // Show the modal
         modal.style.display = "flex";
     };
+    window.openCompleteModal = function (url, itemName, itemCategory, repairNumber) {
+        console.log("Button clicked!"); // Debugging log
+        console.log("Repair Details:", { url, itemName, itemCategory, repairNumber });
+        console.log(modal)
+        // Update modal details
+        modalDetails.innerHTML = `
+            <strong>Repair #:</strong> ${repairNumber}<br>
+            <strong>Item Name:</strong> ${itemName}<br>
+            <strong>Category:</strong> ${itemCategory}
+        `;
+        acceptForm.setAttribute("action", url);
+        // Show the modal
+        modal.style.display = "flex";
+    };
 
     // Function to close the modal
     const closeModal = () => {

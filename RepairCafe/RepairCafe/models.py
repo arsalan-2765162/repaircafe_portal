@@ -66,6 +66,14 @@ class Ticket(models.Model):
                                   position__isnull=False,
                                     position__gt=old_position
                                     ).update(position=models.F('position') - 1)
+        
+    def complete_ticket(self):
+        waiting_list = self.queue
+        main_queue=Queue.objects.get(name="Main Queue")
+        self.repairStatus = "COMPLETED"
+        self.position = 0
+        self.save()
+
 
     def move_up(self):
         if self.position > 1:
