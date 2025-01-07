@@ -3,6 +3,9 @@
 body {
     font-family: 'Inter', sans-serif;
 }
+.btn {
+  box-sizing: border-box;
+}
 /* The sidebar menu */
 .sidebarbutton{
   background-color: #0A2540;
@@ -138,12 +141,14 @@ body {
     transform: scale(1.1);
     background-color: #cdcccc; /* Darker shade on hover */
     color: #000000;
+    cursor: pointer;
     
   } 
   .btn-primary:active {
-    background-color: #3d3d3d; /* Darker shade on hover */
+    background-color: #3d3d3d; 
     color: #ffffff;
-    transform: scale(0.95); /* Slightly enlarge on hover */
+    transform: scale(0.95); 
+    cursor: pointer;
   } 
 
   .ticket-form img{
@@ -250,10 +255,12 @@ body {
 .btn-accept:hover{
   transform: scale(1.15);
   background-color: #38ff3f; /* Button color */
+  cursor: pointer;
 }
 .btn-reject:hover{
   transform: scale(1.15);
   background-color: #c5c4c4; /* Button color */
+  cursor: pointer;
 }
 
 .btn-accept:active, .btn-reject:active{
@@ -280,3 +287,143 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+.repairbg h1{
+  color: white;
+}
+
+.repairbg .numberbg h1{
+  color: white;
+  line-height: 0.1em;
+  font-size: 5em;
+}
+
+.repairbg{
+z-index: 1000;
+background-color: #E86312;
+border-radius: 15px;
+position: fixed; 
+top: 50%; 
+left: 50%; 
+transform: translate(-50%, -50%); 
+justify-content: center; 
+align-items: center;
+width: 90%; 
+height: 90%; 
+display: flex; 
+flex-direction: column; 
+text-align: center; 
+overflow: auto;
+}
+
+.numberbg{
+  display: inline-block;
+  margin-right: clamp(0px,10vw,10vw);
+  margin-bottom: 1em;
+  align-self: flex-start;
+  background-color: #382F2F;
+  padding: 5px 40px; 
+  border-radius: 10px;
+  font-size: 24px; 
+  color: white; 
+  font-weight: bold; 
+  box-sizing: border-box;
+ 
+}
+
+.rightBlock{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.namebg{
+  display: inline-block;
+  margin-bottom: 2em;
+  background-color: #382F2F;
+  padding: 5px 20px; 
+  min-width: 19em;
+  font-size: 14px;
+  border-radius: 10px;
+  color: white; 
+  font-weight: bold; 
+}
+.namebg h1{
+  line-height: 0.8em;
+}
+.namebg h2{
+  line-height: 0.8em;
+}
+.row{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(0px,0em,00px); /* Adds spacing between buttons */
+}
+.repairbg .btn{
+  margin-top:10px;
+  margin-bottom: 10px;
+  padding: 25px 40px; 
+  border-radius: 10px;
+  bottom: 10px;
+  max-width: 10em ;
+  min-width: 10em;
+  border: 4px solid hsl(0, 0%, 100%,40%);
+  color: #ffffff; /* Button text color */
+  font-size: 35px; /* Button text size */
+  font-weight: bold; /* Bold text */
+  transition: transform 0.3s ease,border 0.3s ease;; /* Hover effect transition */
+  
+
+}
+.btn-complete{
+  background-color: #18B64D;
+}
+.btn-complete:hover{
+  background-color: #18B64D;
+  border: 7px solid hsl(0, 0%, 100%,40%);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.btn-complete:active{
+  background-color: hsl(140, 77%, 50%);
+  transform: scale(0.98);
+  border: 7px solid hsl(0, 0%, 100%,60%);
+  cursor: pointer;
+}
+.btn-incomplete{
+  background-color: #2D2E82;
+}
+
+.btn-incomplete:hover{
+  background-color: hsl(239, 49%, 34%);
+  border: 7px solid hsl(0, 0%, 100%,40%);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.btn-incomplete:active{
+  background-color: hsl(239, 43%, 44%);
+  border: 4px solid hsl(0, 0%, 100%,60%);
+  transform:scale(0.98);
+  cursor: pointer;
+}
+
+.numberbg h3{
+  color:hsl(0, 0%, 95%)
+}
+
+.repairbg h2{
+  color:hsl(0, 0%, 95%)
+}
+
+
+.button-row{
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center buttons horizontally */
+  align-items: center; /* Center buttons vertically */
+  gap: clamp(0px,40vw,100px); /* Adds spacing between buttons */
+  height: 100%; /* Fill the available height of the parent */
+}
+
+
+ 

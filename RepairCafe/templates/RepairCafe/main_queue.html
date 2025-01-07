@@ -31,25 +31,25 @@
         {% endfor %} -->
 
         <div class = "ticket-feed">
-            {% for form in TicketForms %}
+            {% for ticket in Tickets %}
             <div class ="ticket-form">
                 <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
                 <!--<img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">-->
-                <p><h2>Repair #{{ form.repairNumber.value }}: {{ form.itemName.value }}</h2></p>
-                <p><h2>Position:  {{ form.position.value }}</h2></p>
-                <p><h2>Category: {{ form.instance.get_itemCategory_display }}</h2></p>
-                <p><h2>Repair Status: {{ form.instance.get_repairStatus_display }}</h2></p>
-                <p><h2>Repair Description: <em>Place Holder Description</em></h2></p>
-                {% if form.repairStatus.value == "WAITING" %}
+                <p><h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2></p>
+                <p><h2>Position:  {{ ticket.position }}</h2></p>
+                <p><h2>Category: {{ ticket.get_itemCategory_display }}</h2></p>
+                <p><h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2></p>
+                <p><h2>Repair Description: {{ ticket.itemDescription}}</h2></p>
+                {% if ticket.repairStatus == "WAITING" %}
                 <button 
                     type="button" 
                     class="btn btn-primary" 
                     onclick="openModal(
-                        '{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}', 
-                        '{{ form.itemName.value }}', 
-                        '{{ form.instance.get_itemCategory_display }}', 
-                        '{{ form.repairNumber.value }}',
-                        '{{ form.repairNumber.itemDescription.value }}'
+                        '{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                        '{{ ticket.itemName }}', 
+                        '{{ ticket.get_itemCategory_display }}', 
+                        '{{ ticket.repairNumber }}',
+                        '{{ ticket.itemDescription }}'
                     )">
                     Accept Repair
                 </button>

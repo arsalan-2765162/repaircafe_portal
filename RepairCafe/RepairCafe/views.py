@@ -84,7 +84,11 @@ def repair_ticket(request,repairNumber):
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired")
     else:
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
-    return redirect ('RepairCafe:main_queue')
+    return redirect('RepairCafe:repair_item', repairNumber=repairNumber)
+
+def repair_item(request,repairNumber):
+    ticket=get_object_or_404(Ticket,repairNumber=repairNumber)
+    return render(request,'RepairCafe/repair_item.html',{'ticket':ticket})
         
     
 

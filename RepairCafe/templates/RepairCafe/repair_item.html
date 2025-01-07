@@ -1,0 +1,27 @@
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class = "repairbg">
+    <h1>Current Repair</h1>
+    <div class="row">
+        <div class="numberbg">
+            <h3>Repair Number</h3>
+            <h1>#{{ ticket.repairNumber }}</h1>
+        </div>
+        <div class="rightBlock">
+            <div class ="namebg">
+                <h2>Repair Item</h2>
+                <h1>{{ ticket.itemName }}</h1>
+            </div>
+            <div class="namebg">
+                <h2>Item Category</h2>
+                <h1>{{ ticket.get_itemCategory_display }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="button-row">
+        <button class="btn btn-incomplete">Mark as Incomplete</button>
+        <button class="btn btn-complete">Complete Repair</button>
+    </div>
+</div>
+{% endblock %}
