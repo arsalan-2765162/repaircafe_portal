@@ -39,22 +39,43 @@
                 <p><h2>Position:  {{ form.position.value }}</h2></p>
                 <p><h2>Category: {{ form.instance.get_itemCategory_display }}</h2></p>
                 <p><h2>Repair Status: {{ form.instance.get_repairStatus_display }}</h2></p>
-                
                 <p><h2>Repair Description: <em>Place Holder Description</em></h2></p>
                 {% if form.repairStatus.value == "WAITING" %}
-                    <form action="{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        Accept Repair
-                    </button>
-                </form>
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    onclick="openModal(
+                        '{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}', 
+                        '{{ form.itemName.value }}', 
+                        '{{ form.instance.get_itemCategory_display }}', 
+                        '{{ form.repairNumber.value }}',
+                        '{{ form.repairNumber.itemDescription.value }}'
+                    )">
+                    Accept Repair
+                </button>
                 {% endif %}
                 </div>
             {% endfor %}
         </div>  
-        
 
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Accept Repair?</h1>
+            <p id ="modal-item-details"></p>
+            <div class = "buttons">
+                <button id="cancel-btn" class="btn btn-reject">Go Back</button>
+                <form id="accept-form" action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-accept">Accept</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
