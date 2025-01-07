@@ -48,7 +48,8 @@
                         '{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}', 
                         '{{ form.itemName.value }}', 
                         '{{ form.instance.get_itemCategory_display }}', 
-                        '{{ form.repairNumber.value }}'
+                        '{{ form.repairNumber.value }}',
+                        '{{ form.repairNumber.itemDescription.value }}'
                     )">
                     Accept Repair
                 </button>
@@ -67,11 +68,13 @@
             <span class="close">&times;</span>
             <h1>Accept Repair?</h1>
             <p id ="modal-item-details"></p>
-            <form id="accept-form" action="" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-accept">Accept</button>
-            </form>
-            <button id="cancel-btn" class="btn btn-reject">Cancel</button>
+            <div class = "buttons">
+                <button id="cancel-btn" class="btn btn-reject">Go Back</button>
+                <form id="accept-form" action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-accept">Accept</button>
+                </form>
+            </div>
         </div>
     </div>
 

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         acceptForm.setAttribute("action", url);
         // Show the modal
-        modal.style.display = "block";
+        modal.style.display = "flex";
     };
 
     // Function to close the modal
