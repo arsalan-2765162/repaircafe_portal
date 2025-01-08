@@ -3,8 +3,6 @@
 {% block content %}
     <h1>Main Queue</h1>
     {% if Queue %}
-        <p>Queue Name: {{ Queue.name }}</p>
-        <p>Queue Description: {{ Queue.description }}</p>
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
@@ -13,7 +11,6 @@
         {{ FilterForm.as_p }}
         <button type="submit">Filter</button>
     </form>
-    <h1>Tickets</h1>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -31,30 +28,36 @@
         {% endfor %} -->
 
         <div class = "ticket-feed">
-            {% for form in TicketForms %}
+            {% for ticket in Tickets %}
             <div class ="ticket-form">
                 <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
+                <div class="ticket-info">
                 <!--<img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">-->
-                <p><h2>Repair #{{ form.repairNumber.value }}: {{ form.itemName.value }}</h2></p>
-                <p><h2>Position:  {{ form.position.value }}</h2></p>
-                <p><h2>Category: {{ form.instance.get_itemCategory_display }}</h2></p>
-                <p><h2>Repair Status: {{ form.instance.get_repairStatus_display }}</h2></p>
-                <p><h2>Repair Description: <em>Place Holder Description</em></h2></p>
-                {% if form.repairStatus.value == "WAITING" %}
+                <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                <h2>Position:  {{ ticket.position }}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                {% if ticket.repairStatus == "INCOMPLETE" %}
+                    <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                {% endif %}
+                <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                {% if ticket.repairStatus == "WAITING" %}
+            </div>
                 <button 
                     type="button" 
                     class="btn btn-primary" 
                     onclick="openModal(
-                        '{% url 'RepairCafe:repair_ticket' form.repairNumber.value %}', 
-                        '{{ form.itemName.value }}', 
-                        '{{ form.instance.get_itemCategory_display }}', 
-                        '{{ form.repairNumber.value }}',
-                        '{{ form.repairNumber.itemDescription.value }}'
+                        '{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                        '{{ ticket.itemName }}', 
+                        '{{ ticket.get_itemCategory_display }}', 
+                        '{{ ticket.repairNumber }}',
+                        '{{ ticket.itemDescription }}'
                     )">
                     Accept Repair
                 </button>
                 {% endif %}
                 </div>
+            
             {% endfor %}
         </div>  
 
@@ -69,7 +72,7 @@
             <h1>Accept Repair?</h1>
             <p id ="modal-item-details"></p>
             <div class = "buttons">
-                <button id="cancel-btn" class="btn btn-reject">Go Back</button>
+                <button class="btn btn-reject cancel-btn">Go Back</button>
                 <form id="accept-form" action="" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-accept">Accept</button>

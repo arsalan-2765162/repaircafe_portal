@@ -29,6 +29,9 @@ class Ticket(models.Model):
                       ('NEED_PAT','Needs PAT tested'),
                       ('INCOMPLETE','Incomplete'),
                       ('BEING_REPAIRED','Currently being Repaired')]
+    REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
+                                 ('COM_BACK','Coming back next time'),
+                                 ('TAKEN_HOME','Repairer has taken it home')]
     ITEM_CATEGORY_CHOICES = [('ELEC','Electrical'),
                              ('TEXT','Clothing & Textiles'),
                              ('TOOLS','tools & equipment'),]
@@ -38,6 +41,8 @@ class Ticket(models.Model):
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
     repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
+    incompleteReason = models.CharField(choices=REPAIR_INCOMPLETE_CHOICES,max_length=128,
+                                        default=None,blank=True,null=True)
     position = models.IntegerField(default=None,null=True,blank=True,)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE,default=None,null=True,blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
@@ -66,6 +71,14 @@ class Ticket(models.Model):
                                   position__isnull=False,
                                     position__gt=old_position
                                     ).update(position=models.F('position') - 1)
+        
+    def complete_ticket(self):
+        waiting_list = self.queue
+        main_queue=Queue.objects.get(name="Main Queue")
+        self.repairStatus = "COMPLETED"
+        self.position = 0
+        self.save()
+
 
     def move_up(self):
         if self.position > 1:

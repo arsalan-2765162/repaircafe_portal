@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Queue
-from .forms import TicketFilterForm,TicketForm
+from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm
 from django.urls import reverse
 from django.contrib import messages
+
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
@@ -84,7 +85,45 @@ def repair_ticket(request,repairNumber):
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired")
     else:
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
-    return redirect ('RepairCafe:main_queue')
+    return redirect('RepairCafe:repair_item', repairNumber=repairNumber)
+
+def mark_incomplete_ticket(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if request.method == 'POST':
+        incompleteForm = IncompleteTicketForm(request.POST)
+        if incompleteForm.is_valid():
+            ticket.repairStatus = "INCOMPLETE"
+            ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
+            ticket.save()
+            messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
+            return redirect('RepairCafe:main_queue')
+    else:
+        form = IncompleteTicketForm()
+    context_dict = {'ticket': ticket, 'form': incompleteForm}
+    return render(request, 'RepairCafe/mark_incomplete_ticket.html', context_dict)
+
+def repair_item(request,repairNumber):
+    context_dict={}
+    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    incompleteForm = IncompleteTicketForm()
+    
+
+    context_dict['incompleteForm'] = incompleteForm
+    context_dict['ticket']=ticket
+    return render(request,'RepairCafe/repair_item.html',context_dict)
+
+def complete_ticket(request,repairNumber):
+    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    if ticket.repairStatus == 'BEING_REPAIRED':
+        ticket.complete_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked complete")
+    else:
+        messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not completed")
+    return redirect(reverse('RepairCafe:main_queue'))
         
+
+
+
+
     
 
