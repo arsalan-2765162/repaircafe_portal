@@ -16,6 +16,17 @@ class TicketFilterForm(forms.Form):
         model = Ticket
         fields = ()
 
+class IncompleteTicketForm(forms.Form):
+    incompleteReason = forms.ChoiceField(
+        choices=Ticket.REPAIR_INCOMPLETE_CHOICES,
+        widget=forms.RadioSelect,
+        label="Reason for Incompletion",
+        required=True,
+    )
+    class Meta:
+        model=Ticket
+        fields=["incompleteReason"]
+
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket

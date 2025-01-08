@@ -3,8 +3,6 @@
 {% block content %}
     <h1>Main Queue</h1>
     {% if Queue %}
-        <p>Queue Name: {{ Queue.name }}</p>
-        <p>Queue Description: {{ Queue.description }}</p>
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
@@ -69,7 +67,7 @@
             <h1>Accept Repair?</h1>
             <p id ="modal-item-details"></p>
             <div class = "buttons">
-                <button id="cancel-btn" class="btn btn-reject">Go Back</button>
+                <button class="btn btn-reject cancel-btn">Go Back</button>
                 <form id="accept-form" action="" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-accept">Accept</button>

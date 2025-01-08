@@ -19,15 +19,24 @@
             </div>
         </div>
     </div>
-    <div class="button-row">
-        <button class="btn btn-incomplete">Mark as Incomplete</button>
+    <div class="button-row" >
+        <button class="btn btn-incomplete" onclick="openIncompleteModal(
+            '{% url 'RepairCafe:complete_ticket' ticket.repairNumber %}', 
+            '{{ ticket.itemName }}', 
+            '{{ ticket.get_itemCategory_display }}', 
+            '{{ ticket.repairNumber }}',
+            '{{ ticket.itemDescription }}'
+        )">
+            Mark as Incomplete
+        </button>
         <button class="btn btn-complete" onclick="openCompleteModal(
             '{% url 'RepairCafe:complete_ticket' ticket.repairNumber %}', 
             '{{ ticket.itemName }}', 
             '{{ ticket.get_itemCategory_display }}', 
             '{{ ticket.repairNumber }}',
             '{{ ticket.itemDescription }}'
-        )">Complete Repair</button>
+        )">Complete Repair
+        </button>
     </div>
 </div>
 <!-- Modal -->
@@ -42,6 +51,28 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-accept">Complete</button>
             </form>
+        </div>
+    </div>
+</div>
+
+<div id="incompleteModal" class="modal">
+    <div class="modal-content2">
+        <span class="close">&times;</span>
+        <h1>Mark Repair as Incomplete?</h1>
+        <form action="{% url 'RepairCafe:mark_incomplete_ticket' ticket.repairNumber %}" method="post">
+            <div class="inc-form">
+                {% csrf_token %}
+                {% for radio in incompleteForm.incompleteReason %}
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}">
+                        <li>{{ radio.choice_label }}</li>
+                    </label>
+                {% endfor %}
+            </div>
+        <div class = "buttons">
+            <button type="button" class="btn btn-reject cancel-btn">Go Back</button>
+            <button type="submit" class="btn btn-accept">Submit</button>
+        </form>
         </div>
     </div>
 </div>
