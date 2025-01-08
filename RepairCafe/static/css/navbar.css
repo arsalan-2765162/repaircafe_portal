@@ -65,11 +65,12 @@ body {
   
   /* The button used to open the sidebar */
   .openbtn {
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
     cursor: pointer;
     background-color: #2D2E82;
     color: white;
-    padding: 15px 15px;
+    padding: 5px 10px;
     border: none;
     border-radius: 15px;
     outline: 2px solid black;
@@ -105,7 +106,9 @@ body {
   }
   
   .ticket-form {
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin: 20px auto; /* Center and space each ticket */
     padding: 20px; /* Ensure internal spacing */
     border-radius: 12px; /* Rounded corners */
@@ -116,9 +119,16 @@ body {
     max-width:1900px; /* Limit maximum size for readability */
     }
 
+    .ticket-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; /* Allow text container to take up remaining space */
+      padding-left: 20px; /* Add space between image and text */
+    }
 
   .ticket-form .btn-primary {
     margin-top: 10px;
+    margin-left:15px;
     float:right;
     position: relative; /* Absolute positioning inside the .ticket-form */
     bottom: 10px; /* Button 20px from the bottom of the .ticket-form */
@@ -133,10 +143,7 @@ body {
     transition: transform 0.2s ease; /* Hover effect transition */
   }
   
-  .ticket-form p {
-    text-align:center;
-    margin-bottom: 10px; /* Add space between paragraphs */
-}
+
   .btn-primary:hover {
     transform: scale(1.1);
     background-color: #cdcccc; /* Darker shade on hover */
@@ -150,20 +157,28 @@ body {
     transform: scale(0.98); 
     cursor: pointer;
   } 
+  .ticket-form .btn-primary {
+    align-self: flex-end;
+  } 
 
   .ticket-form img{
-    float:left;
-    margin:5px; 
-    width:118px;
-    height:118px;
+    margin:0;
+    margin-left:10px;
+    width:100px;
+    height:100px;
+    flex-shrink: 0;
    }
   .ticket-form h2 {
-    text-align:center;
+    text-align:left;
     font-size:22px; 
     color:white;
     font-family:'Inter', sans-serif;
-    margin:10px;
+    margin:10px 0;
+    margin-left:10px;
+    margin-right:10px;
+    padding-left: 10px;
     }
+
   #dropdownbutton{float:right; 
     width:50px; 
     height:50px; 

@@ -3,8 +3,6 @@
 {% block content %}
     <h1>Waiting List</h1>
     {% if Queue %}
-        <p>Queue Name: {{ Queue.name }}</p>
-        <p>Queue Description: {{ Queue.description }}</p>
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
@@ -28,9 +26,11 @@
     <div class ="ticket-form">
             <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
             <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
-            <p><h2>Repair Request: {{ form.itemName.value }}</h2></p>
-            <p><h2>Issue: {{ form.itemDescription.value }}</h2></p>
-            <p><h2>Visitor Details: [Customer info should go here: their name, number and email]</h2></p>
+            <div class = "ticket-info">
+            <h2>Repair Request: {{ form.itemName.value }}</h2>
+            <h2>Issue: {{ form.itemDescription.value }}</h2>
+            <h2>Visitor Details: [Placeholder: name, number and email]</h2>
+            </div>
             {% if form.repairStatus.value == 'WAITING_TO_JOIN' %}
             <form method="post" action="{% url 'RepairCafe:accept_ticket' form.repairNumber.value %}">
                 {% csrf_token %}
