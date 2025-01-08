@@ -137,6 +137,7 @@ body {
     border-radius: 15px; /* Round corners */
     background-color: #ffffff; /* Button color */
     border-color:#333;
+    border-width: 3px;
     color: #000000; /* Button text color */
     font-size: 1.5em; /* Button text size */
     font-weight: bold; /* Bold text */
@@ -145,7 +146,7 @@ body {
   
 
   .btn-primary:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     background-color: #cdcccc; /* Darker shade on hover */
     color: #000000;
     cursor: pointer;
@@ -249,6 +250,7 @@ body {
   margin-bottom: 10px;
   padding: 1.6vw 1.8vw; /* Button size */
   border-radius: 10px; /* Round corners */
+  border-style: outset;
   bottom: 10px;
   border: 3px solid #4d4d4d;
   color: #333; /* Button text color */
