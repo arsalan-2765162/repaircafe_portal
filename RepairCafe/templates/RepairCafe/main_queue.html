@@ -6,44 +6,36 @@
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
-    <h2>Filter Options</h2>
-    <form method="get">
-        {{ FilterForm.as_p }}
-        <button type="submit">Filter</button>
-    </form>
+    <div class = "center-con">
+        <form method="get" class="filter">
+                {{ FilterForm.as_p }}
+                <button type="submit">Filter</button>
+        </form>
+    </div>
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-  {% endif %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% if Tickets %}
-        <!-- {% for t in Tickets %}
-            <p>Repair_Number:{{t.repairNumber}} </p>
-            <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
-            <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
-            <p style="text-indent: 2em;">Position:{{ t.position }}</p>
-            <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
-        {% endfor %} -->
-
         <div class = "ticket-feed">
             {% for ticket in Tickets %}
             <div class ="ticket-form">
                 <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
                 <div class="ticket-info">
-                <!--<img src="{% static 'images/whitedropdownicon.png' %}" id="dropdownbutton">-->
-                <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
-                <h2>Position:  {{ ticket.position }}</h2>
-                <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
-                <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
-                {% if ticket.repairStatus == "INCOMPLETE" %}
-                    <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
-                {% endif %}
-                <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                    <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                    <h2>Position:  {{ ticket.position }}</h2>
+                    <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                    <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                    {% if ticket.repairStatus == "INCOMPLETE" %}
+                        <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                    {% endif %}
+                    <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                </div>
                 {% if ticket.repairStatus == "WAITING" %}
-            </div>
-                <button 
+                    <button 
                     type="button" 
                     class="btn btn-primary" 
                     onclick="openModal(
@@ -52,12 +44,11 @@
                         '{{ ticket.get_itemCategory_display }}', 
                         '{{ ticket.repairNumber }}',
                         '{{ ticket.itemDescription }}'
-                    )">
+                        )">
                     Accept Repair
-                </button>
+                    </button>
                 {% endif %}
-                </div>
-            
+            </div>
             {% endfor %}
         </div>  
 
