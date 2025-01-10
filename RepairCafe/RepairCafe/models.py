@@ -32,9 +32,11 @@ class Ticket(models.Model):
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
                                  ('COM_BACK','Coming back next time'),
                                  ('TAKEN_HOME','Repairer has taken it home')]
-    ITEM_CATEGORY_CHOICES = [('ELEC','Electrical'),
+    ITEM_CATEGORY_CHOICES = [('ELECM','Electrical Mains'),
+                             ('ELEC','Electrical Low-Voltage/Battery'),
                              ('TEXT','Clothing & Textiles'),
-                             ('TOOLS','tools & equipment'),]
+                             ('CERA','Ceramics'),
+                             ('OTHER','Other'),]
     
     repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
