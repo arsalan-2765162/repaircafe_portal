@@ -12,7 +12,7 @@ def populate():
         queue.save()
         return queue
 
-    def add_ticket(repair_number, item_name, item_category, item_description, repair_status, position, queue):
+    def add_ticket(repair_number, item_name, item_category, item_description, repair_status, position, queue, customer):
         ticket = Ticket.objects.get_or_create(
             repairNumber=repair_number,
             itemName=item_name,
@@ -20,10 +20,12 @@ def populate():
             itemDescription=item_description,
             repairStatus=repair_status,
             position=position,
-            queue=queue
+            queue=queue,
+            customer=customer
         )[0]
         ticket.save()
         return ticket
+    
 
     def add_customer(first_name, last_name):
         customer = Customer.objects.get_or_create(firstName=first_name, lastName=last_name)[0]
@@ -66,7 +68,18 @@ def populate():
         {'firstName': 'John', 'lastName': 'Doe'},
         {'firstName': 'Jane', 'lastName': 'Smith'},
         {'firstName': 'Robert', 'lastName': 'Brown'},
-        {'firstName': 'Emily', 'lastName': 'Davis'}
+        {'firstName': 'Emily', 'lastName': 'Davis'},
+        {'firstName': 'Michael', 'lastName': 'Wilson'},
+        {'firstName': 'Sarah', 'lastName': 'Anderson'},
+        {'firstName': 'David', 'lastName': 'Taylor'},
+        {'firstName': 'Emma', 'lastName': 'Thomas'},
+        {'firstName': 'James', 'lastName': 'Martin'},
+        {'firstName': 'Laura', 'lastName': 'White'},
+        {'firstName': 'Daniel', 'lastName': 'Moore'},
+        {'firstName': 'Sophie', 'lastName': 'Jackson'},
+        {'firstName': 'Oliver', 'lastName': 'Harris'},
+        {'firstName': 'Lucy', 'lastName': 'Clark'},
+        {'firstName': 'William', 'lastName': 'Lewis'}
     ]
     repairers_data = [
         {'firstName': 'Alice', 'lastName': 'Johnson'},
@@ -74,18 +87,31 @@ def populate():
         {'firstName': 'Eve', 'lastName': 'Clark'}
     ]
 
+    customers = []
+    for customer_data in customers_data:
+        customers.append(add_customer(customer_data['firstName'], customer_data['lastName']))
+
+
     # Adding Queue objects
     queue_objects = {queue: add_queue(queue, description) for queue, description in queue_data.items()}
 
     # Adding Ticket objects (ensure the queue is correctly passed)
-    for ticket_data in tickets_data:
-        queue = queue_objects[ticket_data['queue']]  # Fetch the corresponding Queue object
-        add_ticket(ticket_data['repairNumber'], ticket_data['itemName'], ticket_data['itemCategory'],
-                   ticket_data['itemDescription'], ticket_data['repairStatus'], ticket_data['position'], queue)
+    for i, ticket_data in enumerate(tickets_data):
+        queue = queue_objects[ticket_data['queue']]
+        # Use modulo to cycle through customers if there are more tickets than customers
+        customer = customers[i]
+        add_ticket(
+            ticket_data['repairNumber'], 
+            ticket_data['itemName'], 
+            ticket_data['itemCategory'],
+            ticket_data['itemDescription'], 
+            ticket_data['repairStatus'], 
+            ticket_data['position'], 
+            queue,
+            customer
+        )
 
-    # Adding Customer objects
-    for customer_data in customers_data:
-        add_customer(customer_data['firstName'], customer_data['lastName'])
+
 
     # Adding Repairer objects
     for repairer_data in repairers_data:

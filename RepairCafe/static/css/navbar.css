@@ -87,6 +87,7 @@ body {
   #main {
     transition: margin-left .5s; /* If you want a transition effect */
     padding: 20px;
+    padding-top: 10px;
   }
   
   /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -97,33 +98,35 @@ body {
 
  
   .ticket-feed {
-    display: flex; /* Flexbox for layout */
-    flex-direction: column; /* Stack tickets vertically */
-    gap: 0px; /* Add spacing between tickets */
-    align-items: center; /* Center tickets within the container */
-    width: 100%; /* Ensure the container spans the full width */
-    padding: 10px; /* Add some padding around the container */
+    display: flex; 
+    flex-direction: column; 
+    gap: 0px; 
+    align-items: center; 
+    width: 100%;
+    padding: 10px; 
+    justify-content: center; 
+    box-sizing: border-box;
   }
   
   .ticket-form {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 20px auto; /* Center and space each ticket */
-    padding: 20px; /* Ensure internal spacing */
-    border-radius: 12px; /* Rounded corners */
-    background-color: #e86312; /* Orange background */
-    color: white; /* Text color for contrast */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    width: 90%; /* Set width relative to the container */
-    max-width:1900px; /* Limit maximum size for readability */
+    margin: 20px auto; 
+    padding: 20px; 
+    border-radius: 12px; 
+    background-color: #e86312; 
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 95%; 
+    max-width:1900px; 
     }
 
     .ticket-info {
       display: flex;
       flex-direction: column;
-      flex-grow: 1; /* Allow text container to take up remaining space */
-      padding-left: 20px; /* Add space between image and text */
+      flex-grow: 1; 
+      padding-left: 20px; 
     }
 
   .ticket-form .btn-primary {
@@ -256,7 +259,9 @@ body {
   color: #333; /* Button text color */
   font-size: 35px; /* Button text size */
   font-weight: bold; /* Bold text */
+  height: fit-content;
   transition: transform 0.3s ease; /* Hover effect transition */
+  box-sizing: border-box;
 }
 
 
@@ -350,19 +355,27 @@ overflow: auto;
  
 }
 
-.rightBlock{
+.rightBlock, .leftBlock{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
+
+.leftBlock{
+  margin-right: clamp(0px,10vw,10vw);
+  margin-bottom: 1em;
+  box-sizing: border-box;
+}
+
 .namebg{
   display: inline-block;
   margin-bottom: 2em;
   background-color: #382F2F;
   padding: 5px 20px; 
   min-width: 19em;
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 10px;
   color: white; 
   font-weight: bold; 
@@ -579,6 +592,7 @@ overflow: auto;
   max-width: 100%;
   min-width: 150px;
   flex: 1;
+  cursor:pointer;
 }
 .filter p , .filter2 p {
   margin: .5em;
