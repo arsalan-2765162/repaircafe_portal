@@ -6,12 +6,14 @@
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
-    <h2>Filter Options</h2>
-    <form method="get">
-        {{ WaitingForm.itemCategory.label_tag }}
-        {{ WaitingForm.itemCategory }}
-        <button type="submit">Filter</button>
-    </form>     
+    <div class="center-con">
+        <form method="get" class="filter2">
+            <p>{{ WaitingForm.itemCategory.label_tag }}
+            {{ WaitingForm.itemCategory }}
+            </p>
+            <button type="submit">Filter</button>
+        </form>     
+    </div>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -36,6 +38,7 @@
                 <button type="submit" class="btn btn-primary">
                     Accept Ticket
                 </button>
+            </form>
             {% else %}
                     <p>Ticket cannot be accepted</p>
             {% endif %}

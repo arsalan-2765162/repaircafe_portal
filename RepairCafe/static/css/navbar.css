@@ -87,6 +87,7 @@ body {
   #main {
     transition: margin-left .5s; /* If you want a transition effect */
     padding: 20px;
+    padding-top: 10px;
   }
   
   /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -97,33 +98,35 @@ body {
 
  
   .ticket-feed {
-    display: flex; /* Flexbox for layout */
-    flex-direction: column; /* Stack tickets vertically */
-    gap: 0px; /* Add spacing between tickets */
-    align-items: center; /* Center tickets within the container */
-    width: 100%; /* Ensure the container spans the full width */
-    padding: 10px; /* Add some padding around the container */
+    display: flex; 
+    flex-direction: column; 
+    gap: 0px; 
+    align-items: center; 
+    width: 100%;
+    padding: 10px; 
+    justify-content: center; 
+    box-sizing: border-box;
   }
   
   .ticket-form {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 20px auto; /* Center and space each ticket */
-    padding: 20px; /* Ensure internal spacing */
-    border-radius: 12px; /* Rounded corners */
-    background-color: #e86312; /* Orange background */
-    color: white; /* Text color for contrast */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    width: 90%; /* Set width relative to the container */
-    max-width:1900px; /* Limit maximum size for readability */
+    margin: 20px auto; 
+    padding: 20px; 
+    border-radius: 12px; 
+    background-color: #e86312; 
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 95%; 
+    max-width:1900px; 
     }
 
     .ticket-info {
       display: flex;
       flex-direction: column;
-      flex-grow: 1; /* Allow text container to take up remaining space */
-      padding-left: 20px; /* Add space between image and text */
+      flex-grow: 1; 
+      padding-left: 20px; 
     }
 
   .ticket-form .btn-primary {
@@ -137,6 +140,7 @@ body {
     border-radius: 15px; /* Round corners */
     background-color: #ffffff; /* Button color */
     border-color:#333;
+    border-width: 3px;
     color: #000000; /* Button text color */
     font-size: 1.5em; /* Button text size */
     font-weight: bold; /* Bold text */
@@ -145,7 +149,7 @@ body {
   
 
   .btn-primary:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     background-color: #cdcccc; /* Darker shade on hover */
     color: #000000;
     cursor: pointer;
@@ -249,12 +253,15 @@ body {
   margin-bottom: 10px;
   padding: 1.6vw 1.8vw; /* Button size */
   border-radius: 10px; /* Round corners */
+  border-style: outset;
   bottom: 10px;
   border: 3px solid #4d4d4d;
   color: #333; /* Button text color */
   font-size: 35px; /* Button text size */
   font-weight: bold; /* Bold text */
+  height: fit-content;
   transition: transform 0.3s ease; /* Hover effect transition */
+  box-sizing: border-box;
 }
 
 
@@ -348,19 +355,27 @@ overflow: auto;
  
 }
 
-.rightBlock{
+.rightBlock, .leftBlock{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
+
+.leftBlock{
+  margin-right: clamp(0px,10vw,10vw);
+  margin-bottom: 1em;
+  box-sizing: border-box;
+}
+
 .namebg{
   display: inline-block;
   margin-bottom: 2em;
   background-color: #382F2F;
   padding: 5px 20px; 
   min-width: 19em;
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 10px;
   color: white; 
   font-weight: bold; 
@@ -547,5 +562,109 @@ overflow: auto;
   outline-offset: 2px;
 }
 
+.filter , .filter2{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+  align-items: stretch;
+  background-color: hsl(0, 0%, 0%,20%);
+  border-radius: 10px;
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 0.1em;
+  width: 100%;
+  max-width: 1200px;
+  align-self: center;
+  gap: 20px;
+  overflow: auto;
+}
 
- 
+.filter2{
+  justify-content: flex-start;
+}
+
+.filter select , .filter2 select {
+  font-size:1em;
+  border-radius: .5em;
+  padding:.3em;
+  font-weight: 200;
+  max-width: 100%;
+  min-width: 150px;
+  flex: 1;
+  cursor:pointer;
+}
+.filter p , .filter2 p {
+  margin: .5em;
+  background-color: #333;
+  border-radius: .5em;
+  padding:1em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap ;
+  min-width: 200px; 
+  word-break: break-word;
+  min-height: 3.5em; /* Set minimum height */
+  box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.filter label , .filter2 label {
+  margin: .5em;
+  background-color: #333;
+  border-radius: .5em;
+
+
+  margin-bottom: .5em;
+}
+
+
+
+.filter button, .filter2 button{
+  margin: .5em;
+  font-size:25px;
+  border-radius: 1em;
+  border-width: .2em;
+  padding:1em 1em;
+  font-weight: 450;
+  background-color: #2D2E82;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease;
+}
+
+.filter button:hover , .filter2 button:hover {
+  background-color: #3d3e9e;
+}
+.filter button:active , filter2 button:active{
+  background-color: #3d3e9e;
+  transform: scale(0.98);
+}
+
+.center-con{
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 100%;
+  margin: 20px 0;
+}
+
+@media screen and (max-width: 768px) {
+  .filter, .filter2 {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 0.5em;
+  }
+
+  .filter p, .filter2 p {
+    margin: 0.25em;
+    width: auto;
+    min-height: 3.5em; /* Maintain minimum height on mobile */
+  }
+
+  .filter select, .filter2 select {
+    width: 100%;
+  }
+}

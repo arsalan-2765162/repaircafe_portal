@@ -4,9 +4,15 @@
 <div class = "repairbg">
     <h1>Current Repair</h1>
     <div class="row">
-        <div class="numberbg">
-            <h3>Repair Number</h3>
-            <h1>#{{ ticket.repairNumber }}</h1>
+        <div class="leftBlock">
+            <div class="namebg">
+                <h2>Repair Number</h2>
+                <h1>#{{ ticket.repairNumber }}</h1>
+            </div>
+            <div class="namebg">
+                <h2>Visitors Name</h2>
+                <h1>{{ ticket.customer.firstName }}</h1>
+            </div>
         </div>
         <div class="rightBlock">
             <div class ="namebg">
@@ -46,7 +52,7 @@
         <h1>Mark Repair as Complete?</h1>
         <p id ="modal-item-details"></p>
         <div class = "buttons">
-            <button id="cancel-btn" class="btn btn-reject">Go Back</button>
+            <button  class="btn btn-reject cancel-btn">Go Back</button>
             <form id="accept-form" action="" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-accept">Complete</button>
