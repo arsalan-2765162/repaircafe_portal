@@ -77,7 +77,10 @@ class Ticket(models.Model):
     def complete_ticket(self):
         waiting_list = self.queue
         main_queue=Queue.objects.get(name="Main Queue")
-        self.repairStatus = "COMPLETED"
+        if self.itemCategory=="ELECM":
+            self.repairStatus="NEED_PAT"
+        else:
+            self.repairStatus = "COMPLETED"
         self.position = 0
         self.save()
 
