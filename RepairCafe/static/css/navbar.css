@@ -133,18 +133,18 @@ body {
     margin-top: 10px;
     margin-left:15px;
     float:right;
-    position: relative; /* Absolute positioning inside the .ticket-form */
-    bottom: 10px; /* Button 20px from the bottom of the .ticket-form */
-    right: 10px; /* Button 20px from the right side */
-    padding: 1vw 2vw; /* Button size */
-    border-radius: 15px; /* Round corners */
-    background-color: #ffffff; /* Button color */
+    position: relative; 
+    bottom: 10px; 
+    right: 10px; 
+    padding: 1vw 2vw;
+    border-radius: 15px; 
+    background-color: #ffffff; 
     border-color:#333;
     border-width: 3px;
-    color: #000000; /* Button text color */
-    font-size: 1.5em; /* Button text size */
-    font-weight: bold; /* Bold text */
-    transition: transform 0.2s ease; /* Hover effect transition */
+    color: #000000; 
+    font-size: 1.5em; 
+    font-weight: bold; 
+    transition: transform 0.2s ease; 
   }
   
 
@@ -161,9 +161,7 @@ body {
     transform: scale(0.98); 
     cursor: pointer;
   } 
-  .ticket-form .btn-primary {
-    align-self: flex-end;
-  } 
+  
 
   .ticket-form img{
     margin:0;
@@ -172,6 +170,9 @@ body {
     height:100px;
     flex-shrink: 0;
    }
+
+ 
+
   .ticket-form h2 {
     text-align:left;
     font-size:22px; 
@@ -182,6 +183,32 @@ body {
     margin-right:10px;
     padding-left: 10px;
     }
+
+  .ticket-form .button-col{
+    display: flex;
+    justify-content: space-between;
+    gap:10px;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .ticket-form .button-col .btn-primary {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; 
+    width: 80px;
+    box-sizing: border-box;
+    text-align: center;
+    
+  } 
+  .ticket-form .feather, .ticket-form .svg{
+    stroke-width: 3;
+    vertical-align: middle;
+    align-self: center;
+    width: 24px;
+    height: 24px;
+  }
 
   #dropdownbutton{float:right; 
     width:50px; 
@@ -668,3 +695,4 @@ overflow: auto;
     width: 100%;
   }
 }
+
