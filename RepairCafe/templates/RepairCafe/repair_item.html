@@ -41,7 +41,12 @@
             '{{ ticket.get_itemCategory_display }}', 
             '{{ ticket.repairNumber }}',
             '{{ ticket.itemDescription }}'
-        )">Complete Repair
+        )">
+        {% if ticket.itemCategory == "ELECM" %}
+            Send To PAT Test
+        {% else %}
+            Complete Repair
+        {% endif %}
         </button>
     </div>
 </div>
@@ -49,13 +54,23 @@
 <div id="confirmationModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h1>Mark Repair as Complete?</h1>
+        <h1>{% if ticket.itemCategory == "ELECM" %}
+                Send Item to PAT Testing?
+            {% else %}
+                Mark Repair as Complete?
+            {% endif %}</h1>
         <p id ="modal-item-details"></p>
         <div class = "buttons">
             <button  class="btn btn-reject cancel-btn">Go Back</button>
             <form id="accept-form" action="" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-accept">Complete</button>
+                <button type="submit" class="btn btn-accept">
+                    {% if ticket.itemCategory == "ELECM" %}
+                        Send to PAT
+                    {% else %}
+                        Complete
+                    {% endif %} 
+                </button>
             </form>
         </div>
     </div>

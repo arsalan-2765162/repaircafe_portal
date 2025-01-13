@@ -73,16 +73,16 @@ def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     if ticket.repairStatus == 'WAITING_TO_JOIN':
         ticket.accept_ticket()
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been accepted")
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been accepted.")
     else:
-        messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not accepted")
+        messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not accepted.")
     return redirect(reverse('RepairCafe:waiting_list'))
 
 def repair_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == "WAITING":
         ticket.repair_ticket()
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired")
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
     else:
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
     return redirect('RepairCafe:repair_item', repairNumber=repairNumber)
@@ -114,9 +114,12 @@ def repair_item(request,repairNumber):
 
 def complete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
-    if ticket.repairStatus == 'BEING_REPAIRED':
+    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "NEED_PAT":
         ticket.complete_ticket()
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked complete")
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
+    elif(ticket.repairStatus == 'BEING_REPAIRED' ):
+        ticket.complete_ticket()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
         messages.error(request,f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
     return redirect(reverse('RepairCafe:main_queue'))

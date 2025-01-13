@@ -259,6 +259,8 @@ body {
   padding: 0.65em;
   margin: -0.2em -0.2em; 
   padding-bottom: 10px;
+  margin-left: 0px;
+  padding-left: 0px;
 }
 
 .modal-content p{
@@ -645,6 +647,7 @@ overflow: auto;
 
   margin-bottom: .5em;
 }
+
 
 
 

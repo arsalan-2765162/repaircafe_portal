@@ -32,9 +32,11 @@ class Ticket(models.Model):
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
                                  ('COM_BACK','Coming back next time'),
                                  ('TAKEN_HOME','Repairer has taken it home')]
-    ITEM_CATEGORY_CHOICES = [('ELEC','Electrical'),
+    ITEM_CATEGORY_CHOICES = [('ELECM','Electrical Mains'),
+                             ('ELEC','Electrical Low-Voltage/Battery'),
                              ('TEXT','Clothing & Textiles'),
-                             ('TOOLS','tools & equipment'),]
+                             ('CERA','Ceramics'),
+                             ('OTHER','Other'),]
     
     repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
@@ -75,7 +77,10 @@ class Ticket(models.Model):
     def complete_ticket(self):
         waiting_list = self.queue
         main_queue=Queue.objects.get(name="Main Queue")
-        self.repairStatus = "COMPLETED"
+        if self.itemCategory=="ELECM":
+            self.repairStatus="NEED_PAT"
+        else:
+            self.repairStatus = "COMPLETED"
         self.position = 0
         self.save()
 
