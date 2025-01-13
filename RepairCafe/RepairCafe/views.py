@@ -121,8 +121,15 @@ def complete_ticket(request,repairNumber):
         ticket.complete_ticket()
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
-        messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not completed.")
+        messages.error(request,f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
     return redirect(reverse('RepairCafe:main_queue'))
+
+def delete_ticket(request,repairNumber):
+    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    ticket.delete_ticket()
+    messages.success(request,f"Ticket: {ticket.itemName}, has been removed")
+    return redirect('RepairCafe:waiting_list')
+
         
 
 

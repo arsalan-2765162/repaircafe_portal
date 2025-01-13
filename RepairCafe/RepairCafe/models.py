@@ -84,6 +84,8 @@ class Ticket(models.Model):
         self.position = 0
         self.save()
 
+    def delete_ticket(self):
+        self.delete()
 
     def move_up(self):
         if self.position > 1:
