@@ -105,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PRESET_PASSWORD = "sh28" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

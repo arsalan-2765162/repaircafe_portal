@@ -3,6 +3,7 @@ from .models import Ticket, Queue
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm
 from django.urls import reverse
 from django.contrib import messages
+from django.conf import settings
 
 
 def index(request):
@@ -129,6 +130,19 @@ def delete_ticket(request,repairNumber):
     ticket.delete_ticket()
     messages.success(request,f"Ticket: {ticket.itemName}, has been removed")
     return redirect('RepairCafe:waiting_list')
+
+# visitor flow #
+
+def enter_password(request):
+    if request.method == 'POST':
+        entered_password = request.POST.get('password')
+        if entered_password == settings.PRESET_PASSWORD:
+            request.session['preset_password_verified'] = True
+            return redirect('index')
+        else:
+            return render(request, 'enter_password.html', {'error': 'Incorrect Password'})
+        
+    return render(request, 'enter_password.html')
 
         
 
