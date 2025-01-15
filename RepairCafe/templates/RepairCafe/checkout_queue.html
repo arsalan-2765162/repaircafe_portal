@@ -1,0 +1,60 @@
+{% extends 'RepairCafe/navbar.html' %}
+{% load static %} 
+{% block content %}
+    <h1>Checkout queue</h1>
+    {% if Queue %}
+    {% else %}
+        <p>No Queue object found.</p>
+    {% endif %}
+    <div class="center-con">
+        <form method="get" class="filter2">
+            <p>{{ WaitingForm.itemCategory.label_tag }}
+            {{ WaitingForm.itemCategory }}
+            </p>
+            <button type="submit">Filter</button>
+        </form>     
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+    {% if Tickets %}
+    <div class = "ticket-feed">
+    {% for ticket in Tickets %}
+    <div class ="ticket-form">
+            <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
+            <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
+            <div class="ticket-info">
+                <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                <h2>Position:  {{ ticket.position }}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                {% if ticket.repairStatus == "INCOMPLETE" %}
+                    <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                {% endif %}
+                <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+            </div>
+            
+            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
+                    <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">
+                            Checkout
+                        </button>
+                    </form>
+                {% else %}
+                        <p>Ticket cannot be accepted</p>
+                {% endif %}
+            
+    </div>
+
+    {% endfor %}
+    </div>  
+    {% else %}
+        <p>No tickets Exist</p>
+    {% endif %}
+{% endblock %}
+

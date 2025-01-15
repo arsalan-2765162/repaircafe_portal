@@ -3,6 +3,7 @@ from .models import Ticket, Queue
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm
 from django.urls import reverse
 from django.contrib import messages
+from django.db.models import Q
 
 
 def index(request):
@@ -63,11 +64,28 @@ def waiting_list(request):
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
-def move_ticket(request, ticket_id, direction):
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-    if direction == 'up':
-        ticket.move_up()
-    return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
+def checkout_queue(request):
+    context_dict={}
+    try:
+        queue = Queue.objects.get(name="Checkout Queue")
+        ticket_list = Ticket.objects.filter(isCheckedOut=False,queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
+
+        form = TicketFilterForm(request.GET or None)
+        print("Form is valid:", form.is_valid())  # This will print if the form is valid
+        if form.is_valid():
+            category_filter = form.cleaned_data.get('itemCategory')
+            if category_filter and category_filter != 'ALL':
+                ticket_list = ticket_list.filter(itemCategory=category_filter)
+        
+        
+        context_dict['Queue']=queue
+        context_dict['Tickets']=ticket_list
+        context_dict['WaitingForm']=form
+    except Queue.DoesNotExist:
+        context_dict['Queue']=None
+    return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
+
+
 
 def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
@@ -94,6 +112,7 @@ def mark_incomplete_ticket(request,repairNumber):
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
+            ticket.add_to_checkout()
             ticket.save()
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
@@ -129,6 +148,15 @@ def delete_ticket(request,repairNumber):
     ticket.delete_ticket()
     messages.success(request,f"Ticket: {ticket.itemName}, has been removed")
     return redirect('RepairCafe:waiting_list')
+
+def checkout_ticket(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
+        ticket.checkout()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
+    else:
+        messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+    return redirect(reverse('RepairCafe:checkout_queue'))
 
         
 

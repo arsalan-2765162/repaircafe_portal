@@ -28,7 +28,8 @@ class Ticket(models.Model):
                       ('COMPLETED','Completed'),
                       ('NEED_PAT','Needs PAT tested'),
                       ('INCOMPLETE','Incomplete'),
-                      ('BEING_REPAIRED','Currently being Repaired')]
+                      ('BEING_REPAIRED','Currently being Repaired'),
+                      ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
                                  ('COM_BACK','Coming back next time'),
                                  ('TAKEN_HOME','Repairer has taken it home')]
@@ -39,6 +40,7 @@ class Ticket(models.Model):
                              ('OTHER','Other'),]
     
     repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
+    isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
@@ -58,6 +60,13 @@ class Ticket(models.Model):
         self.position = max_position + 1
         self.save()
 
+    @staticmethod
+    def decrement_positions(queue,position):
+        Ticket.objects.filter(queue=queue,
+                                  position__isnull=False,
+                                    position__gt=position
+                                    ).update(position=models.F('position') - 1)
+
     def accept_ticket(self):
         waiting_list = self.queue
         main_queue=Queue.objects.get(name="Main Queue")
@@ -68,11 +77,7 @@ class Ticket(models.Model):
         self.position = max_posistion + 1
         self.save()
 
-        #decrement posistions for tickets in waiting list
-        Ticket.objects.filter(queue=waiting_list,
-                                  position__isnull=False,
-                                    position__gt=old_position
-                                    ).update(position=models.F('position') - 1)
+        Ticket.decrement_positions(waiting_list,old_position)
         
     def complete_ticket(self):
         waiting_list = self.queue
@@ -81,20 +86,22 @@ class Ticket(models.Model):
             self.repairStatus="NEED_PAT"
         else:
             self.repairStatus = "COMPLETED"
-        self.position = 0
+            self.add_to_checkout()
         self.save()
+
+    def add_to_checkout(self):
+        self.repairStatus = "COMPLETED"
+        queue = Queue.objects.get(name="Checkout Queue")
+        old_position = self.position
+        max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
+        self.queue = queue
+        self.position = max_position + 1 
+        self.save()
+
 
     def delete_ticket(self):
         self.delete()
 
-    def move_up(self):
-        if self.position > 1:
-            ticket_above = Ticket.objects.filter(queue=self.queue, position=self.position - 1).first()
-            if ticket_above:
-                ticket_above.position += 1
-                ticket_above.save()
-            self.position -= 1
-            self.save()
     
     def repair_ticket(self):
         if self.repairStatus=='WAITING':
@@ -102,13 +109,20 @@ class Ticket(models.Model):
             old_position = self.position
             self.position = None
             self.save()
-            #decremenent posistion for tickets in main queue
-            Ticket.objects.filter(queue=self.queue,
-                                  position__isnull=False,
-                                    position__gt=old_position
-                                    ).update(position=models.F('position') - 1)
+
+            Ticket.decrement_positions(self.queue, old_position)
+
         else:
             raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
+        
+    def checkout(self):
+        if self.repairStatus=='COMPLETED' or 'INCOMPLETE':
+                self.isCheckedOut = True
+                self.save()
+                self.decrement_positions(self.queue,self.position)
+
+        else:
+            raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
 
