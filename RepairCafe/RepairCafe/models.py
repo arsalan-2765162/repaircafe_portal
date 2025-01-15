@@ -112,7 +112,7 @@ class Ticket(models.Model):
         else:
             raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
         
-    def check_out(self):
+    def checkout(self):
         if self.repairStatus=='COMPLETED' or 'INCOMPLETE':
                 self.isCheckedOut = True
                 self.save()

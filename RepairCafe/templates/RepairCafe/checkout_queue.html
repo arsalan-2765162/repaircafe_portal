@@ -36,9 +36,10 @@
                     <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
                 {% endif %}
                 <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                <h2>Is checked out: {{ ticket.isCheckedOut}}</h2>
             </div>
             
-                {% if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus == 'INCOMPLETE' %}
+            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">

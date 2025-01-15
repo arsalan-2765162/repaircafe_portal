@@ -68,7 +68,8 @@ def checkout_queue(request):
     context_dict={}
     try:
         queue = Queue.objects.get(name="Main Queue")
-        ticket_list = Ticket.objects.filter(queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
+        ticket_list = Ticket.objects.filter(isCheckedOut=False,queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
+
         form = TicketFilterForm(request.GET or None)
         print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
@@ -159,7 +160,7 @@ def checkout_ticket(request,repairNumber):
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
-
+    return redirect(reverse('RepairCafe:checkout_queue'))
 
         
 
