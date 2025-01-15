@@ -28,7 +28,8 @@ class Ticket(models.Model):
                       ('COMPLETED','Completed'),
                       ('NEED_PAT','Needs PAT tested'),
                       ('INCOMPLETE','Incomplete'),
-                      ('BEING_REPAIRED','Currently being Repaired')]
+                      ('BEING_REPAIRED','Currently being Repaired'),
+                      ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
                                  ('COM_BACK','Coming back next time'),
                                  ('TAKEN_HOME','Repairer has taken it home')]
@@ -39,6 +40,7 @@ class Ticket(models.Model):
                              ('OTHER','Other'),]
     
     repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
+    isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
