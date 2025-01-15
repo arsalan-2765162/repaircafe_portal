@@ -27,11 +27,15 @@
     <div class ="ticket-form">
             <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
             <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
-            <div class = "ticket-info">
-            <h2>Repair Request: {{ ticket.itemName }}</h2>
-            <h2>Issue: {{ ticket.itemDesription }}</h2>
-            <h2>Category: {{ ticket }}</h2>
-            <h2>Visitor Details: [Placeholder: name, number and email]</h2>
+            <div class="ticket-info">
+                <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                <h2>Position:  {{ ticket.position }}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                {% if ticket.repairStatus == "INCOMPLETE" %}
+                    <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                {% endif %}
+                <h2>Repair Description: {{ ticket.itemDescription}}</h2>
             </div>
             <div class="button-col">
                 {% if ticket.repairStatus == 'COMPLETE' or ticket.repairStatus == 'INCOMPLETE' %}
