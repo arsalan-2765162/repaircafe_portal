@@ -36,7 +36,6 @@
                     <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
                 {% endif %}
                 <h2>Repair Description: {{ ticket.itemDescription}}</h2>
-                <h2>Is checked out: {{ ticket.isCheckedOut}}</h2>
             </div>
             
             {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
