@@ -67,7 +67,7 @@ def waiting_list(request):
 def checkout_queue(request):
     context_dict={}
     try:
-        queue = Queue.objects.get(name="Main Queue")
+        queue = Queue.objects.get(name="Checkout Queue")
         ticket_list = Ticket.objects.filter(isCheckedOut=False,queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
 
         form = TicketFilterForm(request.GET or None)
@@ -117,6 +117,7 @@ def mark_incomplete_ticket(request,repairNumber):
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
+            ticket.add_to_checkout()
             ticket.save()
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
