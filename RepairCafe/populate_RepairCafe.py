@@ -7,7 +7,6 @@ from RepairCafe.models import Ticket, Customer, Repairer, Queue
 
 def populate():
     for each in [Ticket, Customer, Repairer, Queue]:
-        print(each)
         x = each.objects.all()
         for entry in x:
             entry.delete()
