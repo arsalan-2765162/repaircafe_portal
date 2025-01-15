@@ -99,14 +99,6 @@ class Ticket(models.Model):
     def delete_ticket(self):
         self.delete()
 
-    def move_up(self):
-        if self.position > 1:
-            ticket_above = Ticket.objects.filter(queue=self.queue, position=self.position - 1).first()
-            if ticket_above:
-                ticket_above.position += 1
-                ticket_above.save()
-            self.position -= 1
-            self.save()
     
     def repair_ticket(self):
         if self.repairStatus=='WAITING':

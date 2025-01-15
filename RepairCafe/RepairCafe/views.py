@@ -86,11 +86,6 @@ def checkout_queue(request):
     return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
 
 
-def move_ticket(request, ticket_id, direction):
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-    if direction == 'up':
-        ticket.move_up()
-    return redirect('RepairCafe:view_queue', queue_id=ticket.queue.name)
 
 def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
