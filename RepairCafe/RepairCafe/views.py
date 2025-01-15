@@ -152,6 +152,15 @@ def delete_ticket(request,repairNumber):
     messages.success(request,f"Ticket: {ticket.itemName}, has been removed")
     return redirect('RepairCafe:waiting_list')
 
+def checkout_ticket(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
+        ticket.checkout()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
+    else:
+        messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+
+
         
 
 
