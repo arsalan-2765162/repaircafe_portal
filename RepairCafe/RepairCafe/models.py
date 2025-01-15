@@ -60,6 +60,13 @@ class Ticket(models.Model):
         self.position = max_position + 1
         self.save()
 
+    @staticmethod
+    def decrement_positions(queue,position):
+        Ticket.objects.filter(queue=queue,
+                                  position__isnull=False,
+                                    position__gt=position
+                                    ).update(position=models.F('position') - 1)
+
     def accept_ticket(self):
         waiting_list = self.queue
         main_queue=Queue.objects.get(name="Main Queue")
@@ -70,11 +77,7 @@ class Ticket(models.Model):
         self.position = max_posistion + 1
         self.save()
 
-        #decrement posistions for tickets in waiting list
-        Ticket.objects.filter(queue=waiting_list,
-                                  position__isnull=False,
-                                    position__gt=old_position
-                                    ).update(position=models.F('position') - 1)
+        Ticket.decrement_positions(waiting_list,old_position)
         
     def complete_ticket(self):
         waiting_list = self.queue
@@ -84,17 +87,17 @@ class Ticket(models.Model):
         else:
             self.repairStatus = "COMPLETED"
             self.add_to_checkout()
-        self.position = 0
         self.save()
 
     def add_to_checkout(self):
         self.repairStatus = "COMPLETED"
         queue = Queue.objects.get(name="Checkout Queue")
+        old_position = self.position
         max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
         self.queue = queue
-        self.position = max_position
+        self.position = max_position + 1 
         self.save()
-        
+
 
     def delete_ticket(self):
         self.delete()
@@ -106,11 +109,9 @@ class Ticket(models.Model):
             old_position = self.position
             self.position = None
             self.save()
-            #decremenent posistion for tickets in main queue
-            Ticket.objects.filter(queue=self.queue,
-                                  position__isnull=False,
-                                    position__gt=old_position
-                                    ).update(position=models.F('position') - 1)
+
+            Ticket.decrement_positions(self.queue, old_position)
+
         else:
             raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
         
@@ -118,6 +119,8 @@ class Ticket(models.Model):
         if self.repairStatus=='COMPLETED' or 'INCOMPLETE':
                 self.isCheckedOut = True
                 self.save()
+                self.decrement_positions(self.queue,self.position)
+
         else:
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
