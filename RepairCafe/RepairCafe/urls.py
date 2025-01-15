@@ -5,6 +5,7 @@ app_name = 'RepairCafe'
 
 urlpatterns = [
         path('', views.index, name='index'),
+	path('reset_data', views.reset_data, name='reset_data'),
         path('repair/<str:repairNumber>',views.repair_item,name='repair_item'),
         path('complete/<str:repairNumber>',views.complete_ticket,name='complete_ticket'),
         path('mark_incomplete_ticket/<str:repairNumber>/', views.mark_incomplete_ticket, name='mark_incomplete_ticket'),

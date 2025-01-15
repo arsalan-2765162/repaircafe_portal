@@ -9,4 +9,7 @@ Home
 
 {% block body_block %}
 	<p>This is the home page</p>
+	<form action="{% url 'RepairCafe:reset_data' %}" method="GET">
+		<input type="submit" value="temp">
+	</form>
 {% endblock %}
