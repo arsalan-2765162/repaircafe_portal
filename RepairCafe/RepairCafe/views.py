@@ -63,6 +63,31 @@ def waiting_list(request):
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
+def checkout(request):
+    context_dict={}
+    try:
+        queue = Queue.objects.get(name="Main Queue")
+        ticket_list = Ticket.objects.filter(queue=queue,repairStatus='completed').order_by('position')
+
+        form = TicketFilterForm(request.GET or None)
+        print("Form is valid:", form.is_valid())  # This will print if the form is valid
+        if form.is_valid():
+            category_filter = form.cleaned_data.get('itemCategory')
+            if category_filter and category_filter != 'ALL':
+                ticket_list = ticket_list.filter(itemCategory=category_filter)
+        
+        #populate the list of forms used to display all tickets in waiting list
+        waitingForms = [TicketForm(instance=ticket) for ticket in ticket_list]
+        context_dict['TicketForms'] = waitingForms
+        
+        context_dict['Queue']=queue
+        context_dict['Tickets']=ticket_list
+        context_dict['WaitingForm']=form
+    except Queue.DoesNotExist:
+        context_dict['Queue']=None
+    return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
+
+
 def move_ticket(request, ticket_id, direction):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     if direction == 'up':
