@@ -16,12 +16,18 @@ body {
   font-weight: bold;
 }
 
+.sidebarbutton .end{
+  align-self: flex-end;
+}
+
 .sidebarbutton:hover{
   background-color: #ffbd99;
 }
 
 .sidebar {
     height: 100%; /* 100% Full-height */
+    display: flex;
+    flex-direction: column;
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
@@ -36,7 +42,7 @@ body {
   }
   
   /* The sidebar links */
-  .sidebar a {
+  .sidebar a , .sidebar .link {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -62,6 +68,8 @@ body {
     font-size: 36px;
     margin-left: 50px;
   }
+
+ 
   
   /* The button used to open the sidebar */
   .openbtn {

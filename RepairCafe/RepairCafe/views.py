@@ -11,7 +11,7 @@ def index(request):
 
 def reset_data(request):
 	script.populate()
-	return HttpResponseRedirect('/')
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER', redirect('RepairCafe/main_queue.html')))
 
 def main_queue(request):
     context_dict={}
