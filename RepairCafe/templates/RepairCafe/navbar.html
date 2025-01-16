@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Navigation</title>
+    <title>
+	{% block title_block %}
+	Sidebar Navigation
+	{% endblock %}
+    </title>
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
@@ -18,13 +22,17 @@
   </div>
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:waiting_list'%}">Waitlist</a>
-
+  </div>
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
   </div>
   <div class="sidebarbutton">
     <a href="#">Stats</a>
   </div>
-  <div class="sidebarbutton">
-    <a href="#" >Checkout</a>
+  <div class="sidebarbutton end link">
+    <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
+      <input class ="btn-primary" type="submit" value="RELOAD DATA">
+    </form>
   </div>
 </div>
 
@@ -38,6 +46,8 @@
 <script>
   feather.replace();
 </script>
+{% block body_block %}
+{% endblock %}
 </body>
 </html>
 
