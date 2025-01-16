@@ -14,6 +14,6 @@ urlpatterns = [
         path('accept_ticket/<str:repairNumber>/',views.accept_ticket, name='accept_ticket'),
         path('repair_ticket/<str:repairNumber>/',views.repair_ticket,name='repair_ticket'),
         path('delete-ticket/<str:repairNumber>/',views.delete_ticket,name='delete_ticket'),
-        path('enter-password/', enter_password, name='enter_password'),
+        path('enter-password/', views.enter_password, name='enter_password'),
 
 ]

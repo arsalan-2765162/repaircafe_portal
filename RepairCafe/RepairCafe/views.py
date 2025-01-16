@@ -136,13 +136,16 @@ def delete_ticket(request,repairNumber):
 def enter_password(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        if entered_password == settings.PRESET_PASSWORD:
+        if entered_password == settings.VISITOR_PRESET_PASSWORD:
             request.session['preset_password_verified'] = True
-            return redirect('index')
+            return redirect('RepairCafe:index')
+        elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
+            request.session['preset_password_verified'] = True
+            return redirect('RepairCafe:index')
         else:
-            return render(request, 'enter_password.html', {'error': 'Incorrect Password'})
+            return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
         
-    return render(request, 'enter_password.html')
+    return render(request, 'RepairCafe/enter_password.html')
 
         
 

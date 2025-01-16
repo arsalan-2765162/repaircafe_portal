@@ -7,10 +7,10 @@ class PasswordProtectionMiddleware:
         self.get_response = get_response
     
     def __call__(self, request):
-        if request.path == reverse('enter_password'):
+        if request.path == '/enter-password/':
             return self.get_response(request)
         
         if not request.session.get('preset_password_verified'):
-            return redirect('enter_password')
+            return redirect('enter-password/')
         
         return self.get_response(request)
