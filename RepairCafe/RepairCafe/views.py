@@ -1,14 +1,17 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
-
+import populate_RepairCafe as script
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
+def reset_data(request):
+	script.populate()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER', redirect('RepairCafe/main_queue.html')))
 
 def main_queue(request):
     context_dict={}

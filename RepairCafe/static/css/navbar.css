@@ -12,8 +12,25 @@ body {
   border-radius: 15px;
   outline: 2px solid black;
   margin: 10px;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: bold;
+}
+
+
+.sidebar .btn-primary{
+  float: none;
+  position: static;
+  bottom: auto;
+  right: auto;
+  margin: 0;
+  display: block;
+  color: #000000;
+  font-size: .9em;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px;
+  
 }
 
 .sidebarbutton:hover{
@@ -22,6 +39,8 @@ body {
 
 .sidebar {
     height: 100%; /* 100% Full-height */
+    display: flex;
+    flex-direction: column;
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
@@ -36,7 +55,7 @@ body {
   }
   
   /* The sidebar links */
-  .sidebar a {
+  .sidebar a , .sidebar .link {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -62,6 +81,8 @@ body {
     font-size: 36px;
     margin-left: 50px;
   }
+
+ 
   
   /* The button used to open the sidebar */
   .openbtn {
@@ -129,7 +150,7 @@ body {
       padding-left: 20px; 
     }
 
-  .ticket-form .btn-primary {
+ .btn-primary {
     margin-top: 10px;
     margin-left:15px;
     float:right;
@@ -147,6 +168,8 @@ body {
     font-weight: bold; 
     transition: transform 0.2s ease; 
   }
+
+
   
 
   .btn-primary:hover {
@@ -699,4 +722,8 @@ overflow: auto;
     width: 100%;
   }
 }
+
+  .left{
+    float: left;
+  }
 

@@ -6,6 +6,10 @@ django.setup()
 from RepairCafe.models import Ticket, Customer, Repairer, Queue
 
 def populate():
+    for each in [Ticket, Customer, Repairer, Queue]:
+        x = each.objects.all()
+        for entry in x:
+            entry.delete()
     def add_queue(name, description):
         queue = Queue.objects.get_or_create(name=name)[0]
         queue.description = description  # Add the description
