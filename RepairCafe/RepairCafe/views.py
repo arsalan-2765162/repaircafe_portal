@@ -138,7 +138,7 @@ def enter_password(request):
         entered_password = request.POST.get('password')
         if entered_password == settings.VISITOR_PRESET_PASSWORD:
             request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:index')
+            return redirect('RepairCafe:house_rules')
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
             request.session['preset_password_verified'] = True
             return redirect('RepairCafe:index')
@@ -146,6 +146,9 @@ def enter_password(request):
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
         
     return render(request, 'RepairCafe/enter_password.html')
+
+def house_rules(request):
+    return render(request, 'RepairCafe/house_rules.html')
 
         
 
