@@ -7,9 +7,9 @@ Home
 
 
 
-{% block body_block %}
+{% block content %}
 	<p>This is the home page</p>
 	<form action="{% url 'RepairCafe:reset_data' %}" method="GET">
-		<input type="submit" value="RELOAD DATA">
-	</form>
+		<input class ="btn-primary left" type="submit" value="RELOAD DATA">
+	  </form>
 {% endblock %}

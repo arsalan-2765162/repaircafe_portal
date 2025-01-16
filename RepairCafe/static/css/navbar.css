@@ -12,12 +12,23 @@ body {
   border-radius: 15px;
   outline: 2px solid black;
   margin: 10px;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: bold;
 }
 
-.sidebarbutton .end{
-  align-self: flex-end;
+
+.sidebar .reload{
+  float: none;
+  position: static;
+  bottom: auto;
+  right: auto;
+  margin: 0;
+  display: block;
+  color: #000000;
+  font-size: .8em;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  
 }
 
 .sidebarbutton:hover{
@@ -137,7 +148,7 @@ body {
       padding-left: 20px; 
     }
 
-  .ticket-form .btn-primary {
+ .btn-primary {
     margin-top: 10px;
     margin-left:15px;
     float:right;
@@ -155,6 +166,8 @@ body {
     font-weight: bold; 
     transition: transform 0.2s ease; 
   }
+
+
   
 
   .btn-primary:hover {
@@ -707,4 +720,8 @@ overflow: auto;
     width: 100%;
   }
 }
+
+  .left{
+    float: left;
+  }
 
