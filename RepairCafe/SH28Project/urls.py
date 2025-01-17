@@ -18,8 +18,10 @@ from django.shortcuts import redirect
 from django.urls import path, include
 from RepairCafe import views
 
+
 urlpatterns = [
     path('', lambda request: redirect('RepairCafe:enter_password')),
     path('RepairCafe/', include('RepairCafe.urls')),
     path('admin/', admin.site.urls),
 ]
+

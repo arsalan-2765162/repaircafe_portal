@@ -7,10 +7,16 @@ class PasswordProtectionMiddleware:
         self.get_response = get_response
     
     def __call__(self, request):
-        if request.path == '/enter-password/':
+        # Allow access to admin URLs
+        if request.path.startswith('/admin/'):
+            return self.get_response(request)
+
+        # Allow access to the password entry page itself
+        if request.path == reverse('RepairCafe:enter_password'):
             return self.get_response(request)
         
+        # Check if password verified
         if not request.session.get('preset_password_verified'):
-            return redirect('enter-password/')
+            return redirect('RepairCafe:enter_password')
         
         return self.get_response(request)
