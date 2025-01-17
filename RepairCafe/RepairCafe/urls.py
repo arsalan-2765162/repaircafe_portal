@@ -1,5 +1,6 @@
 from django.urls import path
 from RepairCafe import views
+from .views import enter_password
 
 app_name = 'RepairCafe'
 
@@ -16,6 +17,7 @@ urlpatterns = [
         path('repair_ticket/<str:repairNumber>/',views.repair_ticket,name='repair_ticket'),
         path('delete-ticket/<str:repairNumber>/',views.delete_ticket,name='delete_ticket'),
         path('checkout_ticket/<str:repairNumber>/',views.checkout_ticket,name='checkout_ticket'),
-
+        path('enter_password/', views.enter_password, name='enter_password'),
+        path('house_rules/', views.house_rules, name='house_rules'),
 
 ]

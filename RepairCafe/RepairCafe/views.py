@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
 import populate_RepairCafe as script
+from django.conf import settings
+
 
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
@@ -160,6 +162,25 @@ def checkout_ticket(request,repairNumber):
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(reverse('RepairCafe:checkout_queue'))
+
+# visitor flow #
+
+def enter_password(request):
+    if request.method == 'POST':
+        entered_password = request.POST.get('password')
+        if entered_password == settings.VISITOR_PRESET_PASSWORD:
+            request.session['preset_password_verified'] = True
+            return redirect('RepairCafe:house_rules')
+        elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
+            request.session['preset_password_verified'] = True
+            return redirect('RepairCafe:index')
+        else:
+            return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
+        
+    return render(request, 'RepairCafe/enter_password.html')
+
+def house_rules(request):
+    return render(request, 'RepairCafe/house_rules.html')
 
         
 
