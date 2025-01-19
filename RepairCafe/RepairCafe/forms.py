@@ -43,20 +43,23 @@ class TicketForm(forms.ModelForm):
 
 class CheckoutForm(forms.Form):
     Q1 = forms.CharField(
-        label="Q1 How did you find out about the repair cafe?",
+        label="Q1 Why did you come to the repair cafe today? What brought you here?",
         max_length=512,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
     Q2 = forms.CharField(
         label="Q2 How did you hear about us?",
         max_length=512,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q3 = forms.CharField(
         label="Q3 How was your experience? What did you get from it? (Learn something new, meet new people etc.)",
         max_length=512,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q4 = forms.ChoiceField(
@@ -69,7 +72,8 @@ class CheckoutForm(forms.Form):
     Q4Extra = forms.CharField(
         label="If yes, what skills/workshops would you be interested in?",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q5 = forms.ChoiceField(
@@ -82,38 +86,44 @@ class CheckoutForm(forms.Form):
     Q5Extra = forms.CharField(
         label="Q5 If yes please leave your contact details (name and email address)",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
         
 
     Q6 = forms.CharField(
         label="Q6 How did you find out about the repair cafe?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q7 = forms.CharField(
         label="Q7 Item type",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q8 = forms.CharField(
         label="Q8 Make of item (if applicable)",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q9 = forms.CharField(
         label="Q9 Model of item (if applicable)",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q10 = forms.CharField(
         label="Q10 What was wrong with the item?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q11 = forms.ChoiceField(
@@ -126,7 +136,8 @@ class CheckoutForm(forms.Form):
     Q11Extra = forms.CharField(
         label="If no, Q11 Why were we unable to repair your item today?",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
 
@@ -141,7 +152,9 @@ class CheckoutForm(forms.Form):
     Q12Extra = forms.CharField(
         label="Q12 If yes, please tell us more",
         max_length=256,
-        required=False
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
+        
     )
 
 
@@ -154,7 +167,8 @@ class CheckoutForm(forms.Form):
     Q13Extra = forms.CharField(
         label="Q13 If yes, please tell us more",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q14 = forms.ChoiceField(
@@ -167,41 +181,48 @@ class CheckoutForm(forms.Form):
     Q15 = forms.CharField(
         label="Q15 How much would you have spent on it?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     Q16 = forms.CharField(
         label="Q16 Do you feel more confident tackling a repair yourself in the future?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q17 = forms.CharField(
         label="Q17 How did you find your experience at the repair cafe?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q18 = forms.CharField(
         label="Q18 What could be improved?",
         max_length=512,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q19 = forms.CharField(
         label="Q19 Did you meet anyone new at the repair cafe?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
     Q19Extra = forms.CharField(
         label="Q19 If yes, please tell us more?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
     Q20 = forms.CharField(
         label="Q20 Would you come back if you had something else to fix?",
         max_length=256,
-        required=True
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
 
