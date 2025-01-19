@@ -1,7 +1,7 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %} 
 {% block content %}
-    <h1>Waiting List</h1>
+    <h1>Checkout queue</h1>
     {% if Queue %}
     {% else %}
         <p>No Queue object found.</p>
@@ -27,31 +27,28 @@
     <div class ="ticket-form">
             <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
             <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
-            <div class = "ticket-info">
-            <h2>Repair Request: {{ ticket.itemName }}</h2>
-            <h2>Position: {{ ticket.position}}</h2>
-            <h2>Issue: {{ ticket.itemDescription }}</h2>
-            <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
-            <h2>Visitor Details: [Placeholder: name, number and email]</h2>
+            <div class="ticket-info">
+                <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                <h2>Position:  {{ ticket.position }}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                {% if ticket.repairStatus == "INCOMPLETE" %}
+                    <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                {% endif %}
+                <h2>Repair Description: {{ ticket.itemDescription}}</h2>
             </div>
-            <div class="button-col">
-                {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
-                    <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
+            
+            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
+                    <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
-                            <i data-feather="check"></i>
+                            Checkout
                         </button>
                     </form>
                 {% else %}
                         <p>Ticket cannot be accepted</p>
                 {% endif %}
-                <form method="post" action="{% url 'RepairCafe:delete_ticket'  ticket.repairNumber %}">     
-                    {% csrf_token %}
-                    <button class = "btn btn-primary">
-                        <i data-feather="x"></i>
-                    </button>
-                </form>
-            </div>
+            
     </div>
 
     {% endfor %}

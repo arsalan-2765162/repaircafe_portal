@@ -10,8 +10,33 @@ class TicketFilterForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        status_choices = [choice for choice in Ticket.REPAIR_STATUS_CHOICES if choice[0] != 'WAITING_TO_JOIN']
+        excluded_statuses = ['WAITING_TO_JOIN', 'INCOMPLETE', 'COMPLETED']
+        status_choices = [
+            choice for choice in Ticket.REPAIR_STATUS_CHOICES
+            if choice[0] not in excluded_statuses
+        ]
         self.fields['repairStatus'].choices = [('ALL', 'All')] + status_choices
     class Meta:
         model = Ticket
         fields = ()
+
+class IncompleteTicketForm(forms.Form):
+    incompleteReason = forms.ChoiceField(
+        choices=Ticket.REPAIR_INCOMPLETE_CHOICES,
+        widget=forms.RadioSelect,
+        label="Reason for Incompletion",
+        required=True,
+    )
+    class Meta:
+        model=Ticket
+        fields=["incompleteReason"]
+
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['repairNumber', 'itemName', 'itemCategory', 'position', 'repairStatus', 'itemDescription']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['readonly'] = True

@@ -30,7 +30,7 @@ SECRET_KEY = 't1#aj@10-snk50%a!&%@p7kh^ky&vviq87x@d48k2(n^cdvmd='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['arsalanh.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'RepairCafe.middleware.PasswordProtectionMiddleware',
 ]
 
 ROOT_URLCONF = 'SH28Project.urls'
@@ -104,6 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+VISITOR_PRESET_PASSWORD = "visitor" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
+REPAIRER_PRESET_PASSWORD = "repairer" #same with repairer
 
 
 # Internationalization

@@ -27,16 +27,26 @@ class Ticket(models.Model):
                              ('WAITING_TO_JOIN','Waiting to Join Queue'),
                       ('COMPLETED','Completed'),
                       ('NEED_PAT','Needs PAT tested'),
-                      ('INCOMPLETE','Incomplete')]
-    ITEM_CATEGORY_CHOICES = [('ELEC','Electrical'),
+                      ('INCOMPLETE','Incomplete'),
+                      ('BEING_REPAIRED','Currently being Repaired'),
+                      ]
+    REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
+                                 ('COM_BACK','Coming back next time'),
+                                 ('TAKEN_HOME','Repairer has taken it home')]
+    ITEM_CATEGORY_CHOICES = [('ELECM','Electrical Mains'),
+                             ('ELEC','Electrical Low-Voltage/Battery'),
                              ('TEXT','Clothing & Textiles'),
-                             ('TOOLS','tools & equipment'),]
+                             ('CERA','Ceramics'),
+                             ('OTHER','Other'),]
     
     repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
+    isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
     repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
+    incompleteReason = models.CharField(choices=REPAIR_INCOMPLETE_CHOICES,max_length=128,
+                                        default=None,blank=True,null=True)
     position = models.IntegerField(default=None,null=True,blank=True,)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE,default=None,null=True,blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
@@ -50,14 +60,69 @@ class Ticket(models.Model):
         self.position = max_position + 1
         self.save()
 
-    def move_up(self):
-        if self.position > 1:
-            ticket_above = Ticket.objects.filter(queue=self.queue, position=self.position - 1).first()
-            if ticket_above:
-                ticket_above.position += 1
-                ticket_above.save()
-            self.position -= 1
+    @staticmethod
+    def decrement_positions(queue,position):
+        Ticket.objects.filter(queue=queue,
+                                  position__isnull=False,
+                                    position__gt=position
+                                    ).update(position=models.F('position') - 1)
+
+    def accept_ticket(self):
+        waiting_list = self.queue
+        main_queue=Queue.objects.get(name="Main Queue")
+        self.repairStatus = "WAITING"
+        self.queue = main_queue
+        max_posistion = Ticket.objects.filter(queue=main_queue).aggregate(models.Max('position'))['position__max'] or 0
+        old_position = self.position
+        self.position = max_posistion + 1
+        self.save()
+
+        Ticket.decrement_positions(waiting_list,old_position)
+        
+    def complete_ticket(self):
+        waiting_list = self.queue
+        main_queue=Queue.objects.get(name="Main Queue")
+        if self.itemCategory=="ELECM":
+            self.repairStatus="NEED_PAT"
+        else:
+            self.repairStatus = "COMPLETED"
+            self.add_to_checkout()
+        self.save()
+
+    def add_to_checkout(self):
+        self.repairStatus = "COMPLETED"
+        queue = Queue.objects.get(name="Checkout Queue")
+        old_position = self.position
+        max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
+        self.queue = queue
+        self.position = max_position + 1 
+        self.save()
+
+
+    def delete_ticket(self):
+        self.delete()
+
+    
+    def repair_ticket(self):
+        if self.repairStatus=='WAITING':
+            self.repairStatus ='BEING_REPAIRED'
+            old_position = self.position
+            self.position = None
             self.save()
+
+            Ticket.decrement_positions(self.queue, old_position)
+
+        else:
+            raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
+        
+    def checkout(self):
+        if self.repairStatus=='COMPLETED' or 'INCOMPLETE':
+                self.isCheckedOut = True
+                self.save()
+                self.decrement_positions(self.queue,self.position)
+
+        else:
+            raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
 

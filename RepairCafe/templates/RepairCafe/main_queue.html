@@ -1,28 +1,75 @@
 {% extends 'RepairCafe/navbar.html' %}
-
+{% load staticfiles %}
 {% block content %}
     <h1>Main Queue</h1>
     {% if Queue %}
-        <p>Queue Name: {{ Queue.name }}</p>
-        <p>Queue Description: {{ Queue.description }}</p>
     {% else %}
         <p>No Queue object found.</p>
     {% endif %}
-    <h2>Filter Options</h2>
-    <form method="get">
-        {{ form.as_p }}
-        <button type="submit">Filter</button>
-    </form>
-    <h1>Tickets</h1>
+    <div class = "center-con">
+        <form method="get" class="filter">
+                {{ FilterForm.as_p }}
+                <button type="submit">Filter</button>
+        </form>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% if Tickets %}
-        {% for t in Tickets %}
-            <p>Repair_Number:{{t.repairNumber}} </p>
-            <p style="text-indent: 2em;">Item Name:{{t.itemName}} </p>
-            <p style="text-indent: 2em;">Item Category:{{ t.get_itemCategory_display }}</p>
-            <p style="text-indent: 2em;">Position:{{ t.position }}</p>
-            <p style="text-indent: 2em;">Repair Status:{{ t.get_repairStatus_display}}</p>
-        {% endfor %}
+        <div class = "ticket-feed">
+            {% for ticket in Tickets %}
+            <div class ="ticket-form">
+                <img src="{% static 'images/whitedrillicon.png' %}" alt="white drill icon">
+                <div class="ticket-info">
+                    <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                    <h2>Position:  {{ ticket.position }}</h2>
+                    <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                    <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                    {% if ticket.repairStatus == "INCOMPLETE" %}
+                        <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                    {% endif %}
+                    <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                </div>
+                {% if ticket.repairStatus == "WAITING" %}
+                    <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    onclick="openModal(
+                        '{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                        '{{ ticket.itemName }}', 
+                        '{{ ticket.get_itemCategory_display }}', 
+                        '{{ ticket.repairNumber }}',
+                        '{{ ticket.itemDescription }}'
+                        )">
+                    Accept Repair
+                    </button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>  
+
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Accept Repair?</h1>
+            <p id ="modal-item-details"></p>
+            <div class = "buttons">
+                <button class="btn btn-reject cancel-btn">Go Back</button>
+                <form id="accept-form" action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-accept">Accept</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

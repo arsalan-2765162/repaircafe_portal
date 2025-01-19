@@ -4,25 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Navigation</title>
+    <title>
+	{% block title_block %}
+	Sidebar Navigation
+	{% endblock %}
+    </title>
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-    <script src="{% static 'js/navbar.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    
 </head>
 <body>
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="sidebarbutton">
-        <a href="{% url 'RepairCafe:main_queue'%}" class="btn btn-primary">Queue</a>
+        <a href="{% url 'RepairCafe:main_queue'%}" >Queue</a>
   </div>
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:waiting_list'%}">Waitlist</a>
-
+  </div>
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
   </div>
   <div class="sidebarbutton">
     <a href="#">Stats</a>
   </div>
-  <div class="sidebarbutton">
-    <a href="#" >Checkout</a>
+  <div class="sidebarbutton end link">
+    <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
+      <input class ="btn-primary" type="submit" value="RELOAD DATA">
+    </form>
   </div>
 </div>
 
@@ -31,6 +41,13 @@
   {% block content %}
   {% endblock %}
 </div>
+<script src="{% static 'js/navbar.js' %}" defer></script>
+<script src="{% static 'js/modal.js' %}" defer></script>
+<script>
+  feather.replace();
+</script>
+{% block body_block %}
+{% endblock %}
 </body>
 </html>
 

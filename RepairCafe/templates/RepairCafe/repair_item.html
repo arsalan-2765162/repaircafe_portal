@@ -1,0 +1,100 @@
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class = "repairbg">
+    <h1>Current Repair</h1>
+    <div class="row">
+        <div class="leftBlock">
+            <div class="namebg">
+                <h2>Repair Number</h2>
+                <h1>#{{ ticket.repairNumber }}</h1>
+            </div>
+            <div class="namebg">
+                <h2>Visitors Name</h2>
+                <h1>{{ ticket.customer.firstName }}</h1>
+            </div>
+        </div>
+        <div class="rightBlock">
+            <div class ="namebg">
+                <h2>Repair Item</h2>
+                <h1>{{ ticket.itemName }}</h1>
+            </div>
+            <div class="namebg">
+                <h2>Item Category</h2>
+                <h1>{{ ticket.get_itemCategory_display }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="button-row" >
+        <button class="btn btn-incomplete" onclick="openIncompleteModal(
+            '{% url 'RepairCafe:complete_ticket' ticket.repairNumber %}', 
+            '{{ ticket.itemName }}', 
+            '{{ ticket.get_itemCategory_display }}', 
+            '{{ ticket.repairNumber }}',
+            '{{ ticket.itemDescription }}'
+        )">
+            Mark as Incomplete
+        </button>
+        <button class="btn btn-complete" onclick="openCompleteModal(
+            '{% url 'RepairCafe:complete_ticket' ticket.repairNumber %}', 
+            '{{ ticket.itemName }}', 
+            '{{ ticket.get_itemCategory_display }}', 
+            '{{ ticket.repairNumber }}',
+            '{{ ticket.itemDescription }}'
+        )">
+        {% if ticket.itemCategory == "ELECM" %}
+            Send To PAT Test
+        {% else %}
+            Complete Repair
+        {% endif %}
+        </button>
+    </div>
+</div>
+<!-- Modal -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>{% if ticket.itemCategory == "ELECM" %}
+                Send Item to PAT Testing?
+            {% else %}
+                Mark Repair as Complete?
+            {% endif %}</h1>
+        <p id ="modal-item-details"></p>
+        <div class = "buttons">
+            <button  class="btn btn-reject cancel-btn">Go Back</button>
+            <form id="accept-form" action="" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-accept">
+                    {% if ticket.itemCategory == "ELECM" %}
+                        Send to PAT
+                    {% else %}
+                        Complete
+                    {% endif %} 
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="incompleteModal" class="modal">
+    <div class="modal-content2">
+        <span class="close">&times;</span>
+        <h1>Mark Repair as Incomplete?</h1>
+        <form action="{% url 'RepairCafe:mark_incomplete_ticket' ticket.repairNumber %}" method="post">
+            <div class="inc-form">
+                {% csrf_token %}
+                {% for radio in incompleteForm.incompleteReason %}
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}">
+                        <li>{{ radio.choice_label }}</li>
+                    </label>
+                {% endfor %}
+            </div>
+        <div class = "buttons">
+            <button type="button" class="btn btn-reject cancel-btn">Go Back</button>
+            <button type="submit" class="btn btn-accept">Submit</button>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
