@@ -19,7 +19,7 @@ urlpatterns = [
         path('checkout_ticket/<str:repairNumber>/',views.checkout_ticket,name='checkout_ticket'),
         path('enter_password/', views.enter_password, name='enter_password'),
         path('house_rules/', views.house_rules, name='house_rules'),
-        path('checkout',views.checkout,name='checkout'),
+        path('checkout/<str:repairNumber>/',views.checkout,name='checkout'),
         path('checkout_success',views.checkout_success,name='checkout_success')
 
 ]

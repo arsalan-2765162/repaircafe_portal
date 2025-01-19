@@ -44,114 +44,162 @@ class TicketForm(forms.ModelForm):
 class CheckoutForm(forms.Form):
     Q1 = forms.CharField(
         label="Q1 How did you find out about the repair cafe?",
-        max_length=256,
+        max_length=512,
         required=True
     )
     Q2 = forms.CharField(
-        label="Q2",
-        max_length=256,
+        label="Q2 How did you hear about us?",
+        max_length=512,
         required=True
     )
 
     Q3 = forms.CharField(
-        label="Q3",
-        max_length=256,
+        label="Q3 How was your experience? What did you get from it? (Learn something new, meet new people etc.)",
+        max_length=512,
         required=True
     )
 
-    Q4 = forms.CharField(
-        label="Q4",
-        max_length=256,
+    Q4 = forms.ChoiceField(
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        widget=forms.RadioSelect,
+        label="Q4 Would you be interested in learning new repair skills/ attending workshops?",
         required=True
     )
 
-    Q5 = forms.CharField(
-        label="Q5",
+    Q4Extra = forms.CharField(
+        label="If yes, what skills/workshops would you be interested in?",
         max_length=256,
+        required=False
+    )
+
+    Q5 = forms.ChoiceField(
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        widget=forms.RadioSelect,
+        label="Q5 Are you interested in volunteering with us? ",
         required=True
     )
+
+    Q5Extra = forms.CharField(
+        label="Q5 If yes please leave your contact details (name and email address)",
+        max_length=256,
+        required=False
+    )
+        
 
     Q6 = forms.CharField(
-        label="Q6",
+        label="Q6 How did you find out about the repair cafe?",
         max_length=256,
         required=True
     )
 
     Q7 = forms.CharField(
-        label="Q7",
+        label="Q7 Item type",
         max_length=256,
         required=True
     )
 
     Q8 = forms.CharField(
-        label="Q8",
+        label="Q8 Make of item (if applicable)",
         max_length=256,
-        required=True
+        required=False
     )
 
     Q9 = forms.CharField(
-        label="Q9",
+        label="Q9 Model of item (if applicable)",
         max_length=256,
-        required=True
+        required=False
     )
 
     Q10 = forms.CharField(
-        label="Q10",
+        label="Q10 What was wrong with the item?",
         max_length=256,
         required=True
     )
 
-    Q11 = forms.CharField(
-        label="Q11",
+    Q11 = forms.ChoiceField(
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        widget=forms.RadioSelect,
+        label="Q11 Were we able to repair your item?",
+        required=True
+    )
+
+    Q11Extra = forms.CharField(
+        label="If no, Q11 Why were we unable to repair your item today?",
+        max_length=256,
+        required=False
+    )
+
+
+
+    Q12 = forms.ChoiceField(
+        label="Q12 Did your item have any sentimental attachment for you?",
+        required=True,
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        widget=forms.RadioSelect,
+    )
+
+    Q12Extra = forms.CharField(
+        label="Q12 If yes, please tell us more",
+        max_length=256,
+        required=False
+    )
+
+
+    Q13 = forms.ChoiceField(
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        label="Q13 Does having your item repaired make your life happier, healthier or more comfortable?",
+        widget=forms.RadioSelect,
+        required=True
+    )
+    Q13Extra = forms.CharField(
+        label="Q13 If yes, please tell us more",
         max_length=256,
         required=True
     )
 
-    Q12 = forms.CharField(
-        label="Q12",
-        max_length=256,
-        required=True
-    )
-
-
-    Q13 = forms.CharField(
-        label="Q13",
-        max_length=256,
-        required=True
-    )
-
-    Q14 = forms.CharField(
-        label="Q14",
-        max_length=256,
+    Q14 = forms.ChoiceField(
+        choices=[('yes', 'Yes'), ('no', 'No')],
+        label="Q14 If you couldn't have had your item repaired today would you have bought a new one?",
+        widget=forms.RadioSelect,
         required=True
     )
 
     Q15 = forms.CharField(
-        label="Q15",
+        label="Q15 How much would you have spent on it?",
         max_length=256,
         required=True
     )
 
     Q16 = forms.CharField(
-        label="Q16",
+        label="Q16 Do you feel more confident tackling a repair yourself in the future?",
         max_length=256,
         required=True
     )
 
     Q17 = forms.CharField(
-        label="Q17",
+        label="Q17 How did you find your experience at the repair cafe?",
         max_length=256,
         required=True
     )
 
     Q18 = forms.CharField(
-        label="Q18",
-        max_length=256,
+        label="Q18 What could be improved?",
+        max_length=512,
         required=True
     )
 
     Q19 = forms.CharField(
-        label="Q19",
+        label="Q19 Did you meet anyone new at the repair cafe?",
+        max_length=256,
+        required=True
+    )
+    Q19Extra = forms.CharField(
+        label="Q19 If yes, please tell us more?",
+        max_length=256,
+        required=True
+    )
+    Q20 = forms.CharField(
+        label="Q20 Would you come back if you had something else to fix?",
         max_length=256,
         required=True
     )

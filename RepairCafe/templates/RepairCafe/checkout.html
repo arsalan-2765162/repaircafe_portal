@@ -6,5 +6,8 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
+    <button type="button" id="demo-autofill">Demo Autofill</button>
 </form>
+
+<script src="{% static 'js/autofillCheckout.js' %}" defer></script>
 {% endblock %}

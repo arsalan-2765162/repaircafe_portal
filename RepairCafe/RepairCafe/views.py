@@ -113,6 +113,7 @@ def repair_ticket(request,repairNumber):
 
 def mark_incomplete_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    
     if request.method == 'POST':
         incompleteForm = IncompleteTicketForm(request.POST)
         if incompleteForm.is_valid():
@@ -183,7 +184,8 @@ def enter_password(request):
 def house_rules(request):
     return render(request, 'RepairCafe/house_rules.html')
 
-def checkout(request):
+def checkout(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict={}
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
