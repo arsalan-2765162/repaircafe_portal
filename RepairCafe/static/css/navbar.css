@@ -729,8 +729,13 @@
     .left{
       float: left;
     }
+
+    
     .back-ground1{
       background-color: #F8F3ED;
+      min-height: 100%;
+      margin: -20px 0 0 0;  /* Negative margin to remove the top gap */
+      padding: 20px 0;
     }
     .checkout-form{
       display: flex;
@@ -746,6 +751,8 @@
       height: auto; 
       position: relative; 
       top: 0; 
+      margin-top: 20px;
+      margin-bottom: 20px;
       justify-content: flex-start;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better visibility */
     }
@@ -806,6 +813,7 @@
     width: 20px; /* Adjust the width */
     height: 20px; /* Adjust the height */
     cursor: pointer; /* Optional: Add a pointer cursor */
+    vertical-align: sub;
   }
   
   /* Optional: Add margin for spacing between buttons */

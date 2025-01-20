@@ -22,5 +22,6 @@ urlpatterns = [
         path('checkout/<str:repairNumber>/',views.checkout,name='checkout'),
         path('checkout_success',views.checkout_success,name='checkout_success'),
         path('checkin_form/', views.checkin_form, name='checkin_form'),
+        path('wait_for_accept',views.wait_for_accept,name='wait_for_accept')
 
 ]

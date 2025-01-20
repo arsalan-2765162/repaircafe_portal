@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue
+from .models import Ticket, Queue, Customer
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -197,22 +197,30 @@ def house_rules(request):
     return render(request, 'RepairCafe/house_rules.html', {'form': form})
 
 def checkin_form(request):
+    context_dict={}
+
     if request.method == 'POST':
         form = CheckinForm(request.POST)
         if form.is_valid():
-            agreed = form.cleaned_data.get('confirmbutton')
-
-            if agreed:
-               return redirect('RepairCafe:index')
-        
-            else:
-               return render(request, 'RepairCafe/checkin_form.html')
-
+            form_data = form.cleaned_data
+            customer = Customer.objects.create(
+                firstName=form_data['firstName'],
+                lastName=form_data['lastName']
+            )
+            ticket = Ticket.objects.create(
+                repairNumber=Ticket.generate_repair_number(),
+                itemName=form_data['itemName'],
+                itemCategory=form_data['itemCategory'],
+                itemDescription=form_data['itemDescription'],
+                customer=customer
+            )
+            waiting_queue = Queue.objects.get(name="Waiting List")  # Assuming you have this queue
+            ticket.add_to_queue(waiting_queue)
+            return redirect('RepairCafe:wait_for_accept')
     else:
-        form = CheckinForm()
-
-
-    return render(request, 'RepairCafe/checkin_form.html', {'form':form})
+        form=CheckinForm()
+        context_dict['form']=form
+    return render(request, 'RepairCafe/checkin_form.html', context_dict)
 
 
 def checkout(request,repairNumber):
@@ -224,7 +232,7 @@ def checkout(request,repairNumber):
             form_data = form.cleaned_data
             form_data['event_date'] = date.today()
             print(form_data)
-            return render(request,'RepairCafe/checkout_success.html')
+            return redirect('RepairCafe:checkout_success')
     else:
         form=CheckoutForm
         context_dict['form']=form
@@ -233,6 +241,9 @@ def checkout(request,repairNumber):
 
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
+
+def wait_for_accept(request):
+    return render(request,'RepairCafe/wait_for_accept.html')
         
         
 

@@ -54,6 +54,28 @@ class Ticket(models.Model):
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
     
+    @classmethod
+    def generate_repair_number(cls):
+        try:
+            # Get all tickets
+            all_tickets = cls.objects.all()
+            
+            # Print all tickets to see what it's accessing
+            for ticket in all_tickets:
+                print(f"Repair Number: {ticket.repairNumber}, Item Name: {ticket.itemName}")
+            
+            # Find the latest ticket based on repairNumber
+            latest_ticket = all_tickets.order_by('repairNumber').last()
+            print(latest_ticket)
+            
+            if latest_ticket:
+                last_number = int(latest_ticket.repairNumber)
+                return str(last_number + 1)
+        except Exception as e:
+            print(f"Error in generate_repair_number: {e}")
+        
+        return "1"
+    
     def add_to_queue(self, queue):
         self.queue = queue
         max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
