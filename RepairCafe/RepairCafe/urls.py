@@ -20,6 +20,7 @@ urlpatterns = [
         path('enter_password/', views.enter_password, name='enter_password'),
         path('house_rules/', views.house_rules, name='house_rules'),
         path('checkout/<str:repairNumber>/',views.checkout,name='checkout'),
-        path('checkout_success',views.checkout_success,name='checkout_success')
+        path('checkout_success',views.checkout_success,name='checkout_success'),
+        path('checkin_form/', views.checkin_form, name='checkin_form'),
 
 ]

@@ -1,10 +1,81 @@
-<!-- house_rules.html -->
-<!DOCTYPE html>
-<html>
-   <head>
-       <title>House Rules:</title>
-   </head>
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %} 
+{% block content %}
+   
+    
+    <div class="rulestitle">
+        <h1>House Rules</h1><br><br>
+    </div>
+       
 
-   <body>
-       <h1>Here are the house rules !!</h1>
-</html>
+
+    <div class="rulestext">
+        
+        
+        To ensure a smooth and positive experience for everyone,
+        we ask all customers to review and accept our House Rules before we begin your repair.
+        By accepting, you agree to follow these guidelines while at the Repair Café.<br><br>
+        
+        
+        <h2>House Rules</h2>
+
+        A repair café is about our volunteer repairers helping you to fix something you own,
+        to give you some more useful life out of it and avoiding it being recycled or going 
+        into landfill too soon. 
+        We encourage you to participate in the repair process alongside our volunteers. 
+        Everything is done on a voluntary basis, so we have some house rules which you'll
+        be asked to agree to as part of our check-in process at the café. The rules outline
+        what you can expect from us, how we work, and what we expect from you. All information
+        on the check-in form is treated with the utmost confidence and is solely for our own records.<br><br>
+        
+        The main points of the rules are:
+
+        <ul>
+        
+        
+        <li>The work carried out by Repair Café Glasgow (RCG) is performed at the visitor’s own risk.  The advice and repair service is conducted by volunteers free of charge, but donations are welcome to cover costs.</li><br>
+        
+        <li>Hazardous tools and equipment may be present and sometimes used in repairs (e.g. knives, drills, chisels). Visitors must take reasonable health and safety precautions.</li><br>
+        
+        <li>Parents must both exercise control over, and be responsible for, the behaviour of their children whilst visiting RCG.</li><br>
+        
+        <li>One registration form per person (or family) must be completed before any repairs can be attempted.  All information is treated with confidence in accordance with UK data protection regulations. Providing us with an email address will help us keep in touch.</li><br>
+        
+        <li>Visitors are encouraged to remain with the repairer to witness how the repair is being done and pick up new/brush up on existing skills. Items should not be left with the repairer and collected at a later time unless agreed between the item’s owner and repairer, and neither the repairer nor RCG assume responsibility for safe-keeping.</li><br>
+        
+        <li>Neither the organisers of RCG nor the repairers in personal capacities or otherwise are liable for any loss or injury whatsoever that may result from any repair carried out or for any advice or instructions given and used at a later date.</li><br>
+        
+        <li>Neither the organisers of RCG nor the repairers in personal capacities or otherwise are liable for any accidental damage that may occur to either visitors’ goods (including vehicles) or personal effects during visitors’ time at the sessions.</li><br>
+        
+        <li>The visitor is responsible for providing any consumables such as leads, plugs, fuses, zips, etc. that may be needed to fully complete a repair. In some cases RCG may provide such materials and the visitor is encouraged, not required, to provide a donation to cover the cost of the materials.</li><br>
+        
+        <li>Repairers offer no guarantee for any repairs carried out and are not liable if any repaired items do not work properly at home or break down again in the future.</li><br>
+        
+        <li>After making an initial assessment of an item, repairers are fully entitled to use their discretion and refuse to repair an item should they so decide.</li><br>
+        
+        <li>Visitors are responsible for the removal of all items that cannot be repaired.</li><br>
+        
+        <li>One item per person will be examined; time permitting, extra items may be considered.</li><br>
+        
+        <li>RCG takes no responsibility for any item, repaired or otherwise, once it has left the premises.</li>
+    
+        </ul></div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            {% if form.acceptrules.errors %}
+        <div style="color: red;">
+            {% for error in form.acceptrules.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+            
+
+            <button type="submit" class="btn-primary">Accept Rules</button>
+        </form>
+   
+{% endblock %}

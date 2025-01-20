@@ -1,6 +1,10 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue
+<<<<<<< HEAD
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm, CheckoutForm
+=======
+from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm
+>>>>>>> 812ddca666c475f62f6e8d99ba94132ad60456a9
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
@@ -182,8 +186,19 @@ def enter_password(request):
     return render(request, 'RepairCafe/enter_password.html')
 
 def house_rules(request):
-    return render(request, 'RepairCafe/house_rules.html')
+    if request.method == 'POST':
+        form = RulesButton(request.POST)
+        if form.is_valid():
+            agreed = form.cleaned_data.get('acceptrules')
+            if agreed:
+                return redirect('RepairCafe:checkin_form')
+            else:
+                return redirect('RepairCafe:house_rules')
+            
+    else:
+        form = RulesButton()
 
+<<<<<<< HEAD
 def checkout(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict={}
@@ -203,6 +218,28 @@ def checkout(request,repairNumber):
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
         
+=======
+    
+    return render(request, 'RepairCafe/house_rules.html', {'form': form})
+
+def checkin_form(request):
+    if request.method == 'POST':
+        form = CheckinForm(request.POST)
+        if form.is_valid():
+            agreed = form.cleaned_data.get('confirmbutton')
+
+            if agreed:
+               return redirect('RepairCafe:index')
+        
+            else:
+               return render(request, 'RepairCafe/checkin_form.html')
+
+    else:
+        form = CheckinForm()
+
+
+    return render(request, 'RepairCafe/checkin_form.html', {'form':form})
+>>>>>>> 812ddca666c475f62f6e8d99ba94132ad60456a9
         
 
 

@@ -866,3 +866,27 @@
   
 
 
+
+
+
+
+.rulestitle {
+  background-color: #2D2E82;
+  border-radius: 15px;
+  margin: 10px;
+  text-align: center;
+  display:block;
+  justify-content: center;
+  padding: 10px;
+}
+
+.rulestitle h1 {
+ 
+ color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+}
+
+.rulestext {
+  font-family: 'Inter';
+}
