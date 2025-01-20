@@ -1,11 +1,12 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue
-from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm
+from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
+from datetime import date
 
 
 def index(request):
@@ -112,12 +113,13 @@ def repair_ticket(request,repairNumber):
 
 def mark_incomplete_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    
     if request.method == 'POST':
         incompleteForm = IncompleteTicketForm(request.POST)
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
-            ticket.add_to_checkout()
+            ticket.adFd_to_checkout()
             ticket.save()
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
@@ -138,7 +140,7 @@ def repair_item(request,repairNumber):
 
 def complete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
-    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "NEED_PAT":
+    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
         ticket.complete_ticket()
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
     elif(ticket.repairStatus == 'BEING_REPAIRED' ):
@@ -212,6 +214,27 @@ def checkin_form(request):
 
 
     return render(request, 'RepairCafe/checkin_form.html', {'form':form})
+    return render(request, 'RepairCafe/house_rules.html')
+
+def checkout(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict={}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['event_date'] = date.today()
+            print(form_data)
+            return render(request,'RepairCafe/checkout_success.html')
+    else:
+        form=CheckoutForm
+        context_dict['form']=form
+
+    return render(request,'RepairCafe/checkout.html',context_dict)
+
+def checkout_success(request):
+    return render(request,'RepairCafe/checkout_success.html')
+        
         
 
 
