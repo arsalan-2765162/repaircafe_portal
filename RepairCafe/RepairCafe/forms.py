@@ -1,5 +1,6 @@
 from django import forms
 from RepairCafe.models import Ticket
+from django.core.validators import MinLengthValidator
 
 class TicketFilterForm(forms.Form):
     STATUS_CHOICES = [('ALL', 'All')] + list(Ticket.REPAIR_STATUS_CHOICES)
@@ -234,5 +235,69 @@ class RulesButton(forms.Form):
     error_messages={'required':'You must agree to the House Rules to access the site.'})
 
 class CheckinForm(forms.Form):
+    firstName = forms.CharField(
+    label="First Name",
+    max_length=56,
+    required=True,
+    widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    lastName = forms.CharField(
+        label="Last Name",
+        max_length=56,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
 
-    confirmbutton = forms.BooleanField(required=True, label='Submit')
+    emailPhone = forms.CharField(
+        label="Email or Phone Number",
+        max_length=56,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    postCode = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label="Post Code (First 3 Characters)",
+        required=True,
+        max_length=3,
+        validators=[
+            MinLengthValidator(3, 'Must be the first 3 Characters of your Post Code')
+            ]
+
+    )
+
+    itemName = forms.CharField(
+        label="Name of Item to be Repaired",
+        max_length=256,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    itemDescription = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label="Short Description of Issue to be Repaired",
+        required=True
+    )
+
+    itemCategory = forms.CharField(
+        label="Category Of item to be Repaired",
+        max_length=256,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+        
+
+    photoConsent = forms.BooleanField(
+        label="Do you consent to being in photos for social media?",
+        required=False,
+        widget=forms.CheckboxInput
+    )
+
+    mailingConsent = forms.BooleanField(
+        label="Would you like to join our Mailing List?",
+        required=False,
+        widget=forms.CheckboxInput
+    )
+
+  
+

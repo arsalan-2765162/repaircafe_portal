@@ -1,13 +1,18 @@
-{% extends 'RepairCafe/navbar.html' %}
-{% load staticfiles %} 
-
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %}
 {% block content %}
-<h1>Check-in Form</h1>
-
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit" class="btn-primary">Submit Form</button>
-</form>
+<div class="back-ground1">
+    <div class="checkout-form checkin">
+        <h1>Checkin Form <i data-feather="clipboard"></i></h1>
+        <div class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn-primary" type="submit">Submit</button>
+                <button class="btn-primary demo" type="button" id="demo-autofill2">Demo Autofill</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/autofillCheckin.js' %}" defer></script>
 {% endblock %}

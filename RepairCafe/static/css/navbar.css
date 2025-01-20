@@ -1,4 +1,8 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  *
+  {
+      -webkit-tap-highlight-color:transparent;
+  }
 
   body {
       font-family: 'Inter', sans-serif;
@@ -815,6 +819,14 @@
   margin: 0; /* Removes default margin */
 }
 
+.checkout-form.checkin ul{
+  list-style-type:circle;
+  display: block; 
+  padding:20px;
+  margin:20px;
+}
+
+
 .repairbg.purple{
   background-color: #2D2E82;
   color: #fff; /* Adjusting color to ensure text is visible */
@@ -890,3 +902,17 @@
 .rulestext {
   font-family: 'Inter';
 }
+
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  vertical-align:sub;
+  margin: 10px;
+}
+
+
