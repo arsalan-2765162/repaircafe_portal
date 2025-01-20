@@ -814,6 +814,55 @@
   padding: 0; /* Removes default padding */
   margin: 0; /* Removes default margin */
 }
+
+.repairbg.purple{
+  background-color: #2D2E82;
+  color: #fff; /* Adjusting color to ensure text is visible */
+  display: flex;
+  flex-direction: column; /* Aligns child elements vertically */
+  align-items: flex-start; /* Aligns content to the left */
+  justify-content: flex-start; /* Keeps content aligned at the top */
+  padding: 3em;
+}
+
+.purp-bg{
+  background-color: #2D2E82;
+  color: #fff; /* Adjusting color to ensure text is visible */
+  display: flex;
+  flex-direction: column; /* Aligns child elements vertically */
+  align-items: flex-start; /* Aligns content to the left */
+  justify-content: flex-start; /* Keeps content aligned at the top */
+  padding: 3em;
+  border-radius: 15px;
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  justify-content: center; 
+  align-items: center;
+  width: 90%; 
+  height: 90%; 
+  display: flex; 
+  text-align: flex-start; 
+  overflow: auto;
+  }
+
+.purple h1{
+  font-weight: 600;
+}
+.purple h1,h2,h3{
+  line-height: 2em;
+  align-self: flex-start;
+}
+.purp-bg.purple a {
+  color: white;        /* Changes the text color to white */
+  text-decoration: none; /* Underlines the text */
+}
+.purp-bg.purple a:hover {
+  color: rgb(159, 249, 255);
+
+  text-decoration: underline; /* Underlines the text */
+}
   
 
 
