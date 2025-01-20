@@ -56,7 +56,7 @@ class Ticket(models.Model):
     
     def add_to_queue(self, queue):
         self.queue = queue
-        max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position_max'] or 0
+        max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
         self.position = max_position + 1
         self.save()
 
