@@ -19,5 +19,6 @@ urlpatterns = [
         path('checkout_ticket/<str:repairNumber>/',views.checkout_ticket,name='checkout_ticket'),
         path('enter_password/', views.enter_password, name='enter_password'),
         path('house_rules/', views.house_rules, name='house_rules'),
+        path('checkin_form/', views.checkin_form, name='checkin_form'),
 
 ]
