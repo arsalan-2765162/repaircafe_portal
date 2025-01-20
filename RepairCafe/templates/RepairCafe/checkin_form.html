@@ -1,0 +1,13 @@
+{% extends 'RepairCafe/navbar.html' %}
+{% load staticfiles %} 
+
+{% block content %}
+<h1>Check-in Form</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn-primary">Submit Form</button>
+</form>
+{% endblock %}

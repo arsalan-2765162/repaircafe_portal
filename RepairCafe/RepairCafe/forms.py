@@ -40,3 +40,14 @@ class TicketForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['readonly'] = True
+
+
+class RulesButton(forms.Form):
+
+    acceptrules = forms.BooleanField(required=True, 
+    label='By ticking you are confirming that you have read and accept the House Rules',
+    error_messages={'required':'You must agree to the House Rules to access the site.'})
+
+class CheckinForm(forms.Form):
+
+    confirmbutton = forms.BooleanField(required=True, label='Submit')
