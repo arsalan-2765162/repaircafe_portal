@@ -1,9 +1,5 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-  *
-  {
-      -webkit-tap-highlight-color:transparent;
-  }
-
+  
   body {
       font-family: 'Inter', sans-serif;
   }
@@ -293,7 +289,7 @@
     padding-top:10px;
     margin-bottom:10px;
     font-size: 20px;
-    line-height: 1.6;
+    line-height: 1.6em;
   }
 
   .buttons {
@@ -370,11 +366,12 @@
   }
   .repairbg h1{
     color: white;
+    line-height: 2em;
   }
 
   .repairbg .numberbg h1{
     color: white;
-    line-height: 0.1em;
+    line-height: 1em;
     font-size: 5em;
   }
 
@@ -429,7 +426,7 @@
     display: inline-block;
     margin-bottom: 2em;
     background-color: #382F2F;
-    padding: 5px 20px; 
+    padding: 10px 30px; 
     min-width: 19em;
     font-size: 15px;
     border-radius: 10px;
@@ -437,10 +434,12 @@
     font-weight: bold; 
   }
   .namebg h1{
-    line-height: 0.8em;
+    line-height: 1em;
+    font-size: 2.3em;
   }
   .namebg h2{
-    line-height: 0.8em;
+    line-height: 1em;
+    font-size:1.8em;
   }
   .row{
     display: flex;

@@ -139,7 +139,7 @@ def repair_item(request,repairNumber):
 
 def complete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
-    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "NEED_PAT":
+    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
         ticket.complete_ticket()
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
     elif(ticket.repairStatus == 'BEING_REPAIRED' ):

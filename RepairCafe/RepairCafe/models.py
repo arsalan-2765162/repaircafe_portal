@@ -20,7 +20,6 @@ class Customer(models.Model):
 
 
 class Ticket(models.Model):
-    MAX_REPAIR_NUM_LENGTH = 8
     MAX_ITEM_NAME_LENGTH = 128
     MAX_ITEM_DESC_LENGTH = 256
     REPAIR_STATUS_CHOICES = [('WAITING','Waiting'),
@@ -39,7 +38,7 @@ class Ticket(models.Model):
                              ('CERA','Ceramics'),
                              ('OTHER','Other'),]
     
-    repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
+    repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
@@ -69,7 +68,7 @@ class Ticket(models.Model):
             print(latest_ticket)
             
             if latest_ticket:
-                last_number = int(latest_ticket.repairNumber)
+                last_number = latest_ticket.repairNumber
                 return str(last_number + 1)
         except Exception as e:
             print(f"Error in generate_repair_number: {e}")
