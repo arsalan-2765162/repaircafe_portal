@@ -1,10 +1,6 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue
-<<<<<<< HEAD
-from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm, CheckoutForm
-=======
-from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm
->>>>>>> 812ddca666c475f62f6e8d99ba94132ad60456a9
+from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
@@ -123,7 +119,7 @@ def mark_incomplete_ticket(request,repairNumber):
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
-            ticket.add_to_checkout()
+            ticket.adFd_to_checkout()
             ticket.save()
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
@@ -198,27 +194,6 @@ def house_rules(request):
     else:
         form = RulesButton()
 
-<<<<<<< HEAD
-def checkout(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    context_dict={}
-    if request.method == 'POST':
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            form_data = form.cleaned_data
-            form_data['event_date'] = date.today()
-            print(form_data)
-            return render(request,'RepairCafe/checkout_success.html')
-    else:
-        form=CheckoutForm
-        context_dict['form']=form
-
-    return render(request,'RepairCafe/checkout.html',context_dict)
-
-def checkout_success(request):
-    return render(request,'RepairCafe/checkout_success.html')
-        
-=======
     
     return render(request, 'RepairCafe/house_rules.html', {'form': form})
 
@@ -239,7 +214,27 @@ def checkin_form(request):
 
 
     return render(request, 'RepairCafe/checkin_form.html', {'form':form})
->>>>>>> 812ddca666c475f62f6e8d99ba94132ad60456a9
+    return render(request, 'RepairCafe/house_rules.html')
+
+def checkout(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict={}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['event_date'] = date.today()
+            print(form_data)
+            return render(request,'RepairCafe/checkout_success.html')
+    else:
+        form=CheckoutForm
+        context_dict['form']=form
+
+    return render(request,'RepairCafe/checkout.html',context_dict)
+
+def checkout_success(request):
+    return render(request,'RepairCafe/checkout_success.html')
+        
         
 
 

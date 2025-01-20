@@ -227,7 +227,6 @@ class CheckoutForm(forms.Form):
 
 
 
-
 class RulesButton(forms.Form):
 
     acceptrules = forms.BooleanField(required=True, 
