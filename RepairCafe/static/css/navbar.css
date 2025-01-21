@@ -141,6 +141,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
       width: 95%; 
       max-width:1900px; 
+      height: 100%;
       }
 
       .ticket-info {
@@ -194,14 +195,13 @@
       flex-shrink: 0;
     }
 
-  
 
     .ticket-form h2 {
       text-align:left;
       font-size:22px; 
       color:white;
       font-family:'Inter', sans-serif;
-      margin:10px 0;
+      margin:5px 0;
       margin-left:10px;
       margin-right:10px;
       padding-left: 10px;
@@ -209,11 +209,19 @@
 
     .ticket-form .button-col{
       display: flex;
-      justify-content:space-evenly;
-      gap:10px;
       align-items: center;
       flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 100px;
     }
+
+    .ticket-form .button-wrapper {
+      flex-grow: 1; /* Allow buttons to stretch equally if needed */
+      display: flex;
+      justify-content: center; /* Center the button horizontally (optional) */
+      align-items: center; /* Center the button vertically (optional) */
+  }
 
     .ticket-form .button-col .btn-primary {
       align-self: flex-end;
@@ -223,6 +231,7 @@
       width: 80px;
       box-sizing: border-box;
       text-align: center;
+      
       
     } 
     .ticket-form .feather, .ticket-form .svg{
@@ -461,8 +470,6 @@
     font-size: 35px; /* Button text size */
     font-weight: bold; /* Bold text */
     transition: transform 0.3s ease,border 0.3s ease;; /* Hover effect transition */
-    
-
   }
   .btn-complete{
     background-color: #18B64D;

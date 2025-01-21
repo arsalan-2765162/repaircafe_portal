@@ -121,6 +121,7 @@ class Ticket(models.Model):
 
 
     def delete_ticket(self):
+        self.decrement_positions(self.queue,self.position)
         self.delete()
 
     

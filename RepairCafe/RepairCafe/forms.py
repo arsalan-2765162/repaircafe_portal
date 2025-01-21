@@ -281,10 +281,9 @@ class CheckinForm(forms.Form):
 
     itemCategory = forms.ChoiceField(
         label="Category Of item to be Repaired",
-        choices=Ticket.ITEM_CATEGORY_CHOICES,
+        choices=[('', '---Please select a category---')] + list(Ticket.ITEM_CATEGORY_CHOICES),
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'}),
-        
     )
         
 

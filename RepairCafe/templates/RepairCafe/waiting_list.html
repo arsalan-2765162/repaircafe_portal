@@ -36,21 +36,25 @@
             </div>
             <div class="button-col">
                 {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
+                <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
                             <i data-feather="check"></i>
                         </button>
                     </form>
+                </div>
                 {% else %}
                         <p>Ticket cannot be accepted</p>
                 {% endif %}
-                <form method="post" action="{% url 'RepairCafe:delete_ticket'  ticket.repairNumber %}">     
-                    {% csrf_token %}
-                    <button class = "btn btn-primary">
-                        <i data-feather="x"></i>
-                    </button>
-                </form>
+                <div class="button-wrapper">
+                    <form method="post" action="{% url 'RepairCafe:delete_ticket'  ticket.repairNumber %}">     
+                        {% csrf_token %}
+                        <button class = "btn btn-primary">
+                            <i data-feather="x"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
     </div>
 
