@@ -213,7 +213,7 @@
       flex-direction: column;
       justify-content: space-between;
       height: 100%;
-      gap: 100px;
+      gap: 40px;
     }
 
     .ticket-form .button-wrapper {
@@ -265,7 +265,7 @@
     }
 
 
-    .modal-content,.modal-content2 {
+    .modal-content,.modal-content2, .modal-content3{
       background-color: #fefefe;
       margin: 15% auto;
       padding: 30px;
@@ -286,7 +286,10 @@
   .modal-content2{
     height: 90%;
     padding-bottom: 5px;
+  }
 
+  .modal-content3{
+    height:70%;
   }
   .modal-content h1{
     margin-top:0px;
