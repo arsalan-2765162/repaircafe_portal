@@ -4,5 +4,6 @@
 <div class="purp-bg purple">
     <h1>Your repair is now complete</h1>
     <h3>Please bring your item to the check out desk</h3>
+    <a href="{% url 'RepairCafe:checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
 {% endblock %}

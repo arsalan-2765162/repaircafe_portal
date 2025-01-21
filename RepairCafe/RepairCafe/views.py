@@ -261,10 +261,17 @@ def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
 
 def wait_for_accept(request,repairNumber):
-    return render(request,'RepairCafe/wait_for_accept.html')
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context = {
+        'ticket': ticket,
+        'repairNumber': repairNumber,  # Adding this explicitly
+    }
+    return render(request, 'RepairCafe/wait_for_accept.html', context)
                 
 def wait_for_checkout(request,repairNumber):
-    return render(request,'RepairCafe/wait_for_checkout.html')
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
         
         
 
