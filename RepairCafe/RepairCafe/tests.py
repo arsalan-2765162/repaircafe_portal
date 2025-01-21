@@ -23,7 +23,7 @@ class QueueModelTest(TestCase):
         customer2 = Customer.objects.create(firstName="Joe", lastName="Blogs")
         # can only have one item per customer or get error
         ticket1 = Ticket.objects.create(
-            repairNumber="12345",
+            repairNumber=12345,
             itemName="Phone",
             itemCategory="ELEC",
             itemDescription="Broken screen",
@@ -33,7 +33,7 @@ class QueueModelTest(TestCase):
         )
         
         ticket2 = Ticket.objects.create(
-            repairNumber="12346",
+            repairNumber=12346,
             itemName="Laptop",
             itemCategory="ELEC",
             itemDescription="Not charging",
@@ -49,7 +49,7 @@ class TicketModelTest(TestCase):
         self.queue = Queue.objects.create(name="Test Queue")
         self.customer = Customer.objects.create(firstName="Alice", lastName="Smith")
         self.ticket = Ticket.objects.create(
-            repairNumber="12345",
+            repairNumber=12345,
             itemName="Toaster",
             itemCategory="ELEC",
             itemDescription="Doesn't heat",
@@ -66,7 +66,7 @@ class TicketModelTest(TestCase):
 
         # Add a second ticket to the queue
         ticket2 = Ticket.objects.create(
-            repairNumber="12346",
+            repairNumber=12346,
             itemName="Blender",
             itemCategory="ELEC",
             itemDescription="Leaking",
@@ -78,7 +78,7 @@ class TicketModelTest(TestCase):
         # Add ticket to queue and move it up
         self.ticket.add_to_queue(self.queue)
         ticket2 = Ticket.objects.create(
-            repairNumber="12346",
+            repairNumber=12346,
             itemName="Blender",
             itemCategory="ELEC",
             itemDescription="Leaking",
@@ -171,7 +171,7 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         self.queue = Queue.objects.create(name="Main Queue")
         self.customer = Customer.objects.create(firstName="Alice", lastName="Smith")
         self.ticket = Ticket.objects.create(
-            repairNumber="12345",
+            repairNumber=12345,
             itemName="Laptop",
             itemCategory="ELEC",
             itemDescription="Battery not charging",

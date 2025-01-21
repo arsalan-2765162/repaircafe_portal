@@ -2,11 +2,16 @@
 {% load staticfiles %}
 {% block content %}
 <div class="back-ground1">
-    <div class="checkout-form">
+    <div class="checkout-form ">
         <h1>Checkout Form <i data-feather="clipboard"></i></h1>
         <div class="form-group">
             <form method="post">
                 {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Please correct the errors below.
+                </div>
+                {% endif %}
                 {{ form.as_p }}
                 <button class="btn-primary" type="submit">Submit</button>
                 <button class="btn-primary demo" type="button" id="demo-autofill">Demo Autofill</button>

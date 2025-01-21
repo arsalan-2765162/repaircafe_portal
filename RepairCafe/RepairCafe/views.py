@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue
+from .models import Ticket, Queue, Customer
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -114,13 +114,12 @@ def repair_ticket(request,repairNumber):
 
 def mark_incomplete_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    
     if request.method == 'POST':
         incompleteForm = IncompleteTicketForm(request.POST)
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
-            ticket.adFd_to_checkout()
+            ticket.add_to_checkout()
             ticket.save()
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
@@ -180,6 +179,7 @@ def change_category(request, repairNumber):
     return redirect(request.META.get('HTTP_REFERER', 'RepairCafe:waiting_list'))
 
 # visitor flow #
+# visitor flow 
 
 def enter_password(request):
     if request.method == 'POST':
@@ -212,23 +212,34 @@ def house_rules(request):
     return render(request, 'RepairCafe/house_rules.html', {'form': form})
 
 def checkin_form(request):
+    context_dict={}
+
     if request.method == 'POST':
         form = CheckinForm(request.POST)
         if form.is_valid():
-            agreed = form.cleaned_data.get('confirmbutton')
-
-            if agreed:
-               return redirect('RepairCafe:index')
-        
-            else:
-               return render(request, 'RepairCafe/checkin_form.html')
-
+            form_data = form.cleaned_data
+            customer = Customer.objects.create(
+                firstName=form_data['firstName'],
+                lastName=form_data['lastName']
+            )
+            ticket = Ticket.objects.create(
+                repairNumber=Ticket.generate_repair_number(),
+                itemName=form_data['itemName'],
+                itemCategory=form_data['itemCategory'],
+                itemDescription=form_data['itemDescription'],
+                customer=customer
+            )
+            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
+            ticket.add_to_queue(waiting_queue)
+            repairNumber=ticket.repairNumber
+            return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
+        else:  
+            context_dict['form'] = form
     else:
-        form = CheckinForm()
+        form=CheckinForm()
+        context_dict['form']=form
+    return render(request, 'RepairCafe/checkin_form.html', context_dict)
 
-
-    return render(request, 'RepairCafe/checkin_form.html', {'form':form})
-    return render(request, 'RepairCafe/house_rules.html')
 
 def checkout(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
@@ -239,7 +250,7 @@ def checkout(request,repairNumber):
             form_data = form.cleaned_data
             form_data['event_date'] = date.today()
             print(form_data)
-            return render(request,'RepairCafe/checkout_success.html')
+            return redirect('RepairCafe:checkout_success')
     else:
         form=CheckoutForm
         context_dict['form']=form
@@ -248,10 +259,21 @@ def checkout(request,repairNumber):
 
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
+
+def wait_for_accept(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context = {
+        'ticket': ticket,
+        'repairNumber': repairNumber,  # Adding this explicitly
+    }
+    return render(request, 'RepairCafe/wait_for_accept.html', context)
+                
+def wait_for_checkout(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
         
         
-
-
 
 
     

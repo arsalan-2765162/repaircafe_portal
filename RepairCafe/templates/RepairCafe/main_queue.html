@@ -48,13 +48,7 @@
                     <button 
                     type="button" 
                     class="btn btn-primary" 
-                    onclick="openModal(
-                        '{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
-                        '{{ ticket.itemName }}', 
-                        '{{ ticket.get_itemCategory_display }}', 
-                        '{{ ticket.repairNumber }}',
-                        '{{ ticket.itemDescription }}'
-                        )">
+                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', '{{ ticket.repairNumber }}','{{ ticket.itemDescription }}')">
                     Accept Repair
                     </button>
                 {% endif %}

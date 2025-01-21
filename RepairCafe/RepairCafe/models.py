@@ -18,9 +18,11 @@ class Customer(models.Model):
     firstName = models.CharField(max_length=NAME_MAX_LENGTH)
     lastName = models.CharField(max_length=NAME_MAX_LENGTH)
 
+    def __str__(self):
+        return f"{self.firstName}  {self.lastName}"
+
 
 class Ticket(models.Model):
-    MAX_REPAIR_NUM_LENGTH = 8
     MAX_ITEM_NAME_LENGTH = 128
     MAX_ITEM_DESC_LENGTH = 256
     REPAIR_STATUS_CHOICES = [('WAITING','Waiting'),
@@ -39,12 +41,12 @@ class Ticket(models.Model):
                              ('CERA','Ceramics'),
                              ('OTHER','Other'),]
     
-    repairNumber = models.CharField(max_length=MAX_REPAIR_NUM_LENGTH,primary_key=True)
+    repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
-    repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
+    repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING_TO_JOIN',max_length=128)
     incompleteReason = models.CharField(choices=REPAIR_INCOMPLETE_CHOICES,max_length=128,
                                         default=None,blank=True,null=True)
     position = models.IntegerField(default=None,null=True,blank=True,)
@@ -53,6 +55,28 @@ class Ticket(models.Model):
     
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
+    
+    @classmethod
+    def generate_repair_number(cls):
+        try:
+            # Get all tickets
+            all_tickets = cls.objects.all()
+            
+            # Print all tickets to see what it's accessing
+            for ticket in all_tickets:
+                print(f"Repair Number: {ticket.repairNumber}, Item Name: {ticket.itemName}")
+            
+            # Find the latest ticket based on repairNumber
+            latest_ticket = all_tickets.order_by('repairNumber').last()
+            print(latest_ticket)
+            
+            if latest_ticket:
+                last_number = latest_ticket.repairNumber
+                return str(last_number + 1)
+        except Exception as e:
+            print(f"Error in generate_repair_number: {e}")
+        
+        return "1"
     
     def add_to_queue(self, queue):
         self.queue = queue
@@ -90,7 +114,6 @@ class Ticket(models.Model):
         self.save()
 
     def add_to_checkout(self):
-        self.repairStatus = "COMPLETED"
         queue = Queue.objects.get(name="Checkout Queue")
         old_position = self.position
         max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0
@@ -100,6 +123,7 @@ class Ticket(models.Model):
 
 
     def delete_ticket(self):
+        self.decrement_positions(self.queue,self.position)
         self.delete()
 
     

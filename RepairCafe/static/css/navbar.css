@@ -1,5 +1,5 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
+  
   body {
       font-family: 'Inter', sans-serif;
   }
@@ -62,6 +62,9 @@
       color: #818181;
       display: block;
       transition: 0.3s;
+      white-space: nowrap;        /* Prevents text wrapping */
+      overflow: hidden;           /* Hides overflow content */
+      text-overflow: ellipsis; 
     }
     
     /* When you mouse over the navigation links, change their color */
@@ -141,6 +144,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
       width: 95%; 
       max-width:1900px; 
+      height: 100%;
       }
 
       .ticket-info {
@@ -194,14 +198,13 @@
       flex-shrink: 0;
     }
 
-  
 
     .ticket-form h2 {
       text-align:left;
       font-size:22px; 
       color:white;
       font-family:'Inter', sans-serif;
-      margin:10px 0;
+      margin:5px 0;
       margin-left:10px;
       margin-right:10px;
       padding-left: 10px;
@@ -209,11 +212,19 @@
 
     .ticket-form .button-col{
       display: flex;
-      justify-content:space-evenly;
-      gap:10px;
       align-items: center;
       flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 40px;
     }
+
+    .ticket-form .button-wrapper {
+      flex-grow: 1; /* Allow buttons to stretch equally if needed */
+      display: flex;
+      justify-content: center; /* Center the button horizontally (optional) */
+      align-items: center; /* Center the button vertically (optional) */
+  }
 
     .ticket-form .button-col .btn-primary {
       align-self: flex-end;
@@ -223,6 +234,7 @@
       width: 80px;
       box-sizing: border-box;
       text-align: center;
+      
       
     } 
     .ticket-form .feather, .ticket-form .svg{
@@ -256,7 +268,7 @@
     }
 
 
-    .modal-content,.modal-content2 {
+    .modal-content,.modal-content2, .modal-content3{
       background-color: #fefefe;
       margin: 15% auto;
       padding: 30px;
@@ -277,7 +289,10 @@
   .modal-content2{
     height: 90%;
     padding-bottom: 5px;
+  }
 
+  .modal-content3{
+    height:70%;
   }
   .modal-content h1{
     margin-top:0px;
@@ -293,7 +308,7 @@
     padding-top:10px;
     margin-bottom:10px;
     font-size: 20px;
-    line-height: 1.6;
+    line-height: 1.6em;
   }
 
   .buttons {
@@ -370,11 +385,12 @@
   }
   .repairbg h1{
     color: white;
+    line-height: 2em;
   }
 
   .repairbg .numberbg h1{
     color: white;
-    line-height: 0.1em;
+    line-height: 1em;
     font-size: 5em;
   }
 
@@ -429,7 +445,7 @@
     display: inline-block;
     margin-bottom: 2em;
     background-color: #382F2F;
-    padding: 5px 20px; 
+    padding: 10px 30px; 
     min-width: 19em;
     font-size: 15px;
     border-radius: 10px;
@@ -437,10 +453,12 @@
     font-weight: bold; 
   }
   .namebg h1{
-    line-height: 0.8em;
+    line-height: 1em;
+    font-size: 2.3em;
   }
   .namebg h2{
-    line-height: 0.8em;
+    line-height: 1em;
+    font-size:1.8em;
   }
   .row{
     display: flex;
@@ -462,8 +480,6 @@
     font-size: 35px; /* Button text size */
     font-weight: bold; /* Bold text */
     transition: transform 0.3s ease,border 0.3s ease;; /* Hover effect transition */
-    
-
   }
   .btn-complete{
     background-color: #18B64D;
@@ -521,6 +537,8 @@
     background-color: #c7c7c7; /* Light background for the form */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    display: flex;
+    flex-direction: column;
   }
 
   .inc-form p{
@@ -529,6 +547,7 @@
     padding: 0px;
     font-size:1.5em;
     font-weight: 600;
+    
 
   }
 
@@ -583,6 +602,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    box-sizing: border-box;  /* Include padding in width calculation */
   }
 
   /* Custom radio button style */
@@ -759,8 +779,13 @@
     .left{
       float: left;
     }
+
+    
     .back-ground1{
       background-color: #F8F3ED;
+      min-height: 100%;
+      margin: -20px 0 0 0;  /* Negative margin to remove the top gap */
+      padding: 20px 0;
     }
     .checkout-form{
       display: flex;
@@ -776,6 +801,8 @@
       height: auto; 
       position: relative; 
       top: 0; 
+      margin-top: 20px;
+      margin-bottom: 20px;
       justify-content: flex-start;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better visibility */
     }
@@ -836,6 +863,7 @@
     width: 20px; /* Adjust the width */
     height: 20px; /* Adjust the height */
     cursor: pointer; /* Optional: Add a pointer cursor */
+    vertical-align: sub;
   }
   
   /* Optional: Add margin for spacing between buttons */
@@ -848,6 +876,14 @@
   padding: 0; /* Removes default padding */
   margin: 0; /* Removes default margin */
 }
+
+.checkout-form.checkin ul{
+  list-style-type:circle;
+  display: block; 
+  padding:20px;
+  margin:20px;
+}
+
 
 .repairbg.purple{
   background-color: #2D2E82;
@@ -924,3 +960,17 @@
 .rulestext {
   font-family: 'Inter';
 }
+
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  vertical-align:sub;
+  margin: 10px;
+}
+
+
