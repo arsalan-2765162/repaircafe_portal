@@ -164,7 +164,7 @@ def checkout_ticket(request,repairNumber):
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(reverse('RepairCafe:checkout_queue'))
 
-# visitor flow #
+# visitor flow 
 
 def enter_password(request):
     if request.method == 'POST':
@@ -214,9 +214,11 @@ def checkin_form(request):
                 itemDescription=form_data['itemDescription'],
                 customer=customer
             )
-            waiting_queue = Queue.objects.get(name="Waiting List")  # Assuming you have this queue
+            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
             return redirect('RepairCafe:wait_for_accept')
+        else:  
+            context_dict['form'] = form
     else:
         form=CheckinForm()
         context_dict['form']=form

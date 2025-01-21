@@ -43,7 +43,7 @@ class Ticket(models.Model):
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
     itemCategory = models.CharField(choices=ITEM_CATEGORY_CHOICES,max_length=128)
     itemDescription = models.CharField(max_length=MAX_ITEM_DESC_LENGTH)
-    repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING',max_length=128)
+    repairStatus = models.CharField(choices=REPAIR_STATUS_CHOICES,default='WAITING_TO_JOIN',max_length=128)
     incompleteReason = models.CharField(choices=REPAIR_INCOMPLETE_CHOICES,max_length=128,
                                         default=None,blank=True,null=True)
     position = models.IntegerField(default=None,null=True,blank=True,)
