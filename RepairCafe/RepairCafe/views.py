@@ -66,6 +66,7 @@ def waiting_list(request):
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
         context_dict['WaitingForm']=form
+        context_dict['Ticket']=Ticket  
     except Queue.DoesNotExist:
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
@@ -164,6 +165,19 @@ def checkout_ticket(request,repairNumber):
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(reverse('RepairCafe:checkout_queue'))
+
+def change_category(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if request.method == 'POST':
+        new_category = request.POST.get('new_category')
+        valid_categories = [choice[0] for choice in Ticket.ITEM_CATEGORY_CHOICES]
+        if new_category in valid_categories:
+            ticket.itemCategory = new_category
+            ticket.save()
+            messages.success(request, f"Category for ticket {ticket.repairNumber} - {ticket.itemName} has been updated.")
+        else:
+            messages.error(request, f"Invalid category selected for ticket {ticket.repairNumber} - {ticket.itemName}")
+    return redirect(request.META.get('HTTP_REFERER', 'RepairCafe:waiting_list'))
 
 # visitor flow #
 
