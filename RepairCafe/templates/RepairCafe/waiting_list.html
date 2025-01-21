@@ -42,7 +42,7 @@
             <h2>Position: {{ ticket.position}}</h2>
             <h2>Issue: {{ ticket.itemDescription }}</h2>
             <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
-            <h2>Visitor Details: [Placeholder: name, number and email]</h2>
+            <h2>Visitor Details: {{ ticket.customer }} </h2>
             </div>
             <div class="button-col">
                 <button 

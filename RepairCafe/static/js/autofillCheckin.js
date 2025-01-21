@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "id_emailPhone": "jane.doe@example.com",
             "id_postCode": "G12",
             "id_itemName": "Toaster",
-            "id_itemDescription": "Doesn't heat up",
+            "id_itemDescription": "Does not heat up",
         };
 
         // Loop through formData and populate the fields

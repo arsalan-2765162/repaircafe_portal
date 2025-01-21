@@ -18,6 +18,9 @@ class Customer(models.Model):
     firstName = models.CharField(max_length=NAME_MAX_LENGTH)
     lastName = models.CharField(max_length=NAME_MAX_LENGTH)
 
+    def __str__(self):
+        return f"{self.firstName}  {self.lastName}"
+
 
 class Ticket(models.Model):
     MAX_ITEM_NAME_LENGTH = 128
