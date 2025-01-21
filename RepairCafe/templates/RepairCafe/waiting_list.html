@@ -22,16 +22,27 @@
     </ul>
     {% endif %}
     {% if Tickets %}
-    <div class="ticket-feed">
-        {% for ticket in Tickets %}
-        <div class="ticket-form">
-            <img src="{% static 'images/whitetextilesicon.png' %}" alt="white textiles icon">
-            <div class="ticket-info">
-                <h2>Repair Request: {{ ticket.itemName }}</h2>
-                <h2>Position: {{ ticket.position}}</h2>
-                <h2>Issue: {{ ticket.itemDescription }}</h2>
-                <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
-                <h2>Visitor Details: [Placeholder: name, number and email]</h2>
+    <div class = "ticket-feed">
+    {% for ticket in Tickets %}
+    <div class ="ticket-form">
+            {% if ticket.get_itemCategory_display == "Electrical Mains" %}
+                <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
+            {% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
+                <img src="{% static 'images/battery_icon.png' %}" alt="battery icon">
+            {% elif ticket.get_itemCategory_display == "Clothing & Textiles" %}
+                <img src="{% static 'images/textile_icon.png' %}" alt="textiles icon">
+            {% elif ticket.get_itemCategory_display == "Ceramics" %}
+                <img src="{% static 'images/ceramic_icon.png' %}" alt="ceramics icon">
+            {% else %}
+                <img src="{% static 'images/other_icon.png' %}" alt="other icon">
+            {% endif %}
+            <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
+            <div class = "ticket-info">
+            <h2>Repair Request: {{ ticket.itemName }}</h2>
+            <h2>Position: {{ ticket.position}}</h2>
+            <h2>Issue: {{ ticket.itemDescription }}</h2>
+            <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
+            <h2>Visitor Details: [Placeholder: name, number and email]</h2>
             </div>
             <div class="button-col">
                 <button 
