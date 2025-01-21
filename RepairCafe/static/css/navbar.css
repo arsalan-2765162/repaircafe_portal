@@ -62,6 +62,9 @@
       color: #818181;
       display: block;
       transition: 0.3s;
+      white-space: nowrap;        /* Prevents text wrapping */
+      overflow: hidden;           /* Hides overflow content */
+      text-overflow: ellipsis; 
     }
     
     /* When you mouse over the navigation links, change their color */
@@ -534,6 +537,8 @@
     background-color: #c7c7c7; /* Light background for the form */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    display: flex;
+    flex-direction: column;
   }
 
   .inc-form p{
@@ -542,6 +547,7 @@
     padding: 0px;
     font-size:1.5em;
     font-weight: 600;
+    
 
   }
 
@@ -596,6 +602,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    box-sizing: border-box;  /* Include padding in width calculation */
   }
 
   /* Custom radio button style */

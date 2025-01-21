@@ -114,7 +114,6 @@ class Ticket(models.Model):
         self.save()
 
     def add_to_checkout(self):
-        self.repairStatus = "COMPLETED"
         queue = Queue.objects.get(name="Checkout Queue")
         old_position = self.position
         max_position = Ticket.objects.filter(queue=queue).aggregate(models.Max('position'))['position__max'] or 0

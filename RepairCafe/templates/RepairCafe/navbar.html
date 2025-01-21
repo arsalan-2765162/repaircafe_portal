@@ -17,12 +17,13 @@
 <body>
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  
   <div class="sidebarbutton">
-        <a href="{% url 'RepairCafe:main_queue'%}" >Queue</a>
+    <a href="{% url 'RepairCafe:waiting_list'%}">Check-in</a>
   </div>
   <div class="sidebarbutton">
-    <a href="{% url 'RepairCafe:waiting_list'%}">Waitlist</a>
-  </div>
+    <a href="{% url 'RepairCafe:main_queue'%}" >Repair </a>
+</div>
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
   </div>
