@@ -216,7 +216,8 @@ def checkin_form(request):
             )
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
-            return redirect('RepairCafe:wait_for_accept')
+            repairNumber=ticket.repairNumber
+            return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
         else:  
             context_dict['form'] = form
     else:
@@ -244,12 +245,13 @@ def checkout(request,repairNumber):
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
 
-def wait_for_accept(request):
+def wait_for_accept(request,repairNumber):
     return render(request,'RepairCafe/wait_for_accept.html')
+                
+def wait_for_checkout(request,repairNumber):
+    return render(request,'RepairCafe/wait_for_checkout.html')
         
         
-
-
 
 
     

@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
             "id_postCode": "G12",
             "id_itemName": "Toaster",
             "id_itemDescription": "Doesn't heat up",
-            "id_itemCategory": "Kitchen Appliance"
         };
 
         // Loop through formData and populate the fields
