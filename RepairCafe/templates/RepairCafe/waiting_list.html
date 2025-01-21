@@ -20,7 +20,7 @@
             <li class="{{ message.tags }}">{{ message }}</li>
         {% endfor %}
     </ul>
-  {% endif %}
+    {% endif %}
     {% if Tickets %}
     <div class = "ticket-feed">
     {% for ticket in Tickets %}
@@ -45,6 +45,17 @@
             <h2>Visitor Details: [Placeholder: name, number and email]</h2>
             </div>
             <div class="button-col">
+                <button 
+                    type="button" 
+                    class="btn btn-primary"
+                    onclick="openCategoryModal(
+                        '{% url 'RepairCafe:change_category' ticket.repairNumber %}',
+                        '{{ ticket.itemName }}',
+                        '{{ ticket.get_itemCategory_display }}',
+                        '{{ ticket.repairNumber }}'
+                    )">
+                    <i data-feather="edit-2"></i>
+                </button>
                 {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
@@ -53,21 +64,77 @@
                         </button>
                     </form>
                 {% else %}
-                        <p>Ticket cannot be accepted</p>
+                    <p>Ticket cannot be accepted</p>
                 {% endif %}
-                <form method="post" action="{% url 'RepairCafe:delete_ticket'  ticket.repairNumber %}">     
+                <form method="post" action="{% url 'RepairCafe:delete_ticket' ticket.repairNumber %}">     
                     {% csrf_token %}
-                    <button class = "btn btn-primary">
+                    <button class="btn btn-primary">
                         <i data-feather="x"></i>
                     </button>
                 </form>
             </div>
-    </div>
-
-    {% endfor %}
+        </div>
+        {% endfor %}
     </div>  
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
-{% endblock %}
 
+    <!-- Category Change Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Change Item Category</h1>
+            <p id="category-modal-item-details"></p>
+            <form id="category-form" action="" method="post">
+                {% csrf_token %}
+                <select name="new_category" id="new_category">
+                    {% for code, name in Ticket.ITEM_CATEGORY_CHOICES %}
+                        <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="buttons">
+                    <button type="button" class="btn btn-reject cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-accept">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal JavaScript -->
+    <script>
+        var categoryModal = document.getElementById("categoryModal");
+        var spans = document.getElementsByClassName("close");
+        var cancelBtns = document.getElementsByClassName("cancel-btn");
+
+        // Close modal when clicking (x)
+        for (let span of spans) {
+            span.onclick = function() {
+                categoryModal.style.display = "none";
+            }
+        }
+
+        // Close modal when clicking cancel
+        for (let btn of cancelBtns) {
+            btn.onclick = function() {
+                categoryModal.style.display = "none";
+                return false;  // Prevent form submission
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == categoryModal) {
+                categoryModal.style.display = "none";
+            }
+        }
+
+        // Function to open category change modal
+        function openCategoryModal(url, itemName, currentCategory, repairNumber) {
+            categoryModal.style.display = "flex";
+            document.getElementById("category-modal-item-details").innerHTML = 
+                `Repair #${repairNumber}: ${itemName}<br>Current Category: ${currentCategory}`;
+            document.getElementById("category-form").action = url;
+        }
+    </script>
+{% endblock %}
