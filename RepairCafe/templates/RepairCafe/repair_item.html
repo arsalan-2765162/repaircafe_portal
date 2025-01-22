@@ -36,7 +36,7 @@
             Mark as Incomplete
         </button>
         <button class="btn btn-complete" onclick="openCompleteModal(
-            '{% url 'RepairCafe:mark_incomplete_ticket' ticket.repairNumber %}', 
+            '{% url 'RepairCafe:complete_ticket' ticket.repairNumber %}', 
             '{{ ticket.itemName }}', 
             '{{ ticket.get_itemCategory_display }}', 
             '{{ ticket.repairNumber }}',
