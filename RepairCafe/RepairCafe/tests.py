@@ -168,7 +168,9 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         session.save()
 
         # Set up common test data
-        self.queue = Queue.objects.create(name="Main Queue")
+        self.queue = Queue.objects.get_or_create(name="Main Queue")[0]
+        self.wait_list=Queue.objects.get_or_create(name="Waiting List")[0]
+        self.checkout=Queue.objects.get_or_create(name="Checkout Queue")[0]
         self.customer = Customer.objects.create(firstName="Alice", lastName="Smith")
         self.ticket = Ticket.objects.create(
             repairNumber=12345,
@@ -185,15 +187,34 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'RepairCafe/index.html')
 
-    '''def test_reset_data_view(self):
+    def test_reset_data_view(self):
+        Ticket.objects.all().delete()
         response = self.client.get(reverse('RepairCafe:reset_data'))
-        self.assertEqual(response.status_code, 302)  # Redirect after reset'''
+        self.assertEqual(response.status_code, 302)
+        self.assertGreater(len(Queue.objects.get(name='Main Queue').get_tickets()),0)
+        self.assertGreater(len(Queue.objects.get(name='Waiting List').get_tickets()),0)
+        self.assertGreater(len(Queue.objects.get(name='Checkout Queue').get_tickets()),0)
+        
+         
 
     def test_main_queue_view(self):
         response = self.client.get(reverse('RepairCafe:main_queue'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'RepairCafe/main_queue.html')
         self.assertIn('Tickets', response.context)
+    
+    def test_waiting_list(self):
+        self.client.get(reverse('RepairCafe:reset_data'))
+        response = self.client.get(reverse('RepairCafe:waiting_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Tickets', response.context)
+
+    def test_checkout_queue(self):
+        self.client.get(reverse('RepairCafe:reset_data'))
+        response = self.client.get(reverse('RepairCafe:checkout_queue'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Tickets', response.context)
+        
 
 
     def test_enter_password_view(self):
@@ -205,6 +226,20 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         response = self.client.get(reverse('RepairCafe:house_rules'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'RepairCafe/house_rules.html')
+
+    def test_accept_ticket_view(self):
+        self.client.get(reverse('RepairCafe:reset_data'))
+        self.ticket_to_accept=Queue.objects.get(name="Waiting List").get_tickets()[0]
+        self.client.get(reverse('RepairCafe:accept_ticket',args=[self.ticket_to_accept.repairNumber]))
+        self.assertIn(self.ticket_to_accept,Queue.objects.get(name="Main Queue").get_tickets())
+
+    def test_repair_ticket_view(self):
+        self.client.get(reverse('RepairCafe:reset_data'))
+        self.ticket_to_repair=Queue.objects.get(name="Main Queue").get_tickets()[0]
+        self.client.get(reverse('RepairCafe:repair_ticket',args=[self.ticket_to_repair.repairNumber]))
+        self.assertIn(self.ticket_to_repair,Queue.objects.get(name="Checkout Queue").get_tickets())
+
+
 
 
 class EnterPasswordViewTest(TestCase):

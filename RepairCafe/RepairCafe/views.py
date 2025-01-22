@@ -13,8 +13,12 @@ def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
 def reset_data(request):
-	script.populate()
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER', redirect('RepairCafe/main_queue.html')))
+    script.populate()
+    referer_url=request.META.get('HTTP_REFERER')
+    if referer_url:
+        return HttpResponseRedirect(referer_url)
+    else:
+        return HttpResponseRedirect('RepairCafe/main_queue.html')
 
 def main_queue(request):
     context_dict={}
