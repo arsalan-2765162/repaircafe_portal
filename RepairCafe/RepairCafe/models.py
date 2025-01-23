@@ -86,6 +86,8 @@ class Ticket(models.Model):
 
     @staticmethod
     def decrement_positions(queue,position):
+        if position==None:
+            return
         Ticket.objects.filter(queue=queue,
                                   position__isnull=False,
                                     position__gt=position
