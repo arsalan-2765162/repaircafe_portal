@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from .models import Queue, Customer, Ticket, Repairer
 from django.urls import reverse
-
+import time
 class SimpleTest(TestCase):
     def test_basic_run(self):
         print("The test is running!")
@@ -237,8 +237,56 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         self.client.get(reverse('RepairCafe:reset_data'))
         self.ticket_to_repair=Queue.objects.get(name="Main Queue").get_tickets()[0]
         self.client.get(reverse('RepairCafe:repair_ticket',args=[self.ticket_to_repair.repairNumber]))
-        self.assertIn(self.ticket_to_repair,Queue.objects.get(name="Checkout Queue").get_tickets())
+        self.ticket_to_repair.repair_ticket()
+        self.assertEqual(self.ticket_to_repair.repairStatus,"BEING_REPAIRED")
 
+    '''def test_complete_ticket_mains(self):
+        self.client.get(reverse('RepairCafe:reset_data'))
+        self.ticket_to_complete=Ticket.objects.filter(queue=Queue.objects.get(name="Main Queue"))[0]
+        self.ticket_to_complete.repairStatus="BEING_REPAIRED"
+        self.ticket_to_complete.itemCategory="ELECM"
+        
+        self.client.get(reverse('RepairCafe:complete_ticket',args=[self.ticket_to_complete.repairNumber]))
+        self.assertEqual(self.ticket_to_complete.repairStatus,"NEED_PAT")'''
+    
+    def test_complet_ticket_non_mains(self):
+        pass
+    
+    def test_delete_ticket(self):
+        self.ticket_to_delete=Ticket.objects.filter(queue=Queue.objects.get(name="Main Queue"))[0]
+        self.client.get(reverse('RepairCafe:delete_ticket',args=[self.ticket_to_delete.repairNumber]))
+        self.assertNotIn(self.ticket_to_delete,Ticket.objects.all())
+
+    def test_checkout_ticket(self):
+        pass
+
+    def test_change_category(self):
+        pass
+
+    def test_enter_password(self):
+        pass
+
+
+    def test_checkin_form(self):
+        pass
+
+    def test_checkin_form_incomplete(self):
+        pass
+
+    def test_checkout(self):
+        pass
+
+    def test_checkout_incomplete(self):
+        pass
+
+    def test_checkout_success(self):
+        pass
+
+    def test_wait_for_accept(self):
+        pass
+
+    def test_wait_for_checkout(self):
+        pass
 
 
 

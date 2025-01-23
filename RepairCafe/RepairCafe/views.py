@@ -20,6 +20,7 @@ def reset_data(request):
     else:
         return HttpResponseRedirect('RepairCafe/main_queue.html')
 
+
 def main_queue(request):
     context_dict={}
     try:
