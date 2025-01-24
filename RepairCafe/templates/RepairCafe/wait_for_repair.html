@@ -1,0 +1,28 @@
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="repairbg">
+    <h1>You're Officially in the Queue!</h1>
+    <h2>Thank you for joining the Repair Café queue.  
+        We’ve reserved your spot, and our volunteer repair team will be with you soon.</h2>
+    <div class="row2">
+        <div class = "numberSquare">
+            <h3>Your Repair Number</h3>
+            <p>
+            #{{ ticket.repairNumber }}
+            </p>
+        </div>  
+        <div class = "numberSquare">
+            <h3>Position In Queue</h3>
+            <p>
+            {{ ticket.position }}
+            </p>
+        </div> 
+    </div>
+    <h2>
+    We’ll notify you as soon as a repairer is ready to see you. 
+    Thank you for your patience and for being part of the Repair Café community!
+    </h2>
+    <a href="{% url 'RepairCafe:repair_prompt' ticket.repairNumber %}"><h1>Next Page</h1></a>
+</div>
+{% endblock %}

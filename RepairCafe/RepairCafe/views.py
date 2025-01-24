@@ -282,6 +282,11 @@ def repair_prompt(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict = {'ticket': ticket} 
     return render(request,'RepairCafe/repair_prompt.html',context_dict)
+
+def wait_for_repair(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/wait_for_repair.html',context_dict)
         
         
 

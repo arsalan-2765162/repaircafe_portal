@@ -387,6 +387,7 @@
     color: white;
     line-height: 2em;
     font-weight: 600;
+    position: relative;
   }
 
   .repairbg .numberbg h1{
@@ -394,7 +395,7 @@
     line-height: 1em;
     font-size: 5em;
   }
-
+/*
   .repairbg{
   z-index: 1000;
   background-color: #E86312;
@@ -406,12 +407,27 @@
   justify-content: center; 
   align-items: center;
   width: 90%; 
-  height: 90%; 
+  margin: 2vw auto;
   display: flex; 
   flex-direction: column; 
   text-align: center; 
   overflow: auto;
   }
+*/
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
   .numberbg{
     display: inline-block;
@@ -439,6 +455,9 @@
       color: white; 
       font-weight: bold; 
       box-sizing: border-box;
+      margin-right: 25px;
+      margin-top: 10px;
+      margin-bottom: 20px;
   }
 
   .numberSquare p{
@@ -458,6 +477,7 @@
     margin-left: 40px;
     margin-right: 40px;
     align-self: center;
+    line-height: 1.5em;
   }
 
   .leftBlock{
@@ -492,6 +512,16 @@
     justify-content: center;
     gap: clamp(0px,0em,00px); 
   }
+
+  .row2{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
   .repairbg .btn{
     margin-top:10px;
     margin-bottom: 10px;
