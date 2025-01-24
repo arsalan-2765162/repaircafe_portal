@@ -1,0 +1,15 @@
+{% extends 'RepairCafe/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="repairbg">
+    <h1>We are ready to see you</h1>
+    <h2>Please make your way to "placeholder" at the "placeholder" repair desk</h2>
+    <div class = "numberSquare">
+        <h3>Your Repair Number</h3>
+        <p>
+        #{{ ticket.repairNumber }}
+        </p>
+    </div>  
+    <a href="{% url 'RepairCafe:wait_for_checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
+</div>
+{% endblock %}

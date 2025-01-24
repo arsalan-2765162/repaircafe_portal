@@ -386,6 +386,7 @@
   .repairbg h1{
     color: white;
     line-height: 2em;
+    font-weight: 600;
   }
 
   .repairbg .numberbg h1{
@@ -427,12 +428,36 @@
   
   }
 
+  .numberSquare{
+      display:flex;
+      align-self: center;
+      flex-direction: column;
+      background-color: #382F2F;
+      padding: 5px 40px; 
+      border-radius: 10px;
+      font-size: 8em; 
+      color: white; 
+      font-weight: bold; 
+      box-sizing: border-box;
+  }
+
+  .numberSquare p{
+    line-height: 1.2em;
+  }
+
   .rightBlock, .leftBlock{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+  }
+
+  .repairbg h2{
+    text-align: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    align-self: center;
   }
 
   .leftBlock{

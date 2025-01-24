@@ -277,6 +277,11 @@ def wait_for_checkout(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict = {'ticket': ticket} 
     return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
+
+def repair_prompt(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/repair_prompt.html',context_dict)
         
         
 
