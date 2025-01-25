@@ -26,7 +26,10 @@ urlpatterns = [
         path('checkin_form/', views.checkin_form, name='checkin_form'),
         path('wait_for_accept/<int:repairNumber>/',views.wait_for_accept,name='wait_for_accept'),
         path('wait_for_checkout/<int:repairNumber>/',views.wait_for_checkout,name='wait_for_checkout'),
-        path('admin_tools/', include('admin_tools.urls')),
         path('admin/', admin.site.urls),
+        path('admin_tools/', include('admin_tools.urls'))
+        
+        
+        
 
 ]
