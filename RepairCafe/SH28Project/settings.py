@@ -37,12 +37,15 @@ ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'daphne',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'RepairCafe',
+    'channels',
+    
 ]
 
 MIDDLEWARE = [
@@ -75,6 +78,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SH28Project.wsgi.application'
+
+ASGI_APPLICATION = 'SH28Project.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database

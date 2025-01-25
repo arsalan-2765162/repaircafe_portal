@@ -1,10 +1,12 @@
 {% extends 'RepairCafe/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <div class="repairbg">
+    <div id="status-message">
     <h1>You're Officially in the Queue!</h1>
     <h2>Thank you for joining the Repair Café queue.  
         We’ve reserved your spot, and our volunteer repair team will be with you soon.</h2>
+    </div>
     <div class="row2">
         <div class = "numberSquare">
             <h3>Your Repair Number</h3>
@@ -23,6 +25,22 @@
     We’ll notify you as soon as a repairer is ready to see you. 
     Thank you for your patience and for being part of the Repair Café community!
     </h2>
-    <a href="{% url 'RepairCafe:repair_prompt' ticket.repairNumber %}"><h1>Next Page</h1></a>
+    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:repair_prompt' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
+
+<script>
+    const repairNumber = "{{ ticket.repairNumber }}";
+    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.status === 'REPAIRING') {
+            document.getElementById('status-message').textContent = 'A repairer will see you now!';
+            document.getElementById('next-page').style.display = 'block';
+            const nextPageUrl = document.getElementById('next-page').getAttribute('href');
+            window.location.href = nextPageUrl;
+        }
+    };
+</script>
+
 {% endblock %}

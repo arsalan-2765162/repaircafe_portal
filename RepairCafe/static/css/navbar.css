@@ -959,18 +959,30 @@
   justify-content: flex-start; /* Keeps content aligned at the top */
   padding: 3em;
   border-radius: 15px;
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
   justify-content: center; 
   align-items: center;
   width: 90%; 
-  height: 90%; 
   display: flex; 
   text-align: flex-start; 
   overflow: auto;
+  padding:30px;
+  margin: 2vw auto;
   }
+
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
 .purple h1{
   font-weight: 600;

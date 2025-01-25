@@ -7,6 +7,10 @@ from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
 from datetime import date
+from django.http import JsonResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 
 def index(request):
@@ -103,6 +107,17 @@ def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     if ticket.repairStatus == 'WAITING_TO_JOIN':
         ticket.accept_ticket()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "ticket_updates",
+            {
+                "type": "ticket_status_update",
+                "repair_number": repairNumber,
+                "status": "ACCEPTED"
+            }
+        )
+
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been accepted.")
     else:
         messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not accepted.")
@@ -112,6 +127,18 @@ def repair_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == "WAITING":
         ticket.repair_ticket()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "ticket_updates",
+            {
+                "type": "ticket_status_update",
+                "repair_number": repairNumber,
+                "status": "REPAIRING"
+            }
+        )
+
+
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
     else:
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
@@ -126,6 +153,17 @@ def mark_incomplete_ticket(request,repairNumber):
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
             ticket.add_to_checkout()
             ticket.save()
+
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "ticket_updates",
+                {
+                    "type": "ticket_status_update",
+                    "repair_number": repairNumber,
+                    "status": "WAIT_FOR_CHECKOUT"
+                }
+            )
+
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
     else:
@@ -147,9 +185,32 @@ def complete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
         ticket.complete_ticket()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "ticket_updates",
+            {
+                "type": "ticket_status_update",
+                "repair_number": repairNumber,
+                "status": "WAIT_FOR_PAT"
+            }
+        )
+
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
     elif(ticket.repairStatus == 'BEING_REPAIRED' ):
         ticket.complete_ticket()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "ticket_updates",
+            {
+                "type": "ticket_status_update",
+                "repair_number": repairNumber,
+                "status": "WAIT_FOR_CHECKOUT"
+            }
+        )
+
+
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
         messages.error(request,f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
@@ -165,6 +226,17 @@ def checkout_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
         ticket.checkout()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "ticket_updates",
+            {
+                "type": "ticket_status_update",
+                "repair_number": repairNumber,
+                "status": "CHECKOUT"
+            }
+        )
+
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
@@ -287,6 +359,8 @@ def wait_for_repair(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict = {'ticket': ticket} 
     return render(request,'RepairCafe/wait_for_repair.html',context_dict)
+
+
         
         
 

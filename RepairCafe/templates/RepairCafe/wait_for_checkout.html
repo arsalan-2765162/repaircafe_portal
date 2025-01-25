@@ -1,9 +1,30 @@
 {% extends 'RepairCafe/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <div class="purp-bg purple">
     <h1>Your repair is now complete</h1>
-    <h3>Please bring your item to the check out desk</h3>
-    <a href="{% url 'RepairCafe:checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
+    <h3 id="status-message">Please bring your item to the check out desk</h3>
+    <div class = "numberSquare">
+        <h3>Your Repair Number</h3>
+        <p>
+        #{{ ticket.repairNumber }}
+    </p>
+    </div>  
+    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
+
+<script>
+    const repairNumber = "{{ ticket.repairNumber }}";
+    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.status === 'CHECKOUT') {
+            document.getElementById('status-message').textContent = 'Your ticket has been accepted!';
+            document.getElementById('next-page').style.display = 'block';
+            const nextPageUrl = document.getElementById('next-page').getAttribute('href');
+            window.location.href = nextPageUrl;
+        }
+    };
+</script>
 {% endblock %}
