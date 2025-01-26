@@ -312,6 +312,9 @@ def checkin_form(request):
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
             repairNumber=ticket.repairNumber
+
+            send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
+            
             return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
         else:  
             context_dict['form'] = form
