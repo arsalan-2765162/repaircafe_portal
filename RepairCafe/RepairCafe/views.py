@@ -26,6 +26,19 @@ def send_ticket_update(group_name, repair_number, status):
     )
 
 
+def send_queue_update(group_name, queue_name, update_type):
+    print(f"Sending update to group {group_name}")
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        group_name,
+        {
+            "type": "queue_update",
+            "queue_name": queue_name,
+            "message": update_type,
+        },
+    )
+
+
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
@@ -65,6 +78,9 @@ def main_queue(request):
         ticketForms = [TicketForm(instance=ticket) for ticket in ticket_list]
         context_dict['TicketForms']=ticketForms
         
+        
+
+
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
         context_dict['FilterForm']=form
@@ -126,6 +142,8 @@ def accept_ticket(request,repairNumber):
         ticket.accept_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "ACCEPTED")
+        send_queue_update("main_queue_updates", "Main Queue", "ticket_added")
+        send_queue_update("waiting_queue_updates", "Waiting List", "ticket_removed")
 
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been accepted.")
     else:
@@ -138,6 +156,8 @@ def repair_ticket(request,repairNumber):
         ticket.repair_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "REPAIRING")
+        send_queue_update("main_queue_updates", "Main Queue", "ticket_being_repaired")
+        
 
 
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
@@ -156,6 +176,8 @@ def mark_incomplete_ticket(request,repairNumber):
             ticket.save()
 
             send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
+            send_queue_update("main_queue_updates", "Main Queue", "ticket_removed")
+            send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
             return redirect('RepairCafe:main_queue')
@@ -180,23 +202,30 @@ def complete_ticket(request,repairNumber):
         ticket.complete_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_PAT")
+        send_queue_update("main_queue_updates", "Main Queue", "ticket_updated")
+        
 
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
     elif(ticket.repairStatus == 'BEING_REPAIRED' ):
         ticket.complete_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
+        send_queue_update("main_queue_updates", "Main Queue", "ticket_removed")
+        send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
 
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
         messages.error(request,f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
+    
+    
     return redirect(reverse('RepairCafe:main_queue'))
 
 def delete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     ticket.delete_ticket()
     messages.success(request,f"Ticket: {ticket.itemName}, has been removed")
+    send_queue_update("waiting_queue_updates", "Waiting List", "ticket_removed")
     return redirect('RepairCafe:waiting_list')
 
 def checkout_ticket(request,repairNumber):
@@ -205,6 +234,7 @@ def checkout_ticket(request,repairNumber):
         ticket.checkout()
 
         send_ticket_update("ticket_updates", repairNumber, "CHECKOUT")
+        send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
@@ -220,6 +250,7 @@ def change_category(request, repairNumber):
             ticket.itemCategory = new_category
             ticket.save()
             messages.success(request, f"Category for ticket {ticket.repairNumber} - {ticket.itemName} has been updated.")
+            send_queue_update("waiting_queue_updates", "Waiting List", "ticket_updated")
         else:
             messages.error(request, f"Invalid category selected for ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(request.META.get('HTTP_REFERER', 'RepairCafe:waiting_list'))
@@ -290,6 +321,42 @@ def checkin_form(request):
     return render(request, 'RepairCafe/checkin_form.html', context_dict)
 
 
+
+
+def wait_for_accept(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus != "WAITING_TO_JOIN":
+        raise Http404("The ticket is not in the desired state.")
+    context = {
+        'ticket': ticket,
+        'repairNumber': repairNumber,  # Adding this explicitly
+    }
+    return render(request, 'RepairCafe/wait_for_accept.html', context)
+                
+
+def wait_for_repair(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus != "WAITING":
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/wait_for_repair.html',context_dict)
+
+def repair_prompt(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus != "BEING_REPAIRED":
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/repair_prompt.html',context_dict)
+
+def wait_for_checkout(request,repairNumber):
+    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
+        raise Http404("The ticket is not in the desired state.")
+    if ticket.isCheckedOut !=False:
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {'ticket': ticket} 
+    return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
+
 def checkout(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
@@ -310,41 +377,13 @@ def checkout(request,repairNumber):
 
     return render(request,'RepairCafe/checkout.html',context_dict)
 
+
+
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
 
-def wait_for_accept(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    if ticket.repairStatus != "WAITING_TO_JOIN":
-        raise Http404("The ticket is not in the desired state.")
-    context = {
-        'ticket': ticket,
-        'repairNumber': repairNumber,  # Adding this explicitly
-    }
-    return render(request, 'RepairCafe/wait_for_accept.html', context)
-                
-def wait_for_checkout(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
-        raise Http404("The ticket is not in the desired state.")
-    if ticket.isCheckedOut !=False:
-        raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
-    return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
 
-def repair_prompt(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    if ticket.repairStatus != "BEING_REPAIRED":
-        raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
-    return render(request,'RepairCafe/repair_prompt.html',context_dict)
 
-def wait_for_repair(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
-    if ticket.repairStatus != "WAITING":
-        raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
-    return render(request,'RepairCafe/wait_for_repair.html',context_dict)
 
 
         

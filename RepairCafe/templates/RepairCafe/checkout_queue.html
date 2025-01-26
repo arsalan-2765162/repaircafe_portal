@@ -66,5 +66,17 @@
     {% else %}
         <p>No tickets Exist</p>
     {% endif %}
+
+    <script>
+        const mainQueueSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/checkout_queue/'
+        );
+    
+        mainQueueSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data.message);
+            location.reload(); 
+        };
+    </script>
 {% endblock %}
 
