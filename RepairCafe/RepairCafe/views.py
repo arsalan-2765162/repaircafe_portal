@@ -13,6 +13,7 @@ from asgiref.sync import async_to_sync
 
 
 
+
 def send_ticket_update(group_name, repair_number, status):
 
     channel_layer = get_channel_layer()
@@ -120,7 +121,6 @@ def checkout_queue(request):
         ticket_list = Ticket.objects.filter(isCheckedOut=False,queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
 
         form = TicketFilterForm(request.GET or None)
-        print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
             category_filter = form.cleaned_data.get('itemCategory')
             if category_filter and category_filter != 'ALL':
@@ -138,6 +138,7 @@ def checkout_queue(request):
 
 def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
+    
     if ticket.repairStatus == 'WAITING_TO_JOIN':
         ticket.accept_ticket()
 
@@ -154,12 +155,6 @@ def repair_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == "WAITING":
         ticket.repair_ticket()
-
-        send_ticket_update("ticket_updates", repairNumber, "REPAIRING")
-        send_queue_update("main_queue_updates", "Main Queue", "ticket_being_repaired")
-        
-
-
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
     else:
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
@@ -169,6 +164,7 @@ def mark_incomplete_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if request.method == 'POST':
         incompleteForm = IncompleteTicketForm(request.POST)
+        
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
@@ -186,12 +182,16 @@ def mark_incomplete_ticket(request,repairNumber):
     context_dict = {'ticket': ticket, 'form': incompleteForm}
     return render(request, 'RepairCafe/mark_incomplete_ticket.html', context_dict)
 
+
+
 def repair_item(request,repairNumber):
     context_dict={}
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     incompleteForm = IncompleteTicketForm()
-    
 
+    send_ticket_update("ticket_updates", repairNumber, "REPAIRING")
+    send_queue_update("main_queue_updates", "Main Queue", "ticket_being_repaired")
+    
     context_dict['incompleteForm'] = incompleteForm
     context_dict['ticket']=ticket
     return render(request,'RepairCafe/repair_item.html',context_dict)
