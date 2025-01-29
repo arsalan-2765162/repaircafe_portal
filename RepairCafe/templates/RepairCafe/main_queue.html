@@ -35,14 +35,19 @@
 		    <img src="{% static 'images/other_icon.png' %}" alt="other icon">
                 {% endif %}
                 <div class="ticket-info" >
-                    <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
-                    <h2>Position:  {{ ticket.position }}</h2>
-                    <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
-                    <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
-                    {% if ticket.repairStatus == "INCOMPLETE" %}
-                        <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
-                    {% endif %}
-                    <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                    <div class="ticket-header">
+                        <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                        <h2>Position:  {{ ticket.position }}</h2>
+                        <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
+                    </div>
+                    <div class="dropdown-content">
+                        <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                        <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                        {% if ticket.repairStatus == "INCOMPLETE" %}
+                            <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                        {% endif %}
+                        <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                    </div>
                 </div>
                 {% if ticket.repairStatus == "WAITING" %}
                 <button 
@@ -82,4 +87,5 @@
 {% endblock %}
 {% block scripts %}
 <script src="{% static 'js/navbar.js' %}" defer></script>
+<script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}

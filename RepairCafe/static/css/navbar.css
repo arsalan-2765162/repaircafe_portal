@@ -38,17 +38,17 @@
   }
 
   .sidebar {
-      height: 100%; /* 100% Full-height */
+      height: 100%; 
       display: flex;
       flex-direction: column;
-      width: 0; /* 0 width - change this with JavaScript */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Stay on top */
+      width: 0; 
+      position: fixed; 
+      z-index: 1;
       top: 0;
       left: 0;
-      overflow-x: hidden; /* Disable horizontal scroll */
-      padding-top: 60px; /* Place content 60px from the top */
-      transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+      overflow-x: hidden; 
+      padding-top: 60px; 
+      transition: 0.5s;
       background-color: #2D2E82;
       color: #ffffff;
       
@@ -62,12 +62,12 @@
       color: #818181;
       display: block;
       transition: 0.3s;
-      white-space: nowrap;        /* Prevents text wrapping */
-      overflow: hidden;           /* Hides overflow content */
+      white-space: nowrap;        
+      overflow: hidden;           
       text-overflow: ellipsis; 
     }
     
-    /* When you mouse over the navigation links, change their color */
+
     .sidebar a:hover {
       color: #f1f1f1;
     }
@@ -76,7 +76,7 @@
       color: #f1f1f1;
     }
     
-    /* Position and style the close button (top right corner) */
+
     .sidebar .closebtn {
       position: absolute;
       top: 0;
@@ -84,8 +84,6 @@
       font-size: 36px;
       margin-left: 50px;
     }
-
-  
     
     /* The button used to open the sidebar */
     .openbtn {
@@ -107,14 +105,14 @@
       font-weight: bold;
     }
     
-    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+   
     #main {
-      transition: margin-left .5s; /* If you want a transition effect */
+      transition: margin-left .5s; 
       padding: 20px;
       padding-top: 10px;
     }
     
-    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    
     @media screen and (max-height: 450px) {
       .sidebar {padding-top: 15px;}
       .sidebar a {font-size: 18px;}
@@ -152,7 +150,91 @@
         flex-direction: column;
         flex-grow: 1; 
         padding-left: 20px; 
+        gap: 0.5rem;
       }
+    
+      .ticket-form h2 {
+        font-size: 1.4rem;
+        margin: 8px 0;
+        font-weight: 600;
+    }
+        
+      .ticket-header{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .dropdown-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        padding: 0.rem;
+        text-align: center;
+        font-weight: bold;
+        align-self: center;
+        transition: color 0.2s ease;
+    }
+    .ticket-form .feather, .ticket-form .svg{
+      stroke-width: 3;
+      vertical-align: middle;
+      align-self: center;
+      width: 24px;
+      height: 24px;
+    }
+
+    .ticket-form .dropdown-btn svg{
+      width: 50px; 
+      height: 50px;
+      stroke: white; 
+      stroke-width: 2px;
+      transition: transform 0.3s ease;
+      transform: rotate(0deg);
+  }
+
+
+    .dropdown-btn:hover {
+      color: #ffffff;
+    
+    
+    }
+
+    .dropdown-btn:hover svg {
+      stroke: #ffffff;
+      transform: scale(1.1);
+    }
+
+
+
+    .ticket-form .dropdown-btn.open svg{
+      transform: rotate(180deg);
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      padding-left: 1rem;
+      margin-left: 0.5rem;
+      border-left: 3px solid #ffa778;
+  }
+
+  .dropdown-content.active {
+    max-height: 200px; 
+    transition: max-height 0.5s ease;
+}
+
+.dropdown-content h2 {
+  margin: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1em;
+}
+
+  
 
   .btn-primary {
       margin-top: 10px;
@@ -177,7 +259,7 @@
 
     .btn-primary:hover {
       transform: scale(1.08);
-      background-color: #cdcccc; /* Darker shade on hover */
+      background-color: #cdcccc; 
       color: #000000;
       cursor: pointer;
       
@@ -201,10 +283,11 @@
 
     .ticket-form h2 {
       text-align:left;
-      font-size:22px; 
+      font-size:25px; 
       color:white;
       font-family:'Inter', sans-serif;
       margin:5px 0;
+      line-height: 1.5em;
       margin-left:10px;
       margin-right:10px;
       padding-left: 10px;
@@ -220,10 +303,10 @@
     }
 
     .ticket-form .button-wrapper {
-      flex-grow: 1; /* Allow buttons to stretch equally if needed */
+      flex-grow: 1;
       display: flex;
-      justify-content: center; /* Center the button horizontally (optional) */
-      align-items: center; /* Center the button vertically (optional) */
+      justify-content: center; 
+      align-items: center;
   }
 
     .ticket-form .button-col .btn-primary {
@@ -237,13 +320,7 @@
       
       
     } 
-    .ticket-form .feather, .ticket-form .svg{
-      stroke-width: 3;
-      vertical-align: middle;
-      align-self: center;
-      width: 24px;
-      height: 24px;
-    }
+
 
     #dropdownbutton{float:right; 
       width:50px; 
@@ -255,8 +332,8 @@
 
     .modal {
       display: none;
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
+      justify-content: center; 
+      align-items: center; 
       position: fixed; 
       z-index: 1000; 
       left: 0;
@@ -264,7 +341,7 @@
       width: 100%; 
       height: 100%; 
       background-color: rgba(0, 0, 0, 0.4); 
-      overflow: hidden; /* Disable scroll */ 
+      overflow: hidden; 
     }
 
 
@@ -296,7 +373,7 @@
   }
   .modal-content h1{
     margin-top:0px;
-    border-bottom: 2px solid #aaaaaa; /* Grey line below header */
+    border-bottom: 2px solid #aaaaaa;
     padding: 0.65em;
     margin: -0.2em -0.2em; 
     padding-bottom: 10px;
@@ -322,40 +399,40 @@
   .btn-accept, .btn-reject {
     margin-top:10px;
     margin-bottom: 10px;
-    padding: 1.6vw 1.8vw; /* Button size */
-    border-radius: 10px; /* Round corners */
+    padding: 1.6vw 1.8vw; 
+    border-radius: 10px; 
     border-style: outset;
     bottom: 10px;
     border: 3px solid #4d4d4d;
-    color: #333; /* Button text color */
-    font-size: 35px; /* Button text size */
-    font-weight: bold; /* Bold text */
+    color: #333; 
+    font-size: 35px; 
+    font-weight: bold;
     height: fit-content;
-    transition: transform 0.3s ease; /* Hover effect transition */
+    transition: transform 0.3s ease;
     box-sizing: border-box;
   }
 
 
 
   .btn-accept{
-    background-color: #74ff78; /* Button color */
+    background-color: #74ff78; 
 
   }
 
   .btn-reject{
-    background-color: #fefefe; /* Button color */
+    background-color: #fefefe; 
 
     
   }
 
   .btn-accept:hover{
     transform: scale(1.1);
-    background-color: #38ff3f; /* Button color */
+    background-color: #38ff3f; 
     cursor: pointer;
   }
   .btn-reject:hover{
     transform: scale(1.1);
-    background-color: #c5c4c4; /* Button color */
+    background-color: #c5c4c4;
     cursor: pointer;
   }
 
@@ -369,9 +446,9 @@
     color: #858585;
     font-size: 28px;
     font-weight: bold;
-    position: absolute;  /* Position relative to the modal-content */
-    top: 10px;           /* Distance from the top */
-    right: 20px;         /* Distance from the right */
+    position: absolute;  
+    top: 10px;          
+    right: 20px;        
     cursor: pointer;
   }
 
@@ -395,25 +472,7 @@
     line-height: 1em;
     font-size: 5em;
   }
-/*
-  .repairbg{
-  z-index: 1000;
-  background-color: #E86312;
-  border-radius: 15px;
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  justify-content: center; 
-  align-items: center;
-  width: 90%; 
-  margin: 2vw auto;
-  display: flex; 
-  flex-direction: column; 
-  text-align: center; 
-  overflow: auto;
-  }
-*/
+
   .repairbg{
     z-index: 1000;
     background-color: #E86312;
@@ -531,10 +590,10 @@
     max-width: 10em ;
     min-width: 10em;
     border: 4px solid hsl(0, 0%, 100%,40%);
-    color: #ffffff; /* Button text color */
-    font-size: 35px; /* Button text size */
-    font-weight: bold; /* Bold text */
-    transition: transform 0.3s ease,border 0.3s ease;; /* Hover effect transition */
+    color: #ffffff;
+    font-size: 35px; 
+    font-weight: bold; 
+    transition: transform 0.3s ease,border 0.3s ease;
   }
   .btn-complete{
     background-color: #18B64D;
@@ -578,20 +637,20 @@
 
 
   .button-row{
-    display: flex; /* Enable flexbox */
-    justify-content: center; /* Center buttons horizontally */
-    align-items: center; /* Center buttons vertically */
-    gap: clamp(0px,40vw,100px); /* Adds spacing between buttons */
-    height: 100%; /* Fill the available height of the parent */
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: clamp(0px,40vw,100px); 
+    height: 100%; 
   }
 
   .inc-form {
     margin-top: 0px;
     padding: 15px;
     margin-bottom: 20px;
-    background-color: #c7c7c7; /* Light background for the form */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    background-color: #c7c7c7; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
     display: flex;
     flex-direction: column;
   }
@@ -638,7 +697,7 @@
     width: 1.15em;
     height: 1.15em;
   }
-  /* Hide the default radio button while keeping it accessible */
+
   .inc-form input[type="radio"] {
     opacity: 0;
     position: absolute;
@@ -657,10 +716,10 @@
     position: relative;
     display: flex;
     align-items: center;
-    box-sizing: border-box;  /* Include padding in width calculation */
+    box-sizing: border-box; 
   }
 
-  /* Custom radio button style */
+
   .inc-form li::before {
     content: '';
     width: 1em;
@@ -672,22 +731,22 @@
     transition: all 0.2s ease;
   }
 
-  /* Hover state for list items */
+
   .inc-form li:hover {
     background-color: #5a5a5a;
   }
 
-  /* Checked state styles */
+
   .inc-form input[type="radio"]:checked + label li {
     background-color: #2d2E82;
   }
 
-  /* Custom radio button checked state */
+
   .inc-form input[type="radio"]:checked + label li::before {
     background-color: rgb(39, 39, 39);
   }
 
-  /* Focus state for accessibility */
+
   .inc-form input[type="radio"]:focus + label li {
     outline: 2px solid #ffffff;
     outline-offset: 2px;
@@ -766,8 +825,8 @@
     flex-wrap: wrap ;
     min-width: 200px; 
     word-break: break-word;
-    min-height: 3.5em; /* Set minimum height */
-    box-sizing: border-box; /* Include padding in height calculation */
+    min-height: 3.5em; 
+    box-sizing: border-box; 
   }
 
   .filter label , .filter2 label {
@@ -805,9 +864,9 @@
   }
 
   .center-con{
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     width: 100%;
     margin: 20px 0;
   }
@@ -823,7 +882,7 @@
     .filter p, .filter2 p {
       margin: 0.25em;
       width: auto;
-      min-height: 3.5em; /* Maintain minimum height on mobile */
+      min-height: 3.5em; 
     }
 
     .filter select, .filter2 select {
@@ -839,7 +898,7 @@
     .back-ground1{
       background-color: #F8F3ED;
       min-height: 100%;
-      margin: -20px 0 0 0;  /* Negative margin to remove the top gap */
+      margin: -20px 0 0 0; 
       padding: 20px 0;
     }
     .checkout-form{
@@ -859,9 +918,8 @@
       margin-top: 20px;
       margin-bottom: 20px;
       justify-content: flex-start;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better visibility */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
     }
-
     .checkout-form h1{
       padding: 10px;
       font-weight: 600;
@@ -915,21 +973,20 @@
   }
 
   input[type="radio"] {
-    width: 20px; /* Adjust the width */
-    height: 20px; /* Adjust the height */
-    cursor: pointer; /* Optional: Add a pointer cursor */
+    width: 20px; 
+    height: 20px;
+    cursor: pointer; 
     vertical-align: sub;
   }
-  
-  /* Optional: Add margin for spacing between buttons */
+
   input[type="radio"] + label {
     margin-left: 10px;
   }
 
   .checkout-form ul {
-  list-style-type: none; /* Removes the bullets */
-  padding: 0; /* Removes default padding */
-  margin: 0; /* Removes default margin */
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
 }
 
 .checkout-form.checkin ul{
@@ -942,21 +999,21 @@
 
 .repairbg.purple{
   background-color: #2D2E82;
-  color: #fff; /* Adjusting color to ensure text is visible */
+  color: #fff; 
   display: flex;
-  flex-direction: column; /* Aligns child elements vertically */
-  align-items: flex-start; /* Aligns content to the left */
-  justify-content: flex-start; /* Keeps content aligned at the top */
+  flex-direction: column; 
+  align-items: flex-start; 
+  justify-content: flex-start; 
   padding: 3em;
 }
 
 .purp-bg{
   background-color: #2D2E82;
-  color: #fff; /* Adjusting color to ensure text is visible */
+  color: #fff; 
   display: flex;
-  flex-direction: column; /* Aligns child elements vertically */
-  align-items: flex-start; /* Aligns content to the left */
-  justify-content: flex-start; /* Keeps content aligned at the top */
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: flex-start; 
   padding: 3em;
   border-radius: 15px;
   justify-content: center; 
@@ -992,13 +1049,13 @@
   align-self: flex-start;
 }
 .purp-bg.purple a {
-  color: white;        /* Changes the text color to white */
-  text-decoration: none; /* Underlines the text */
+  color: white;        
+  text-decoration: none;
 }
 .purp-bg.purple a:hover {
   color: rgb(159, 249, 255);
 
-  text-decoration: underline; /* Underlines the text */
+  text-decoration: underline; 
 }
   
 

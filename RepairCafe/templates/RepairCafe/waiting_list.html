@@ -38,11 +38,16 @@
             {% endif %}
             <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
             <div class = "ticket-info">
-            <h2>Repair Request: {{ ticket.itemName }}</h2>
-            <h2>Position: {{ ticket.position}}</h2>
-            <h2>Issue: {{ ticket.itemDescription }}</h2>
-            <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
-            <h2>Visitor Details: {{ ticket.customer }} </h2>
+            <div class="ticket-header">
+                <h2>Repair Request: {{ ticket.itemName }}</h2>
+                <h2>Position: {{ ticket.position}}</h2>
+                <h2>Issue: {{ ticket.itemDescription }}</h2>
+                <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
+            </div>
+            <div class="dropdown-content">
+                <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
+                <h2>Visitor Details: {{ ticket.customer }} </h2>
+            </div>
             </div>
             <div class="button-col">
                 <button 
@@ -152,4 +157,5 @@
             location.reload(); // Simple refresh on any queue update
         };
     </script>
+    <script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}
