@@ -97,6 +97,17 @@ def checkout_queue(request):
         context_dict['Queue']=None
     return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
 
+def basic_stats(request):
+
+    checkedin = Ticket.objects.exclude(repairStatus = "WAITING").count()
+    checkedout = Ticket.objects.filter(isCheckedOut = True).count()
+    successful = Ticket.objects.filter(repairStatus = "COMPLETED").count()
+    unsuccessful = Ticket.objects.filter(repairStatus = "INCOMPLETE").count()
+
+    context_dict = {"checkedin":checkedin, "checkedout":checkedout, "successful":successful, "unsuccessful":unsuccessful}
+
+    return render(request, 'RepairCafe/basic_stats.html', context_dict)
+
 
 
 def accept_ticket(request,repairNumber):
