@@ -129,7 +129,7 @@
       justify-content: center; 
       box-sizing: border-box;
     }
-    
+
     .ticket-form {
       display: flex;
       flex-direction: row;
@@ -1170,6 +1170,36 @@ input[type="checkbox"] {
   position: relative;
   vertical-align:sub;
   margin: 10px;
+}
+
+  .statsdiv {
+
+    display: inline-block;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin: 20px 10px; 
+    padding: 10px; 
+    border-radius: 12px; 
+    background-color: #e86312;
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 45%; 
+    max-width:1900px; 
+    height: 100%;
+}
+
+.statsdiv h2 {
+  
+  display: inline;
+}
+
+
+.statnumber {
+  font-size: 12vw;
+  display: inline ; 
+  line-height: 1;
+
 }
 
 
