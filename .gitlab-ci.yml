@@ -13,5 +13,7 @@ run_tests:
   image: python:3.9
   script:
     - echo "Running unit tests..."
+    - pip install -r requirements.txt
+    - cd RepairCafe
     - python manage.py test
   allow_failure: false
