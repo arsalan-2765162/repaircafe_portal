@@ -197,8 +197,8 @@
     }
 
     .ticket-form .dropdown-btn svg{
-      width: 50px; 
-      height: 50px;
+      width: 45px; 
+      height: 45px;
       stroke: white; 
       stroke-width: 2px;
       transition: transform 0.3s ease;
@@ -335,8 +335,29 @@
       min-width: 220px;
 
     } 
+
+    /*
+    Beginning of mobile styling
+    */
     
     @media screen and (max-width: 768px) {
+      h2 {
+        display: flex; /* Use flexbox for alignment */
+        flex-wrap: wrap; /* Allow content to wrap to a new line */
+      }
+
+      h2 .weak {
+        flex: 0 0 100%; /* Force the .weak content to occupy a full line */
+      }
+      h2 .inline {
+        margin-left: 2rem; /* Optional: Add left margin to indent the inline content */
+        display: block; /* Ensure the inline content appears on a new line */
+      }
+
+      .inline{
+        display: block;
+        margin-left: 2rem;
+      }
 
       .ticket-form img{
         margin:0;
@@ -349,9 +370,13 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1; 
-        padding-left: 10px; 
+        padding-left: 0px; 
         gap: 0 rem;
         min-width: 0;
+      }
+
+      .dropdown-content{
+        margin-bottom: 10px;
       }
       .ticket-form h2 {
         font-size:22px; 
@@ -360,16 +385,60 @@
         margin-left:0px;
         margin-right:0px;
         padding-left: 0px;
-        margin-bottom: 5px;
+        margin-bottom: 5px !important;
+        flex-wrap: wrap;
         }
+
+      .repairbg .numberSquare{
+        margin-right: 0px;
+        margin-bottom: 10px !important;
+        margin-top: 0px !important;
+        width: 100%;
+      }
+      .repairbg .numberSquare p{
+        margin-right: 0px;
+        font-size: .8em;
+      }
+      .repairbg .numberSquare h3{
+        line-height: 1.5em;
+      }
+      .repairbg h2{
+        font-size: 1.5em !important;
+        line-height: 1.5em !important;
+        margin:0 0 !important;
+        margin-bottom: 10px !important;
+        align-self: center !important;
+        text-align: center !important;
+      }
+
+      .purp-bg .numberSquare{
+        margin: 0 0;
+      }
+
+      .purp-bg h1{
+        line-height: 1.5em !important;
+      }
+
+      .repairbg h1 {
+        margin-bottom: 10px;
+        line-height: 1.5em !important;
+        font-size: 2em;
+      }
+
+      .repairbg h2 {
+
+        font-size: 1.8em;
+      }
+
+
 
       .ticket-form {
           flex-wrap: wrap; /* Allow items to wrap to new lines */
       }
       
       .ticket-form .button-col {
-          flex: 0 0 10%; /* Take full width, forcing to new line */
-          flex-direction: row; /* Arrange buttons horizontally */
+          flex: 0 0 100%; /* Take full width, forcing to new line */
+          flex-direction: column; /* Arrange buttons horizontally */
           gap: 20px; /* Space between buttons */
           justify-content: flex-end; /* Align buttons to the right */
           margin-top: 10px; /* Add spacing above buttons */
@@ -380,9 +449,11 @@
           margin: 0; /* Remove any default margins */
           
       }
+    
       .ticket-form .btn-primary {
         min-width: 120px;
         align-self: center;
+        order: 1;
       } 
   
       
@@ -390,7 +461,17 @@
           padding-left: 10px; 
           gap: 0 rem;
       }
+
+      .modal-content{
+        width: 90% !important;
+      }
+
+      
     }
+
+    /*
+    End of mobile styling
+    */
 
 
 
@@ -423,7 +504,7 @@
       padding: 30px;
       border: 1px solid #888;
       width: 60%; 
-      height: 60%;
+      height: 70%;
       position: absolute;
       box-sizing: border-box;
       border-radius: 15px;
@@ -958,11 +1039,20 @@
       margin: 0.25em;
       width: auto;
       min-height: 3.5em; 
+      font-size: 1em;
     }
 
     .filter select, .filter2 select {
       width: 100%;
+      font-size: 1em;
+      
     }
+    .filter button{
+      padding: 15px;
+      margin: 5px 5px;
+    }
+
+    
   }
 
     .left{
@@ -1201,6 +1291,20 @@ input[type="checkbox"] {
   line-height: 1;
 
 }
+
+.weak{
+  opacity: 95%;
+  font-weight: normal;
+}
+
+.dropdown-content h2{
+  display:flex;
+  
+}
+
+
+
+
 
 
 

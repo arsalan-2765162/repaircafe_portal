@@ -1,7 +1,7 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %}
 {% block content %}
-    <h1>Main Queue</h1>
+    <h1>Repair Queue</h1>
     {% if Queue %}
     {% else %}
         <p>No Queue object found.</p>
@@ -79,7 +79,7 @@
             <h1>Accept Repair?</h1>
             <p id ="modal-item-details"></p>
             <div class = "buttons">
-                <button class="btn btn-reject cancel-btn">Go Back</button>
+                <button class="btn btn-reject cancel-btn">Back</button>
                 <form id="accept-form" action="" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-accept">Accept</button>

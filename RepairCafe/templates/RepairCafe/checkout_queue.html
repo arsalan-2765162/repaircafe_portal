@@ -45,12 +45,12 @@
                     <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
                 </div>
                 <div class="dropdown-content">
-                    <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
-                    <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                    <h2><div class="weak">Category: </div><div class="inline"> &thinsp; {{ ticket.get_itemCategory_display }}</div></h2>
+                    <h2><div class="weak">Repair Status: </div> <div class="inline">&thinsp;{{ ticket.get_repairStatus_display }}</div></h2>
                     {% if ticket.repairStatus == "INCOMPLETE" %}
-                        <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                        <h2><div class="weak">Incomplete Reason: </div> <div class="inline">&thinsp; {{ ticket.get_incompleteReason_display }}</div></h2>
                     {% endif %}
-                    <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                    <h2><div class="weak">Repair Description: </div> <div class="inline">&thinsp; {{ ticket.itemDescription}}</div></h2>
                 </div>
             </div>
             
