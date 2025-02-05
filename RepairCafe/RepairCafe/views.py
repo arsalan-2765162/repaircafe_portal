@@ -134,6 +134,23 @@ def checkout_queue(request):
         context_dict['Queue']=None
     return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
 
+def basic_stats(request):
+
+    checkedin = Ticket.objects.exclude(repairStatus = "WAITING").count()
+    checkedout = Ticket.objects.filter(isCheckedOut = True).count()
+    successful = Ticket.objects.filter(repairStatus = "COMPLETED").count()
+    unsuccessful = Ticket.objects.filter(repairStatus = "INCOMPLETE").count()
+    catpercentages = {}
+
+    for category in Ticket.ITEM_CATEGORY_CHOICES:
+        catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
+
+    
+
+    context_dict = {"checkedin":checkedin, "checkedout":checkedout, "successful":successful, "unsuccessful":unsuccessful, "catpercentages":catpercentages}
+
+    return render(request, 'RepairCafe/basic_stats.html', context_dict)
+
 
 
 def accept_ticket(request,repairNumber):
