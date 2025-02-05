@@ -7,4 +7,10 @@
 <div class="statsdiv"><h2>Visitors Checked Out Today: <br><h3 class="statnumber">{{ checkedout }}</h3></h2><br></div>
 <div class="statsdiv"><h2>Successful Repairs: <br><h3 class="statnumber">{{ successful }}</h3></h2><br></div>
 <div class="statsdiv"><h2>Unsuccessful Repairs: <br><h3 class="statnumber">{{ unsuccessful }}</h3></h2><br></div>
+
+{% for cat,per in catpercentages.items %}
+
+<h2>Percentage of {{cat.1}} items: {{per}}</h2><br>
+
+{% endfor %}
 {% endblock %}
