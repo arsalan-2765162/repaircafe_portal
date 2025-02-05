@@ -24,6 +24,7 @@
     {% if Tickets %}
     <div class = "ticket-feed">
     {% for ticket in Tickets %}
+    <div class="center-con">
     <div class ="ticket-form">
             {% if ticket.get_itemCategory_display == "Electrical Mains" %}
                 <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
@@ -41,12 +42,13 @@
             <div class="ticket-header">
                 <h2>Repair Request: {{ ticket.itemName }}</h2>
                 <h2>Position: {{ ticket.position}}</h2>
-                <h2>Issue: {{ ticket.itemDescription }}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
                 <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
             </div>
             <div class="dropdown-content">
-                <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
+                
                 <h2>Visitor Details: {{ ticket.customer }} </h2>
+                <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
             </div>
             </div>
             <div class="button-col">
@@ -88,6 +90,7 @@
             </div>
             
         </div>
+    </div>
         {% endfor %}
     </div>  
     {% else %}
