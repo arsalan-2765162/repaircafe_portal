@@ -14,14 +14,14 @@ from asgiref.sync import async_to_sync
 
 
 
-def send_ticket_update(group_name, repair_number, status):
+def send_ticket_update(group_name, repairNumber, status):
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         group_name,
         {
             "type": "ticket_status_update",
-            "repair_number": repair_number,
+            "repairNumber": repairNumber,
             "status": status,
         },
     )
@@ -155,11 +155,12 @@ def basic_stats(request):
 
 def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
+    repairNumber=repairNumber
     
     if ticket.repairStatus == 'WAITING_TO_JOIN':
         ticket.accept_ticket()
 
-        send_ticket_update("ticket_updates", repairNumber, "ACCEPTED")
+        send_ticket_update("ticket_updates",repairNumber, "ACCEPTED")
         send_queue_update("main_queue_updates", "Main Queue", "ticket_added")
         send_queue_update("waiting_queue_updates", "Waiting List", "ticket_removed")
 
@@ -357,12 +358,14 @@ def wait_for_accept(request,repairNumber):
 def wait_for_repair(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING":
+        print(ticket.repairStatus,ticket.repairNumber, "This is the issue for 404")
         raise Http404("The ticket is not in the desired state.")
     context_dict = {'ticket': ticket} 
     return render(request,'RepairCafe/wait_for_repair.html',context_dict)
 
 def repair_prompt(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    print(ticket.repairStatus,ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
         raise Http404("The ticket is not in the desired state.")
     context_dict = {'ticket': ticket} 
