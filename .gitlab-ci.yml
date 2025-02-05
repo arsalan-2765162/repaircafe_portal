@@ -1,13 +1,17 @@
-stages:
-  - test
-
 basic_check:
   stage: test
   image: python:3.9
   script:
-
     - echo "Running basic Django check..."
     - pip install -r requirements.txt
-    - cd RepairCafe  
+    - cd RepairCafe
     - python manage.py check --deploy
-  allow_failure: true  
+  allow_failure: false
+
+run_tests:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Running unit tests..."
+    - python manage.py test
+  allow_failure: false
