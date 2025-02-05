@@ -17,7 +17,7 @@ class TicketStatusConsumer(AsyncWebsocketConsumer):
 
     async def ticket_status_update(self,event):
         await self.send(text_data=json.dumps({
-            'repair_number': event['repair_number'],
+            'repairNumber': event['repairNumber'],
             'status':event['status']
         }
 

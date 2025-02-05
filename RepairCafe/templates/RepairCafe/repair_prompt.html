@@ -19,7 +19,7 @@
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        if (data.status === 'WAIT_FOR_CHECKOUT' || data.status === 'WAIT_FOR_PAT') {
+        if (data.status === 'WAIT_FOR_CHECKOUT' && data.repairNumber == repairNumber || data.status === 'WAIT_FOR_PAT' && data.repairNumber == repairNumber ) {
             document.getElementById('status-message').textContent = 'You are now ready to checkout!';
             document.getElementById('next-page').style.display = 'block';
             const nextPageUrl = document.getElementById('next-page').getAttribute('href');

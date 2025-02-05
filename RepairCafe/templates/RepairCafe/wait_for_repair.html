@@ -34,7 +34,7 @@
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        if (data.status === 'REPAIRING') {
+        if (data.status === 'REPAIRING' && data.repairNumber == repairNumber) {
             document.getElementById('status-message').textContent = 'A repairer will see you now!';
             document.getElementById('next-page').style.display = 'block';
             const nextPageUrl = document.getElementById('next-page').getAttribute('href');
