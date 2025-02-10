@@ -6,6 +6,10 @@
   .btn {
     box-sizing:border-box;
   }
+
+  h1{
+    font-size: 1.8em;
+  }
   /* The sidebar menu */
   .sidebarbutton{
     background-color: #0A2540;
@@ -336,143 +340,7 @@
 
     } 
 
-    /*
-    Beginning of mobile styling
-    */
-    
-    @media screen and (max-width: 768px) {
-      h2 {
-        display: flex; /* Use flexbox for alignment */
-        flex-wrap: wrap; /* Allow content to wrap to a new line */
-      }
-
-      h2 .weak {
-        flex: 0 0 100%; /* Force the .weak content to occupy a full line */
-      }
-      h2 .inline {
-        margin-left: 2rem; /* Optional: Add left margin to indent the inline content */
-        display: block; /* Ensure the inline content appears on a new line */
-      }
-
-      .inline{
-        display: block;
-        margin-left: 2rem;
-      }
-
-      .ticket-form img{
-        margin:0;
-        margin-left:10px;
-        width:70px;
-        height:70px;
-        flex-shrink: 0;
-      }
-      .ticket-info {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1; 
-        padding-left: 0px; 
-        gap: 0 rem;
-        min-width: 0;
-      }
-
-      .dropdown-content{
-        margin-bottom: 10px;
-      }
-      .ticket-form h2 {
-        font-size:22px; 
-        margin:5px 0;
-        line-height: 1.3em;
-        margin-left:0px;
-        margin-right:0px;
-        padding-left: 0px;
-        margin-bottom: 5px !important;
-        flex-wrap: wrap;
-        }
-
-      .repairbg .numberSquare{
-        margin-right: 0px;
-        margin-bottom: 10px !important;
-        margin-top: 0px !important;
-        width: 100%;
-      }
-      .repairbg .numberSquare p{
-        margin-right: 0px;
-        font-size: .8em;
-      }
-      .repairbg .numberSquare h3{
-        line-height: 1.5em;
-      }
-      .repairbg h2{
-        font-size: 1.5em !important;
-        line-height: 1.5em !important;
-        margin:0 0 !important;
-        margin-bottom: 10px !important;
-        align-self: center !important;
-        text-align: center !important;
-      }
-
-      .purp-bg .numberSquare{
-        margin: 0 0;
-      }
-
-      .purp-bg h1{
-        line-height: 1.5em !important;
-      }
-
-      .repairbg h1 {
-        margin-bottom: 10px;
-        line-height: 1.5em !important;
-        font-size: 2em;
-      }
-
-      .repairbg h2 {
-
-        font-size: 1.8em;
-      }
-
-
-
-      .ticket-form {
-          flex-wrap: wrap; /* Allow items to wrap to new lines */
-      }
-      
-      .ticket-form .button-col {
-          flex: 0 0 100%; /* Take full width, forcing to new line */
-          flex-direction: column; /* Arrange buttons horizontally */
-          gap: 20px; /* Space between buttons */
-          justify-content: flex-end; /* Align buttons to the right */
-          margin-top: 10px; /* Add spacing above buttons */
-          padding-right: 10px; /* Right padding for alignment */
-      }
-  
-      .ticket-form .button-wrapper {
-          margin: 0; /* Remove any default margins */
-          
-      }
-    
-      .ticket-form .btn-primary {
-        min-width: 120px;
-        align-self: center;
-        order: 1;
-      } 
-  
-      
-      .ticket-info {
-          padding-left: 10px; 
-          gap: 0 rem;
-      }
-
-      .modal-content{
-        width: 90% !important;
-      }
-
-      
-    }
-
-    /*
-    End of mobile styling
-    */
-
+ 
 
 
     #dropdownbutton{float:right; 
@@ -524,6 +392,8 @@
   .modal-content3{
     height:70%;
   }
+
+  
   .modal-content h1{
     margin-top:0px;
     border-bottom: 2px solid #aaaaaa;
@@ -1301,6 +1171,157 @@ input[type="checkbox"] {
   display:flex;
   
 }
+
+   /*
+    Beginning of mobile styling
+    */
+    
+    @media screen and (max-width: 768px) {
+      h2 {
+        display: flex; /* Use flexbox for alignment */
+        flex-wrap: wrap; /* Allow content to wrap to a new line */
+      }
+
+      h2 .weak {
+        flex: 0 0 100%; /* Force the .weak content to occupy a full line */
+      }
+      h2 .inline {
+        margin-left: 2rem; /* Optional: Add left margin to indent the inline content */
+        display: block; /* Ensure the inline content appears on a new line */
+      }
+
+      .inline{
+        display: block;
+        margin-left: 2rem;
+      }
+
+      .ticket-form img{
+        margin:0;
+        margin-left:10px;
+        width:70px;
+        height:70px;
+        flex-shrink: 0;
+      }
+      .ticket-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; 
+        padding-left: 0px; 
+        gap: 0 rem;
+        min-width: 0;
+      }
+
+      .dropdown-content{
+        margin-bottom: 10px;
+      }
+      .ticket-form h2 {
+        font-size:22px; 
+        margin:5px 0;
+        line-height: 1.3em;
+        margin-left:0px;
+        margin-right:0px;
+        padding-left: 0px;
+        margin-bottom: 5px !important;
+        flex-wrap: wrap;
+        }
+
+      .repairbg .numberSquare{
+        margin-right: 0px;
+        margin-bottom: 10px !important;
+        margin-top: 0px !important;
+        width: 100%;
+      }
+      .repairbg .numberSquare p{
+        margin-right: 0px;
+        font-size: .8em;
+      }
+      .repairbg .numberSquare h3{
+        line-height: 1.5em;
+      }
+      .repairbg h2{
+        font-size: 1.5em !important;
+        line-height: 1.5em !important;
+        margin:0 0 !important;
+        margin-bottom: 10px !important;
+        align-self: center !important;
+        text-align: center !important;
+      }
+
+      .purp-bg .numberSquare{
+        margin: 0 0;
+      }
+
+      .purp-bg h1{
+        line-height: 1.5em !important;
+      }
+
+      .repairbg h1 {
+        margin-bottom: 10px;
+        line-height: 1.5em !important;
+        font-size: 2em;
+      }
+
+      .repairbg h2 {
+
+        font-size: 1.8em;
+      }
+
+
+
+      .ticket-form {
+          flex-wrap: wrap; /* Allow items to wrap to new lines */
+          margin-left: 0px;
+          margin-right: 0px;
+      }
+      
+      .ticket-form .button-col {
+          flex: 0 0 100%; /* Take full width, forcing to new line */
+          flex-direction: column; /* Arrange buttons horizontally */
+          gap: 20px; /* Space between buttons */
+          justify-content: flex-end; /* Align buttons to the right */
+          margin-top: 10px; /* Add spacing above buttons */
+          padding-right: 10px; /* Right padding for alignment */
+      }
+  
+      .ticket-form .button-wrapper {
+          margin: 0; /* Remove any default margins */
+          
+      }
+    
+      .ticket-form .btn-primary {
+        min-width: 120px;
+        align-self: center;
+        order: 1;
+      } 
+  
+      
+      .ticket-info {
+          padding-left: 10px;   
+          gap: 0 rem;
+      }
+      .leftBlock, .rightBlock {
+        margin: 0 !important;
+      }
+
+      .rightBlock .namebg{
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .modal-content{
+        width: 90% !important;
+      }
+      
+      #main{
+        padding: 10px;
+      }
+
+    }
+
+    /*
+    End of mobile styling
+    */
+
 
 
 
