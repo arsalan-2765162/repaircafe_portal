@@ -1151,16 +1151,16 @@ input[type="checkbox"] {
     
     @media screen and (max-width: 768px) {
       h2 {
-        display: flex; /* Use flexbox for alignment */
-        flex-wrap: wrap; /* Allow content to wrap to a new line */
+        display: flex; 
+        flex-wrap: wrap;
       }
 
       h2 .weak {
-        flex: 0 0 100%; /* Force the .weak content to occupy a full line */
+        flex: 0 0 100%; 
       }
       h2 .inline {
-        margin-left: 2rem; /* Optional: Add left margin to indent the inline content */
-        display: block; /* Ensure the inline content appears on a new line */
+        margin-left: 2rem;
+        display: block; 
       }
 
       .inline{
@@ -1248,20 +1248,20 @@ input[type="checkbox"] {
       }
       
       .ticket-form .button-col {
-        display: flex; /* Ensures buttons align properly */
-        flex-direction: row; /* Align buttons horizontally */
-        justify-content: center; /* Center buttons */
-        align-items: center; /* Align buttons vertically */
-        gap: 10px; /* Space between buttons */
-        width: 100%; /* Ensure full width */
-        margin-top: 10px; /* Space above buttons */
+        display: flex; 
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center;
+        gap: 10px;
+        width: 100%; 
+        margin-top: 10px;
           
       }
   
       .ticket-form .button-wrapper {
           margin: 0; 
           display:flex;
-          flex-direction: row; /* Ensures buttons are side-by-side */
+          flex-direction: row; 
           justify-content: center;
           align-items: center;
           
