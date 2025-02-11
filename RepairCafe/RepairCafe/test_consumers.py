@@ -1,4 +1,3 @@
-
 import pytest 
 from channels.testing import WebsocketCommunicator
 from django.conf import settings 
