@@ -15,7 +15,17 @@ from asgiref.sync import async_to_sync
 
 
 def send_ticket_update(group_name, repairNumber, status):
+    """
+    Sends an update to the ticket status WebSocket channel.
 
+    Args: 
+        group_name (str): The group name for the WebSocket channel.
+        repairNumber (str): The repair number of the ticket
+        status(str): The new status of the ticket.
+
+    Returns:
+        None
+    """
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         group_name,
@@ -28,6 +38,17 @@ def send_ticket_update(group_name, repairNumber, status):
 
 
 def send_queue_update(group_name, queue_name, update_type):
+    """
+    Sends an update to the respective queue WebSocket channel.
+
+    Args: 
+        group_name (str): The group name for the WebSocket channel.
+        queue_name (str): The queue_name the update is reffering to
+        update_type (str): The type of update being sent.
+
+    Returns:
+        None
+    """
     print(f"Sending update to group {group_name}")
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
