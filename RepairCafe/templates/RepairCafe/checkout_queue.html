@@ -48,15 +48,13 @@
                 <h2>Repair Description: {{ ticket.itemDescription}}</h2>
             </div>
             
-            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
+            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut and request.session.sessionpassword == "volunteer" %}
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
                             Checkout
                         </button>
                     </form>
-                {% else %}
-                        <p>Ticket cannot be accepted</p>
                 {% endif %}
             
     </div>

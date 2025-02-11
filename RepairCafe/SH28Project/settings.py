@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 VISITOR_PRESET_PASSWORD = "visitor" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
 REPAIRER_PRESET_PASSWORD = "repairer" #same with repairer
+VOLUNTEER_PRESET_PASSWORD = "volunteer"
 
 
 # Internationalization

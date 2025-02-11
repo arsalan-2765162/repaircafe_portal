@@ -56,7 +56,7 @@
                     )">
                     <i data-feather="edit-2"></i>
                 </button>
-                {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
+                {% if ticket.repairStatus == 'WAITING_TO_JOIN' and session.request.sessionpassword == "volunteer" %}
                 <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}

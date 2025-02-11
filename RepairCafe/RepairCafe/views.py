@@ -7,6 +7,7 @@ from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
 from datetime import date
+from django.http import HttpResponseForbidden
 
 
 def index(request):
@@ -22,6 +23,10 @@ def reset_data(request):
 
 
 def main_queue(request):
+
+    if request.session['sessionpassword'] == "visitor":
+        return HttpResponseForbidden("Access denied; this page is for repairers.")
+
     context_dict={}
     try:
         queue = Queue.objects.get(name="Main Queue")
@@ -77,6 +82,10 @@ def waiting_list(request):
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
 def checkout_queue(request):
+
+    if request.session['sessionpassword'] == "visitor":
+        return HttpResponseForbidden("Access denied; this page is for repairers.")
+
     context_dict={}
     try:
         queue = Queue.objects.get(name="Checkout Queue")
@@ -98,6 +107,9 @@ def checkout_queue(request):
     return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
 
 def basic_stats(request):
+
+    if request.session['sessionpassword'] == "visitor":
+        return HttpResponseForbidden("Access denied. Incorrect password.")
 
     checkedin = Ticket.objects.exclude(repairStatus = "WAITING").count()
     checkedout = Ticket.objects.filter(isCheckedOut = True).count()
@@ -203,20 +215,33 @@ def change_category(request, repairNumber):
 
 
 def enter_password(request):
+    
     if request.method == 'POST':
+        print(request.POST)
         entered_password = request.POST.get('password')
         if entered_password == settings.VISITOR_PRESET_PASSWORD:
-            request.session['preset_password_verified'] = True
+            request.session['sessionpassword'] = "visitor"
             return redirect('RepairCafe:house_rules')
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
-            request.session['preset_password_verified'] = True
+            request.session['sessionpassword'] = "repairer"
+            return redirect('RepairCafe:index')
+        elif entered_password == settings.VOLUNTEER_PRESET_PASSWORD:
+            request.session['sessionpassword'] = "volunteer"
             return redirect('RepairCafe:index')
         else:
+            print("Password did not match any preset values.")
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
         
     return render(request, 'RepairCafe/enter_password.html')
 
 def house_rules(request):
+
+    if request.session['sessionpassword'] == "volunteer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+
+    if request.session['sessionpassword'] == "repairer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
     if request.method == 'POST':
         form = RulesButton(request.POST)
         if form.is_valid():
@@ -235,13 +260,20 @@ def house_rules(request):
 def checkin_form(request):
     context_dict={}
 
+    if request.session['sessionpassword'] == "repairer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
+    if request.session['sessionpassword'] == "volunteer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+
     if request.method == 'POST':
         form = CheckinForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
             customer = Customer.objects.create(
                 firstName=form_data['firstName'],
-                lastName=form_data['lastName']
+                lastName=form_data['lastName'],
+                email=form_data['emailPhone']
             )
             ticket = Ticket.objects.create(
                 repairNumber=Ticket.generate_repair_number(),
@@ -263,6 +295,13 @@ def checkin_form(request):
 
 
 def checkout(request,repairNumber):
+
+    if request.session['sessionpassword'] == "repairer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
+    if request.session['sessionpassword'] == "volunteer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict={}
     if request.method == 'POST':
@@ -282,6 +321,13 @@ def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')
 
 def wait_for_accept(request,repairNumber):
+
+    if request.session['sessionpassword'] == "repairer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
+    if request.session['sessionpassword'] == "volunteer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context = {
         'ticket': ticket,
@@ -290,6 +336,13 @@ def wait_for_accept(request,repairNumber):
     return render(request, 'RepairCafe/wait_for_accept.html', context)
                 
 def wait_for_checkout(request,repairNumber):
+
+    if request.session['sessionpassword'] == "repairer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
+    if request.session['sessionpassword'] == "volunteer":
+        return HttpResponseForbidden("Access denied; this page is for visitors.")
+    
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     context_dict = {'ticket': ticket} 
     return render(request,'RepairCafe/wait_for_checkout.html',context_dict)
