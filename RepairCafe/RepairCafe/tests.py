@@ -294,7 +294,7 @@ class EnterPasswordViewTest(TestCase):
     def test_enter_password_correct_password(self):
         with self.settings(VISITOR_PRESET_PASSWORD='visitor123'):
             response = self.client.post(reverse('RepairCafe:enter_password'), {'password': 'visitor123'})
-            self.assertRedirects(response, reverse('RepairCafe:house_rulese'))
+            self.assertRedirects(response, reverse('RepairCafe:house_rules'))
 
     def test_enter_password_incorrect_password(self):
         response = self.client.post(reverse('RepairCafe:enter_password'), {'password': 'wrongpassword'})
