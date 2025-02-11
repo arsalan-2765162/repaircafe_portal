@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-
     // Add event listeners to each li element to simulate radio button click
     const listItems = document.querySelectorAll('.inc-form li');
     listItems.forEach(function(item) {
@@ -20,8 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
 
-
-
     // Function to open the modal
     window.openModal = function (url, itemName, itemCategory, repairNumber) {
         modalDetails.innerHTML = `
@@ -32,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         acceptForm.setAttribute("action", url);
         modal.style.display = "flex";
     };
+
     window.openIncompleteModal = function (url, itemName, itemCategory, repairNumber) {
         modalDetails.innerHTML = `
             <strong>Repairrrr #:</strong> ${repairNumber}<br>
@@ -41,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         acceptForm.setAttribute("action", url);
         modalIncomplete.style.display = "flex";
     };
+
     window.openCompleteModal = function (url, itemName, itemCategory, repairNumber) {
         console.log("Button clicked!"); // Debugging log
         console.log("Repair Details:", { url, itemName, itemCategory, repairNumber });
@@ -53,6 +51,31 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         acceptForm.setAttribute("action", url);
         // Show the modal
+        modal.style.display = "flex";
+    };
+
+    // New function for PAT testing modal
+    window.openPATResultModal = function (url, itemName, itemCategory, repairNumber, itemDescription) {
+        console.log("openPATResultModal called with:", {
+            url, 
+            itemName, 
+            itemCategory, 
+            repairNumber, 
+            itemDescription
+        });
+
+        // Use the same form and modal as other modals
+        modalDetails.innerHTML = `
+            <strong>Item:</strong> ${itemName}<br>
+            <strong>Category:</strong> ${itemCategory}<br>
+            <strong>Repair Number:</strong> ${repairNumber}<br>
+            <strong>Description:</strong> ${itemDescription}
+        `;
+
+        // Set form action to the complete PAT test URL
+        acceptForm.setAttribute("action", url);
+
+        // Show modal
         modal.style.display = "flex";
     };
 
@@ -77,6 +100,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
    
+    // Specific PAT test result buttons
+    const patResultButtons = document.querySelectorAll('button[name="test_result"]');
+    patResultButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = this.closest('form');
+            const url = form.getAttribute('action');
+            const testResult = this.value;
+
+            console.log("PAT Test Result Button Clicked");
+            console.log("Form URL:", url);
+            console.log("Test Result:", testResult);
+
+            form.submit();
+        });
+    });
+
     // Close modal when clicking outside it
     window.addEventListener("click", event => {
         if(modal){
@@ -89,5 +129,5 @@ document.addEventListener("DOMContentLoaded", function () {
                 closeModal();
             }
         }
-    })
+    });
 });
