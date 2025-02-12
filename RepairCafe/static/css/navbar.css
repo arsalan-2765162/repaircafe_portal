@@ -1146,6 +1146,43 @@ input[type="checkbox"] {
   
 }
 
+.messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.messages li {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 1.1em;
+}
+
+.messages li.success {
+  background-color: #28a745;
+  color: white;
+}
+
+.messages li.error {
+  background-color: #dc3545;
+  color: white;
+}
+.messages li.info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.messages li.warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.messages li {
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+
    /*
     Beginning of mobile styling
     */
