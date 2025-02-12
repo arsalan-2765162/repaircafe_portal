@@ -28,6 +28,8 @@
     <a id="next-page" style="display:none;" href="{% url 'RepairCafe:repair_prompt' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
 
+<audio id="chime" src="{% static 'sounds/chime.wav' %}" preload="auto"></audio>
+
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
     const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
@@ -64,6 +66,16 @@
             })
             .catch(error => console.error('Error fetching position:', error));
     }
+</script>
+<script>
+    window.onload = function() {
+        const chime = document.getElementById('chime');
+        chime.play();
+        
+        if ("vibrate" in navigator) {
+            navigator.vibrate(200) 
+        }
+    };
 </script>
 
 {% endblock %}
