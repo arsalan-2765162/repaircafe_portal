@@ -12,8 +12,6 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
-
-
 def send_ticket_update(group_name, repairNumber, status):
     """
     Sends an update to the ticket status WebSocket channel.
@@ -35,7 +33,6 @@ def send_ticket_update(group_name, repairNumber, status):
             "status": status,
         },
     )
-
 
 def send_queue_update(group_name, queue_name, update_type):
     """
@@ -60,7 +57,6 @@ def send_queue_update(group_name, queue_name, update_type):
         },
     )
 
-
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
@@ -75,7 +71,6 @@ def reset_data(request):
         return HttpResponseRedirect(referer_url)
     else:
         return HttpResponseRedirect('RepairCafe/main_queue.html')
-
 
 def main_queue(request):
     context_dict={}
@@ -99,10 +94,6 @@ def main_queue(request):
         #populate the list of forms used to display all tickets in the queue
         ticketForms = [TicketForm(instance=ticket) for ticket in ticket_list]
         context_dict['TicketForms']=ticketForms
-        
-        
-
-
         context_dict['Queue']=queue
         context_dict['Tickets']=ticket_list
         context_dict['FilterForm']=form
@@ -172,8 +163,6 @@ def basic_stats(request):
 
     return render(request, 'RepairCafe/basic_stats.html', context_dict)
 
-
-
 def accept_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     repairNumber=repairNumber
@@ -221,8 +210,6 @@ def mark_incomplete_ticket(request,repairNumber):
     context_dict = {'ticket': ticket, 'form': incompleteForm}
     return render(request, 'RepairCafe/mark_incomplete_ticket.html', context_dict)
 
-
-
 def repair_item(request,repairNumber):
     context_dict={}
     ticket = Ticket.objects.get(repairNumber=repairNumber)
@@ -256,7 +243,6 @@ def complete_ticket(request,repairNumber):
         messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
         messages.error(request,f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
-    
     
     return redirect(reverse('RepairCafe:main_queue'))
 
@@ -293,8 +279,6 @@ def change_category(request, repairNumber):
         else:
             messages.error(request, f"Invalid category selected for ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(request.META.get('HTTP_REFERER', 'RepairCafe:waiting_list'))
-
-
 
 def enter_password(request):
     if request.method == 'POST':
@@ -362,9 +346,6 @@ def checkin_form(request):
         context_dict['form']=form
     return render(request, 'RepairCafe/checkin_form.html', context_dict)
 
-
-
-
 def wait_for_accept(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING_TO_JOIN":
@@ -375,7 +356,6 @@ def wait_for_accept(request,repairNumber):
     }
     return render(request, 'RepairCafe/wait_for_accept.html', context)
                 
-
 def wait_for_repair(request,repairNumber):
     ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING":
@@ -420,8 +400,6 @@ def checkout(request,repairNumber):
         context_dict['form']=form
 
     return render(request,'RepairCafe/checkout.html',context_dict)
-
-
 
 def checkout_success(request):
     return render(request,'RepairCafe/checkout_success.html')

@@ -6,23 +6,24 @@ class TicketStatusConsumer(AsyncWebsocketConsumer):
     """
     WebSocket consumer for handling ticket status updates.
 
-    This consumer listens to the 'ticket_updates' group and sends updates to connected clients
-    about the status of repairs.
+    This consumer listens to the 'ticket_updates' group and sends
+    updates to connected clients about the status of repairs.
     """
 
     async def connect(self):
         """
         Handles the WebSocket connection.
 
-        Adds the connection to the 'ticket_updates' group to listen for ticket status updates.
+        Adds the connection to the 'ticket_updates' group
+        to listen for ticket status updates.
         """
         await self.channel_layer.group_add(
             "ticket_updates",
             self.channel_name
         )
         await self.accept()
-        
-    async def disconnect(self,close_code):
+
+    async def disconnect(self, close_code):
         """
         Handles the WebSocket disconnection.
 
@@ -33,15 +34,15 @@ class TicketStatusConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    async def ticket_status_update(self,event):
+    async def ticket_status_update(self, event):
         """
         Handles ticket status update messages from the channel layer.
 
         Sends the ticket status update to the WebSocket client.
         """
         await self.send(text_data=json.dumps({
-            'repairNumber': event['repairNumber'],
-            'status':event['status']
+            'repairNumber': event['repairNumber'], 
+            'status': event['status']
         }))
 
 
@@ -49,15 +50,16 @@ class MainQueueConsumer(AsyncWebsocketConsumer):
     """
     WebSocket consumer for handling updates for the main queue.
 
-    This consumer listens to the 'main_queue_updates' group and sends updates to connected clients
-    about the main queue status.
+    This consumer listens to the 'main_queue_updates' group and
+    sends updates to connected clients about the main queue status.
     """
 
     async def connect(self):
         """
         Handles the WebSocket connection.
 
-        Adds the connection to the 'main_queue_updates' group to listen for main queue updates.
+        Adds the connection to the 'main_queue_updates' group
+        to listen for main queue updates.
         """
         await self.channel_layer.group_add(
             "main_queue_updates",

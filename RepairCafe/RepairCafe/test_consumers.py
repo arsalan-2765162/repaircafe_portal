@@ -12,7 +12,7 @@ class TestConsumers:
         connected, _ = await communicator.connect()
         assert connected 
 
-        #simulating sending a ticket update
+        """simulating sending a ticket update"""
         channel_layer = get_channel_layer()
         await (channel_layer.group_send)(
             "ticket_updates",
@@ -23,7 +23,7 @@ class TestConsumers:
             },
         )
 
-        #receive the message that is sent to the websocket
+        """receive the message that is sent to the websocket"""
         response = await communicator.receive_json_from()
         assert response == {
             "repairNumber": 123,
@@ -32,11 +32,11 @@ class TestConsumers:
         await communicator.disconnect()
 
     async def test_main_queue_consumer(self):
-        communicator = WebsocketCommunicator(application,"/ws/main_queue/")
+        communicator = WebsocketCommunicator(application, "/ws/main_queue/")
         connected, _ = await communicator.connect()
         assert connected
 
-        #simulate sending a main queue update 
+        """simulate sending a main queue update"""
         channel_layer = get_channel_layer()
         await (channel_layer.group_send)(
             "main_queue_updates",
@@ -46,11 +46,11 @@ class TestConsumers:
             },
         )
 
-        #receive the message that is sent to the websocket
+        """receive the message that is sent to the websocket"""
         response = await communicator.receive_json_from()
         assert response == {"message": "ticket_added"}
         await communicator.disconnect()
-    
+
     async def test_waiting_queue_consumer(self):
         communicator = WebsocketCommunicator(application, "/ws/waiting_queue/")
         connected, _ = await communicator.connect()
@@ -88,5 +88,3 @@ class TestConsumers:
         assert response == {"message": "ticket_checked_out"}
 
         await communicator.disconnect()
-
-

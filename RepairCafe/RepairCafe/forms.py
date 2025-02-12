@@ -2,6 +2,7 @@ from django import forms
 from RepairCafe.models import Ticket
 from django.core.validators import MinLengthValidator
 
+
 class TicketFilterForm(forms.Form):
     STATUS_CHOICES = [('ALL', 'All')] + list(Ticket.REPAIR_STATUS_CHOICES)
     CATEGORY_CHOICES = [('ALL', 'All')] + list(Ticket.ITEM_CATEGORY_CHOICES)
@@ -17,9 +18,11 @@ class TicketFilterForm(forms.Form):
             if choice[0] not in excluded_statuses
         ]
         self.fields['repairStatus'].choices = [('ALL', 'All')] + status_choices
+    
     class Meta:
         model = Ticket
         fields = ()
+
 
 class IncompleteTicketForm(forms.Form):
     incompleteReason = forms.ChoiceField(
@@ -28,19 +31,23 @@ class IncompleteTicketForm(forms.Form):
         label="Reason for Incompletion",
         required=True,
     )
+
     class Meta:
         model=Ticket
         fields=["incompleteReason"]
 
+
 class TicketForm(forms.ModelForm):
+
     class Meta:
         model = Ticket
         fields = ['repairNumber', 'itemName', 'itemCategory', 'position', 'repairStatus', 'itemDescription']
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['readonly'] = True
+
 
 class CheckoutForm(forms.Form):
     Q1 = forms.CharField(
@@ -49,6 +56,7 @@ class CheckoutForm(forms.Form):
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control'})
     )
+
     Q2 = forms.CharField(
         label="Q2 How did you hear about us?",
         max_length=512,
@@ -90,7 +98,6 @@ class CheckoutForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-        
 
     Q6 = forms.CharField(
         label="Q6 How did you find out about the repair cafe?",
@@ -141,8 +148,6 @@ class CheckoutForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
-
-
     Q12 = forms.ChoiceField(
         label="Q12 Did your item have any sentimental attachment for you?",
         required=True,
@@ -155,9 +160,8 @@ class CheckoutForm(forms.Form):
         max_length=256,
         required=False,
         widget=forms.Textarea(attrs={'class': 'form-control'})
-        
-    )
 
+    )
 
     Q13 = forms.ChoiceField(
         choices=[('yes', 'Yes'), ('no', 'No')],
@@ -165,6 +169,7 @@ class CheckoutForm(forms.Form):
         widget=forms.RadioSelect,
         required=True
     )
+
     Q13Extra = forms.CharField(
         label="Q13 If yes, please tell us more",
         max_length=256,
@@ -227,19 +232,19 @@ class CheckoutForm(forms.Form):
     )
 
 
-
 class RulesButton(forms.Form):
+    acceptrules = forms.BooleanField(
+        required=True,
+        label='By ticking you are confirming that you have read and accept the House Rules',
+        error_messages={'required': 'You must agree to the House Rules to access the site.'})
 
-    acceptrules = forms.BooleanField(required=True, 
-    label='By ticking you are confirming that you have read and accept the House Rules',
-    error_messages={'required':'You must agree to the House Rules to access the site.'})
 
 class CheckinForm(forms.Form):
     firstName = forms.CharField(
-    label="First Name",
-    max_length=56,
-    required=True,
-    widget=forms.TextInput(attrs={'class': 'form-control'})
+        label="First Name",
+        max_length=56,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     lastName = forms.CharField(
         label="Last Name",
@@ -285,7 +290,6 @@ class CheckinForm(forms.Form):
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
-        
 
     photoConsent = forms.BooleanField(
         label="Do you consent to being in photos for social media?",
@@ -298,6 +302,3 @@ class CheckinForm(forms.Form):
         required=False,
         widget=forms.CheckboxInput
     )
-
-  
-

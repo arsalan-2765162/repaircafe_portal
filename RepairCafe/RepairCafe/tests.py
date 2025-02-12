@@ -2,6 +2,8 @@ from django.test import TestCase, Client
 from .models import Queue, Customer, Ticket, Repairer
 from django.urls import reverse
 import time
+
+
 class SimpleTest(TestCase):
     def test_basic_run(self):
         print("The test is running!")
@@ -31,7 +33,7 @@ class QueueModelTest(TestCase):
             queue=self.queue,
             customer=customer1,
         )
-        
+
         ticket2 = Ticket.objects.create(
             repairNumber=12346,
             itemName="Laptop",
@@ -42,6 +44,7 @@ class QueueModelTest(TestCase):
             customer=customer2,
         )
         self.assertQuerysetEqual(self.queue.get_tickets(), [ticket2, ticket1], transform=lambda x: x)
+
 
 class TicketModelTest(TestCase):
 
@@ -98,6 +101,7 @@ class CustomerModelTest(TestCase):
         self.assertEqual(self.customer.firstName, "Jane")
         self.assertEqual(self.customer.lastName, "Doe")
 
+
 class RepairerModelTest(TestCase):
     def setUp(self):
         self.repairer = Repairer.objects.create(firstName="Bob", lastName="Fixer")
@@ -106,11 +110,10 @@ class RepairerModelTest(TestCase):
         self.assertEqual(self.repairer.firstName, "Bob")
         self.assertEqual(self.repairer.lastName, "Fixer")
 
+
 class TestRedirectToEnterPassword(TestCase):
     def setup(self):
         self.client=Client()
-
-    
 
     def test_redirect_to_enter_password_index(self):
         # Simulate an unauthenticated request
@@ -118,13 +121,11 @@ class TestRedirectToEnterPassword(TestCase):
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
 
-    
     def test_redirect_to_enter_password_reset_data(self):
         # Simulate an unauthenticated request
         response = self.client.get(reverse('RepairCafe:reset_data'))
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
-
 
     def test_redirect_to_enter_password_main_queue(self):
         # Simulate an unauthenticated request
@@ -132,13 +133,11 @@ class TestRedirectToEnterPassword(TestCase):
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
 
-
     def test_redirect_to_enter_password_waiting_list(self):
         # Simulate an unauthenticated request
         response = self.client.get(reverse('RepairCafe:waiting_list'))
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
-
 
     def test_redirect_to_enter_password_checkout_queue(self):
         # Simulate an unauthenticated request
@@ -146,18 +145,13 @@ class TestRedirectToEnterPassword(TestCase):
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
 
-
-
-  
-
     def test_redirect_to_enter_password_house_rules(self):
         # Simulate an unauthenticated request
         response = self.client.get(reverse('RepairCafe:house_rules'))
         self.assertEqual(response.status_code, 302)  # Check for redirect
         self.assertEqual(response.url, reverse('RepairCafe:enter_password'))  # Verify target URL
 
-    
-    
+      
 class RepairCafeViewsTestPasswordEntered(TestCase):
     def setUp(self):
         self.client = Client()
@@ -195,8 +189,6 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         self.assertGreater(len(Queue.objects.get(name='Waiting List').get_tickets()),0)
         self.assertGreater(len(Queue.objects.get(name='Checkout Queue').get_tickets()),0)
         
-         
-
     def test_main_queue_view(self):
         response = self.client.get(reverse('RepairCafe:main_queue'))
         self.assertEqual(response.status_code, 200)
@@ -215,8 +207,6 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Tickets', response.context)
         
-
-
     def test_enter_password_view(self):
         response = self.client.get(reverse('RepairCafe:enter_password'))
         #self.assertEqual(response.status_code, 302) should redirect if password already entered
@@ -266,7 +256,6 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
     def test_enter_password(self):
         pass
 
-
     def test_checkin_form(self):
         pass
 
@@ -287,7 +276,6 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
 
     def test_wait_for_checkout(self):
         pass
-
 
 
 class EnterPasswordViewTest(TestCase):
