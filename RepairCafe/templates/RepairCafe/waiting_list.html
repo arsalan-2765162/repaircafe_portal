@@ -161,7 +161,6 @@
     
         mainQueueSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log(data.message);
             location.reload(); // Simple refresh on any queue update
         };
     </script>

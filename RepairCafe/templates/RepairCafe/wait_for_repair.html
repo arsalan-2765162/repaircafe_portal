@@ -16,7 +16,7 @@
         </div>  
         <div class = "numberSquare">
             <h3>Position In Queue</h3>
-            <p>
+            <p id="position">
             {{ ticket.position }}
             </p>
         </div> 
@@ -41,6 +41,29 @@
             window.location.href = nextPageUrl;
         }
     };
+</script>
+<script>
+    const mainQueueSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/main_queue/'
+    );
+
+    mainQueueSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        updatePosition();
+    };
+
+    function updatePosition() {
+        const repairNumber = "{{ ticket.repairNumber }}";  
+        console.log("Repair Number:", repairNumber);
+        fetch(`/RepairCafe/queue_position/${repairNumber}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.position) {
+                    document.getElementById('position').textContent = data.position;
+                }
+            })
+            .catch(error => console.error('Error fetching position:', error));
+    }
 </script>
 
 {% endblock %}
