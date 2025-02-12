@@ -6,11 +6,11 @@ from RepairCafe.routing import application
 
 
 @pytest.mark.asyncio
-class TestConsumers: 
+class TestConsumers:
     async def test_ticket_status_consumer(self):
         communicator = WebsocketCommunicator(application,"/ws/ticket_status/123/")
         connected, _ = await communicator.connect()
-        assert connected 
+        assert connected
 
         """simulating sending a ticket update"""
         channel_layer = get_channel_layer()
