@@ -61,7 +61,7 @@
             {% endif %}</h1>
         <p id ="modal-item-details"></p>
         <div class = "buttons">
-            <button  class="btn btn-reject cancel-btn">Go Back</button>
+            <button  class="btn btn-reject cancel-btn">Back</button>
             <form id="accept-form" action="" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-accept">
@@ -91,7 +91,7 @@
                 {% endfor %}
             </div>
         <div class = "buttons">
-            <button type="button" class="btn btn-reject cancel-btn">Go Back</button>
+            <button type="button" class="btn btn-reject cancel-btn">Back</button>
             <button type="submit" class="btn btn-accept">Submit</button>
         </form>
         </div>

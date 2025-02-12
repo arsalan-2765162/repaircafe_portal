@@ -417,6 +417,7 @@
     justify-content: space-between; 
     box-sizing: border-box;
     width: 100%; 
+    gap: 15px;
   }
 
   .btn-accept, .btn-reject {
@@ -1279,16 +1280,47 @@ input[type="checkbox"] {
           gap: 0 rem;
       }
       .leftBlock, .rightBlock {
-        margin: 0 !important;
+        margin-left: 10px ;
+        margin-right: 10px;
+        margin-bottom: 0px;
       }
 
-      .rightBlock .namebg{
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
+      .rightBlock .namebg, .leftBlock .namebg{
+        margin-top: 10px ;
+        margin-bottom: 10px;
+      }
+      .button-row{
+        gap: 10px;
+        flex-direction: column;
       }
 
-      .modal-content{
-        width: 90% !important;
+      
+      .btn-accept,.btn-reject{
+        font-size: 1.8em;
+      }
+
+      .repairbg .btn-incomplete, .repairbg  .btn-complete{
+        font-size: 1.8em;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        min-height: 100px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .namebg h2{
+        display: block;
+        text-align: center;
+        width: 100%;
+      }
+
+      .namebg h1{
+        font-size: 1.7em;
+      }
+
+      .modal-content, .modal-content2{
+        width: 90% ;
       }
       
       #main{
