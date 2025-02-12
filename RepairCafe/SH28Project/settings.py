@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'RepairCafe',
     'channels',
-    'django_mutpy',
-    
+
 ]
 
 MIDDLEWARE = [

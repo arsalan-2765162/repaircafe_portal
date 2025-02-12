@@ -7,7 +7,7 @@ class TicketFilterForm(forms.Form):
     STATUS_CHOICES = [('ALL', 'All')] + list(Ticket.REPAIR_STATUS_CHOICES)
     CATEGORY_CHOICES = [('ALL', 'All')] + list(Ticket.ITEM_CATEGORY_CHOICES)
     repairStatus = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label="Repair Status"
-                                     ,initial='WAITING')
+                                     , initial='WAITING')
     itemCategory = forms.ChoiceField(choices=CATEGORY_CHOICES, required=False, label="Item Category")
 
     def __init__(self, *args, **kwargs):
@@ -18,7 +18,7 @@ class TicketFilterForm(forms.Form):
             if choice[0] not in excluded_statuses
         ]
         self.fields['repairStatus'].choices = [('ALL', 'All')] + status_choices
-    
+
     class Meta:
         model = Ticket
         fields = ()
@@ -33,8 +33,8 @@ class IncompleteTicketForm(forms.Form):
     )
 
     class Meta:
-        model=Ticket
-        fields=["incompleteReason"]
+        model = Ticket
+        fields = ["incompleteReason"]
 
 
 class TicketForm(forms.ModelForm):
@@ -267,7 +267,7 @@ class CheckinForm(forms.Form):
         max_length=3,
         validators=[
             MinLengthValidator(3, 'Must be the first 3 Characters of your Post Code')
-            ]
+        ]
 
     )
 

@@ -1,9 +1,8 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue, Customer
-from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
+from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
-from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
 from datetime import date
@@ -39,7 +38,7 @@ def send_queue_update(group_name, queue_name, update_type):
     """
     Sends an update to the respective queue WebSocket channel.
 
-    Args: 
+    Args:
         group_name (str): The group name for the WebSocket channel.
         queue_name (str): The queue_name the update is reffering to
         update_type (str): The type of update being sent.
@@ -70,7 +69,7 @@ Repairer/Volunteer Flow
 
 def reset_data(request):
     script.populate()
-    referer_url=request.META.get('HTTP_REFERER')
+    referer_url = request.META.get('HTTP_REFERER')
     if referer_url:
         return HttpResponseRedirect(referer_url)
     else:
@@ -78,11 +77,11 @@ def reset_data(request):
 
 
 def main_queue(request):
-    context_dict={}
+    context_dict = {}
     try:
         queue = Queue.objects.get(name="Main Queue")
         ticket_list = Ticket.objects.filter(queue=queue).order_by('position')
-        
+
         #retrive filter paremeters for queue
         form = TicketFilterForm(request.GET or None)
         print("Form is valid:", form.is_valid())  # This will print if the form is valid
@@ -94,24 +93,24 @@ def main_queue(request):
             if category_filter and category_filter != 'ALL':
                 ticket_list = ticket_list.filter(itemCategory=category_filter)
         else:
-            ticket_list=ticket_list.filter(repairStatus='WAITING')
+            ticket_list = ticket_list.filter(repairStatus='WAITING')
 
         #populate the list of forms used to display all tickets in the queue
         ticketForms = [TicketForm(instance=ticket) for ticket in ticket_list]
-        context_dict['TicketForms']=ticketForms
-        context_dict['Queue']=queue
-        context_dict['Tickets']=ticket_list
-        context_dict['FilterForm']=form
+        context_dict['TicketForms'] = ticketForms
+        context_dict['Queue'] = queue
+        context_dict['Tickets'] = ticket_list
+        context_dict['FilterForm'] = form
     except Queue.DoesNotExist:
-        context_dict['Queue']=None
+        context_dict['Queue'] = None
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
 
 
 def waiting_list(request):
-    context_dict={}
+    context_dict = {}
     try:
         queue = Queue.objects.get(name="Waiting List")
-        ticket_list = Ticket.objects.filter(queue=queue,repairStatus='WAITING_TO_JOIN').order_by('position')
+        ticket_list = Ticket.objects.filter(queue=queue, repairStatus='WAITING_TO_JOIN').order_by('position')
 
         form = TicketFilterForm(request.GET or None)
         print("Form is valid:", form.is_valid())  # This will print if the form is valid
@@ -119,17 +118,17 @@ def waiting_list(request):
             category_filter = form.cleaned_data.get('itemCategory')
             if category_filter and category_filter != 'ALL':
                 ticket_list = ticket_list.filter(itemCategory=category_filter)
-   
+
         #populate the list of forms used to display all tickets in waiting list
         waitingForms = [TicketForm(instance=ticket) for ticket in ticket_list]
         context_dict['TicketForms'] = waitingForms
 
-        context_dict['Queue']=queue
-        context_dict['Tickets']=ticket_list
-        context_dict['WaitingForm']=form
-        context_dict['Ticket']=Ticket  
+        context_dict['Queue'] = queue
+        context_dict['Tickets'] = ticket_list
+        context_dict['WaitingForm'] = form
+        context_dict['Ticket'] = Ticket
     except Queue.DoesNotExist:
-        context_dict['Queue']=None
+        context_dict['Queue'] = None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
 
@@ -137,19 +136,21 @@ def checkout_queue(request):
     context_dict = {}
     try:
         queue = Queue.objects.get(name="Checkout Queue")
-        ticket_list = Ticket.objects.filter(isCheckedOut=False,queue=queue, repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
+        ticket_list = Ticket.objects.filter(isCheckedOut=False,
+                                            queue=queue,
+                                            repairStatus__in=['COMPLETED', 'INCOMPLETE']).order_by('position')
 
         form = TicketFilterForm(request.GET or None)
         if form.is_valid():
             category_filter = form.cleaned_data.get('itemCategory')
             if category_filter and category_filter != 'ALL':
                 ticket_list = ticket_list.filter(itemCategory=category_filter)
-              
-        context_dict['Queue']=queue
-        context_dict['Tickets']=ticket_list
-        context_dict['WaitingForm']=form
+
+        context_dict['Queue'] = queue
+        context_dict['Tickets'] = ticket_list
+        context_dict['WaitingForm'] = form
     except Queue.DoesNotExist:
-        context_dict['Queue']=None
+        context_dict['Queue'] = None
     return render(request, 'RepairCafe/checkout_queue.html', context=context_dict)
 
 
@@ -162,12 +163,10 @@ def basic_stats(request):
     catpercentages = {}
 
     for category in Ticket.ITEM_CATEGORY_CHOICES:
-        catpercentages[category] = round(((
-                                            Ticket.objects.filter(itemCategory=category[0])
-                                            .count())/(Ticket.objects.count()) * 100), 1)
+        catpercentages[category] = round(((Ticket.objects.filter(itemCategory=category[0])
+                                           .count()) / (Ticket.objects.count()) * 100), 1)
 
-    context_dict = {
-                    "checkedin": checkedin, "checkedout": checkedout,
+    context_dict = {"checkedin": checkedin, "checkedout": checkedout,
                     "successful": successful, "unsuccessful": unsuccessful,
                     "catpercentages": catpercentages}
 
@@ -177,7 +176,7 @@ def basic_stats(request):
 def accept_ticket(request, repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     repairNumber = repairNumber
-    
+
     if ticket.repairStatus == 'WAITING_TO_JOIN':
         ticket.accept_ticket()
 
@@ -205,7 +204,7 @@ def mark_incomplete_ticket(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if request.method == 'POST':
         incompleteForm = IncompleteTicketForm(request.POST)
-        
+
         if incompleteForm.is_valid():
             ticket.repairStatus = "INCOMPLETE"
             ticket.incompleteReason = incompleteForm.cleaned_data['incompleteReason']
@@ -231,7 +230,7 @@ def repair_item(request, repairNumber):
 
     send_ticket_update("ticket_updates", repairNumber, "REPAIRING")
     send_queue_update("main_queue_updates", "Main Queue", "ticket_being_repaired")
-    
+
     context_dict['incompleteForm'] = incompleteForm
     context_dict['ticket'] = ticket
     return render(request, 'RepairCafe/repair_item.html',context_dict)
@@ -244,9 +243,9 @@ def complete_ticket(request, repairNumber):
 
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_PAT")
         send_queue_update("main_queue_updates", "Main Queue", "ticket_updated")
-        
+
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
-    elif(ticket.repairStatus == 'BEING_REPAIRED'):
+    elif (ticket.repairStatus == 'BEING_REPAIRED'):
         ticket.complete_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
@@ -256,7 +255,7 @@ def complete_ticket(request, repairNumber):
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been marked as completed.")
     else:
         messages.error(request, f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
-    
+
     return redirect(reverse('RepairCafe:main_queue'))
 
 
@@ -270,7 +269,7 @@ def delete_ticket(request, repairNumber):
 
 def checkout_ticket(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
+    if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus == 'INCOMPLETE':
         ticket.checkout()
 
         send_ticket_update("ticket_updates", repairNumber, "CHECKOUT")
@@ -389,7 +388,7 @@ def repair_prompt(request, repairNumber):
     print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
         raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
+    context_dict = {'ticket': ticket}
     return render(request, 'RepairCafe/repair_prompt.html',context_dict)
 
 
