@@ -1,6 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isRedirecting = false;
 
+    console.log("Script loaded and running");
+    const mainQueueSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/main_queue/'
+    );
+
+    mainQueueSocket.onmessage = function (e) {
+        if (isRedirecting) {
+            console.log("Redirection in progress. Ignoring WebSocket message.");
+            return;
+        }
+
+        const data = JSON.parse(e.data);
+        console.log(data.message);
+        location.reload(); // Reload the page on queue update
+    };
+
+
     // Add event listeners to each li element to simulate radio button click
     const listItems = document.querySelectorAll('.inc-form li');
     listItems.forEach(function(item) {
@@ -96,28 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modal && event.target === modal) closeModal();
         if (modalIncomplete && event.target === modalIncomplete) closeModal();
     })
-    window.onload = function () {
-        const repairNumber = sessionStorage.getItem("openModalRepairNumber");
-        const modalType = sessionStorage.getItem("openModalType");
 
-        if (repairNumber && modalType) {
-            const ticketElement = document.querySelector(
-                `.ticket-form[data-repair-number="${repairNumber}"]`
-            );
-            if (ticketElement) {
-                const itemName = ticketElement.querySelector("h2:nth-child(1)").textContent.split(": ")[1];
-                const itemCategory = ticketElement.querySelector("h2:nth-child(3)").textContent.split(": ")[1];
-                const url = `/accept_ticket/${repairNumber}/`;
-
-                if (modalType === "confirmation") {
-                    openModal(url, itemName, itemCategory, repairNumber);
-                } else{
-                sessionStorage.removeItem("openModalRepairNumber");
-                sessionStorage.removeItem("openModalType");
-            }
-        }
-    };
-}
+    
 
 acceptForm.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent default form submission
@@ -131,6 +128,44 @@ function redirectToRepairItem(url) {
     document.body.style.cursor = "wait"; // Optional: Show loading indicator
     window.location.href = url; // Redirect to the repair item page
 }
+
+function checkSessionAndOpenModal() {
+    console.log("Checking session storage for modal data"); // Debug: Ensure this function runs
+    const repairNumber = sessionStorage.getItem("openModalRepairNumber");
+    const modalType = sessionStorage.getItem("openModalType");
+
+    console.log("Session Storage - Repair Number:", repairNumber); // Debug: Check the stored repair number
+    console.log("Session Storage - Modal Type:", modalType); // Debug: Check the stored modal type
+
+    if (repairNumber && modalType) {
+        console.log("Repair number and modal type exist"); // Debug: Ensure both session values are present
+
+        const ticketElement = document.querySelector(
+            `.ticket-form[data-repair-number="${repairNumber}"]`
+        );
+        console.log("Ticket Element:", ticketElement); // Debug: Check if the ticket element exists
+
+        if (ticketElement) {
+            const itemName = ticketElement.querySelector("h2:nth-child(1)").textContent.split(": ")[1];
+            const itemCategory = ticketElement.querySelector("h2:nth-child(3)").textContent.split(": ")[1];
+            const url = `/RepairCafe/repair_ticket/${repairNumber}/`;
+
+            console.log("Item Name:", itemName); // Debug: Check the item name
+            console.log("Item Category:", itemCategory); // Debug: Check the item category
+            console.log("URL for Modal:", url); // Debug: Check the URL being passed to openModal
+
+            openModal(url, itemName, itemCategory, repairNumber);
+        } else {
+            console.log("No ticket element found, clearing session storage"); // Debug: No matching ticket element
+            sessionStorage.removeItem("openModalRepairNumber");
+            sessionStorage.removeItem("openModalType");
+        }
+    } else {
+        console.log("No repair number or modal type in session storage"); // Debug: Values are missing
+    }
+}
+
+    checkSessionAndOpenModal();
 
 });
 

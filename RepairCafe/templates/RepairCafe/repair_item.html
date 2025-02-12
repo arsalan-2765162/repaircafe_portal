@@ -1,5 +1,5 @@
 {% extends 'RepairCafe/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <div class = "repairbg">
     <h1>Current Repair</h1>
@@ -97,4 +97,5 @@
         </div>
     </div>
 </div>
+<script src="{% static 'js/modal.js' %}" defer></script>
 {% endblock %}

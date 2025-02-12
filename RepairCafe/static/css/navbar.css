@@ -386,6 +386,8 @@
   .repairbg h1{
     color: white;
     line-height: 2em;
+    font-weight: 600;
+    position: relative;
   }
 
   .repairbg .numberbg h1{
@@ -393,7 +395,7 @@
     line-height: 1em;
     font-size: 5em;
   }
-
+/*
   .repairbg{
   z-index: 1000;
   background-color: #E86312;
@@ -405,12 +407,27 @@
   justify-content: center; 
   align-items: center;
   width: 90%; 
-  height: 90%; 
+  margin: 2vw auto;
   display: flex; 
   flex-direction: column; 
   text-align: center; 
   overflow: auto;
   }
+*/
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
   .numberbg{
     display: inline-block;
@@ -427,12 +444,40 @@
   
   }
 
+  .numberSquare{
+      display:flex;
+      align-self: center;
+      flex-direction: column;
+      background-color: #382F2F;
+      padding: 5px 40px; 
+      border-radius: 10px;
+      font-size: 8em; 
+      color: white; 
+      font-weight: bold; 
+      box-sizing: border-box;
+      margin-right: 25px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+  }
+
+  .numberSquare p{
+    line-height: 1.2em;
+  }
+
   .rightBlock, .leftBlock{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+  }
+
+  .repairbg h2{
+    text-align: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    align-self: center;
+    line-height: 1.5em;
   }
 
   .leftBlock{
@@ -467,6 +512,16 @@
     justify-content: center;
     gap: clamp(0px,0em,00px); 
   }
+
+  .row2{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
   .repairbg .btn{
     margin-top:10px;
     margin-bottom: 10px;
@@ -904,18 +959,30 @@
   justify-content: flex-start; /* Keeps content aligned at the top */
   padding: 3em;
   border-radius: 15px;
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
   justify-content: center; 
   align-items: center;
   width: 90%; 
-  height: 90%; 
   display: flex; 
   text-align: flex-start; 
   overflow: auto;
+  padding:30px;
+  margin: 2vw auto;
   }
+
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
 .purple h1{
   font-weight: 600;

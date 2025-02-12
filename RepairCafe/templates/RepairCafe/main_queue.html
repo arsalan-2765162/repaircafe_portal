@@ -1,5 +1,5 @@
 {% extends 'RepairCafe/navbar.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
     <h1>Main Queue</h1>
     {% if Queue %}
@@ -22,19 +22,19 @@
     {% if Tickets %}
         <div class = "ticket-feed">
             {% for ticket in Tickets %}
-            <div class ="ticket-form">
-		{% if ticket.get_itemCategory_display == "Electrical Mains" %}
-                    <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
-		{% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
-		    <img src="{% static 'images/battery_icon.png' %}" alt="battery icon">
-		{% elif ticket.get_itemCategory_display == "Clothing & Textiles" %}
-		    <img src="{% static 'images/textile_icon.png' %}" alt="textiles icon">
-		{% elif ticket.get_itemCategory_display == "Ceramics" %}
-		    <img src="{% static 'images/ceramic_icon.png' %}" alt="ceramics icon">
-		{% else %}
+        <div class ="ticket-form" data-repair-number="{{ ticket.repairNumber }}">
+            {% if ticket.get_itemCategory_display == "Electrical Mains" %}
+                        <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
+            {% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
+                <img src="{% static 'images/battery_icon.png' %}" alt="battery icon">
+            {% elif ticket.get_itemCategory_display == "Clothing & Textiles" %}
+                <img src="{% static 'images/textile_icon.png' %}" alt="textiles icon">
+            {% elif ticket.get_itemCategory_display == "Ceramics" %}
+                <img src="{% static 'images/ceramic_icon.png' %}" alt="ceramics icon">
+            {% else %}
 		    <img src="{% static 'images/other_icon.png' %}" alt="other icon">
                 {% endif %}
-                <div class="ticket-info">
+                <div class="ticket-info" >
                     <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
                     <h2>Position:  {{ ticket.position }}</h2>
                     <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
@@ -45,12 +45,15 @@
                     <h2>Repair Description: {{ ticket.itemDescription}}</h2>
                 </div>
                 {% if ticket.repairStatus == "WAITING" %}
-                    <button 
+                <button 
                     type="button" 
                     class="btn btn-primary" 
-                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', '{{ ticket.repairNumber }}','{{ ticket.itemDescription }}')">
+                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                    '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
+                    '{{ ticket.repairNumber }}')"
+                    >
                     Accept Repair
-                    </button>
+                </button>
                 {% endif %}
             </div>
             {% endfor %}
@@ -75,5 +78,9 @@
             </div>
         </div>
     </div>
+<script src="{% static 'js/main_queue_modal.js' %}" defer></script>
 
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/navbar.js' %}" defer></script>
 {% endblock %}

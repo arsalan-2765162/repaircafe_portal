@@ -19,7 +19,7 @@
         {% for message in messages %}
             <li class="{{ message.tags }}">{{ message }}</li>
         {% endfor %}
-    </ul>
+    </ul>       
     {% endif %}
     {% if Tickets %}
     <div class = "ticket-feed">
@@ -140,5 +140,16 @@
                 `Repair #${repairNumber}: ${itemName}<br>Current Category: ${currentCategory}`;
             document.getElementById("category-form").action = url;
         }
+    </script>
+    <script>
+        const mainQueueSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/waiting_queue/'
+        );
+    
+        mainQueueSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data.message);
+            location.reload(); // Simple refresh on any queue update
+        };
     </script>
 {% endblock %}

@@ -15,5 +15,5 @@ run_tests:
     - echo "Running unit tests..."
     - pip install -r requirements.txt
     - cd RepairCafe
-    - python manage.py test
+    - pytest
   allow_failure: false
