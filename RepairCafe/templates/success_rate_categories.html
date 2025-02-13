@@ -1,0 +1,55 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% load i18n %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block module_content %}
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                {% for category, counts in module.children.categories.items %}
+                '{{ category }}',
+                {% endfor %}
+            ],
+            datasets: [
+                {
+                    label: 'Completed',
+                    data: [
+                        {% for category, counts in module.children.categories.items %}
+                        {{ counts.0 }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',  // Light green
+                    borderColor: 'rgba(75, 192, 192, 1)'
+                },
+                {
+                    label: 'Incomplete',
+                    data: [
+                        {% for category, counts in module.children.categories.items %}
+                        {{ counts.1 }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',  // Light red
+                    borderColor: 'rgba(255, 99, 132, 1)'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

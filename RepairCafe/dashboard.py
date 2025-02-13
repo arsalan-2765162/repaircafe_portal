@@ -20,13 +20,23 @@ except ImportError:
     from django.utils.translation import ugettext_lazy as _
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
-
-class SuccessRateModule(modules.DashboardModule):
+from RepairCafe.models import Ticket
+class SuccessRateCategoriesModule(modules.DashboardModule):
     title = 'Repair Success Rate'
 
     def __init__(self, title=None, **kwargs):
         super().__init__(title, **kwargs)
-        self.template = 'success_rate_template.html'  # Path to your template
+        self.template = 'success_rate_categories.html'  # Path to your template
+
+    def init_with_context(self,context):
+        successdict={}
+        successdict['categories']={}
+        for category in Ticket.ITEM_CATEGORY_CHOICES:
+            successdict['categories'][category[1]]=(Ticket.objects.filter(itemCategory=category[0],repairStatus='COMPLETED').count(),Ticket.objects.filter(itemCategory=category[0],repairStatus='INCOMPLETE').count())
+
+        successdict['total']=(Ticket.objects.filter(repairStatus='COMPLETED').count(),Ticket.objects.filter(repairStatus='INCOMPLETE').count())
+        self.children=successdict
+        print(self.children)
 
     def is_empty(self):
         # Return False to ensure the module is always displayed
@@ -59,7 +69,7 @@ class CustomIndexDashboard(Dashboard):
             exclude=('django.contrib.*','repairCafe.Models.Queue'),
         ))
         
-        self.children.append(SuccessRateModule())
+        self.children.append(SuccessRateCategoriesModule())
 
         # append an app list module for "Administration"
         self.children.append(modules.AppList(
