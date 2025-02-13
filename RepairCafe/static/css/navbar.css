@@ -6,6 +6,10 @@
   .btn {
     box-sizing:border-box;
   }
+
+  h1{
+    font-size: 1.8em;
+  }
   /* The sidebar menu */
   .sidebarbutton{
     background-color: #0A2540;
@@ -38,17 +42,17 @@
   }
 
   .sidebar {
-      height: 100%; /* 100% Full-height */
+      height: 100%; 
       display: flex;
       flex-direction: column;
-      width: 0; /* 0 width - change this with JavaScript */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Stay on top */
+      width: 0; 
+      position: fixed; 
+      z-index: 1;
       top: 0;
       left: 0;
-      overflow-x: hidden; /* Disable horizontal scroll */
-      padding-top: 60px; /* Place content 60px from the top */
-      transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+      overflow-x: hidden; 
+      padding-top: 60px; 
+      transition: 0.5s;
       background-color: #2D2E82;
       color: #ffffff;
       
@@ -62,12 +66,12 @@
       color: #818181;
       display: block;
       transition: 0.3s;
-      white-space: nowrap;        /* Prevents text wrapping */
-      overflow: hidden;           /* Hides overflow content */
+      white-space: nowrap;        
+      overflow: hidden;           
       text-overflow: ellipsis; 
     }
     
-    /* When you mouse over the navigation links, change their color */
+
     .sidebar a:hover {
       color: #f1f1f1;
     }
@@ -76,7 +80,7 @@
       color: #f1f1f1;
     }
     
-    /* Position and style the close button (top right corner) */
+
     .sidebar .closebtn {
       position: absolute;
       top: 0;
@@ -84,8 +88,6 @@
       font-size: 36px;
       margin-left: 50px;
     }
-
-  
     
     /* The button used to open the sidebar */
     .openbtn {
@@ -107,14 +109,14 @@
       font-weight: bold;
     }
     
-    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+   
     #main {
-      transition: margin-left .5s; /* If you want a transition effect */
+      transition: margin-left .5s; 
       padding: 20px;
       padding-top: 10px;
     }
     
-    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    
     @media screen and (max-height: 450px) {
       .sidebar {padding-top: 15px;}
       .sidebar a {font-size: 18px;}
@@ -131,12 +133,13 @@
       justify-content: center; 
       box-sizing: border-box;
     }
-    
+
     .ticket-form {
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin: 20px auto; 
+      margin-bottom: 30px;
+      
       padding: 20px; 
       border-radius: 12px; 
       background-color: #e86312; 
@@ -145,6 +148,7 @@
       width: 95%; 
       max-width:1900px; 
       height: 100%;
+      overflow: hidden;
       }
 
       .ticket-info {
@@ -152,7 +156,100 @@
         flex-direction: column;
         flex-grow: 1; 
         padding-left: 20px; 
+        gap: 0.5rem;
+        min-width: 0;
       }
+    
+
+      .item-description{
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        max-width: 100%;
+        white-space: normal;
+      }
+      .ticket-form h2 {
+        font-size: 1.4rem;
+        margin: 8px 0;
+        font-weight: 600;
+    }
+        
+      .ticket-header{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .dropdown-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        padding: 0.rem;
+        text-align: center;
+        font-weight: bold;
+        align-self: center;
+        transition: color 0.2s ease;
+    }
+    .ticket-form .feather, .ticket-form .svg{
+      stroke-width: 3;
+      vertical-align: middle;
+      align-self: center;
+      width: 24px;
+      height: 24px;
+    }
+
+    .ticket-form .dropdown-btn svg{
+      width: 45px; 
+      height: 45px;
+      stroke: white; 
+      stroke-width: 2px;
+      transition: transform 0.3s ease;
+      transform: rotate(0deg);
+  }
+
+
+    .dropdown-btn:hover {
+      color: #ffffff;
+    
+    
+    }
+
+    .dropdown-btn:hover svg {
+      stroke: #ffffff;
+      transform: scale(1.1);
+    }
+
+
+
+    .ticket-form .dropdown-btn.open svg{
+      transform: rotate(180deg);
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      padding-left: 1rem;
+      margin-left: 0.5rem;
+      border-left: 3px solid #ffa778;
+  }
+
+  .dropdown-content.active {
+    max-height: 200px; 
+    transition: max-height 0.5s ease;
+}
+
+.dropdown-content h2 {
+  margin: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1em;
+}
+
+  
 
   .btn-primary {
       margin-top: 10px;
@@ -177,7 +274,7 @@
 
     .btn-primary:hover {
       transform: scale(1.08);
-      background-color: #cdcccc; /* Darker shade on hover */
+      background-color: #cdcccc; 
       color: #000000;
       cursor: pointer;
       
@@ -201,10 +298,11 @@
 
     .ticket-form h2 {
       text-align:left;
-      font-size:22px; 
+      font-size:25px; 
       color:white;
       font-family:'Inter', sans-serif;
       margin:5px 0;
+      line-height: 1.5em;
       margin-left:10px;
       margin-right:10px;
       padding-left: 10px;
@@ -220,10 +318,10 @@
     }
 
     .ticket-form .button-wrapper {
-      flex-grow: 1; /* Allow buttons to stretch equally if needed */
+      flex-grow: 1;
       display: flex;
-      justify-content: center; /* Center the button horizontally (optional) */
-      align-items: center; /* Center the button vertically (optional) */
+      justify-content: center; 
+      align-items: center;
   }
 
     .ticket-form .button-col .btn-primary {
@@ -231,19 +329,19 @@
       display: inline-flex;
       align-items: center;
       justify-content: center; 
-      width: 80px;
+      min-width: 80px;
       box-sizing: border-box;
       text-align: center;
-      
-      
     } 
-    .ticket-form .feather, .ticket-form .svg{
-      stroke-width: 3;
-      vertical-align: middle;
-      align-self: center;
-      width: 24px;
-      height: 24px;
-    }
+    
+    .ticket-form .btn-primary {
+ 
+      min-width: 220px;
+
+    } 
+
+ 
+
 
     #dropdownbutton{float:right; 
       width:50px; 
@@ -255,8 +353,8 @@
 
     .modal {
       display: none;
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
+      justify-content: center; 
+      align-items: center; 
       position: fixed; 
       z-index: 1000; 
       left: 0;
@@ -264,7 +362,7 @@
       width: 100%; 
       height: 100%; 
       background-color: rgba(0, 0, 0, 0.4); 
-      overflow: hidden; /* Disable scroll */ 
+      overflow: hidden; 
     }
 
 
@@ -274,7 +372,7 @@
       padding: 30px;
       border: 1px solid #888;
       width: 60%; 
-      height: 60%;
+      height: 70%;
       position: absolute;
       box-sizing: border-box;
       border-radius: 15px;
@@ -294,9 +392,11 @@
   .modal-content3{
     height:70%;
   }
+
+  
   .modal-content h1{
     margin-top:0px;
-    border-bottom: 2px solid #aaaaaa; /* Grey line below header */
+    border-bottom: 2px solid #aaaaaa;
     padding: 0.65em;
     margin: -0.2em -0.2em; 
     padding-bottom: 10px;
@@ -322,40 +422,40 @@
   .btn-accept, .btn-reject {
     margin-top:10px;
     margin-bottom: 10px;
-    padding: 1.6vw 1.8vw; /* Button size */
-    border-radius: 10px; /* Round corners */
+    padding: 1.6vw 1.8vw; 
+    border-radius: 10px; 
     border-style: outset;
     bottom: 10px;
     border: 3px solid #4d4d4d;
-    color: #333; /* Button text color */
-    font-size: 35px; /* Button text size */
-    font-weight: bold; /* Bold text */
+    color: #333; 
+    font-size: 35px; 
+    font-weight: bold;
     height: fit-content;
-    transition: transform 0.3s ease; /* Hover effect transition */
+    transition: transform 0.3s ease;
     box-sizing: border-box;
   }
 
 
 
   .btn-accept{
-    background-color: #74ff78; /* Button color */
+    background-color: #74ff78; 
 
   }
 
   .btn-reject{
-    background-color: #fefefe; /* Button color */
+    background-color: #fefefe; 
 
     
   }
 
   .btn-accept:hover{
     transform: scale(1.1);
-    background-color: #38ff3f; /* Button color */
+    background-color: #38ff3f; 
     cursor: pointer;
   }
   .btn-reject:hover{
     transform: scale(1.1);
-    background-color: #c5c4c4; /* Button color */
+    background-color: #c5c4c4;
     cursor: pointer;
   }
 
@@ -369,9 +469,9 @@
     color: #858585;
     font-size: 28px;
     font-weight: bold;
-    position: absolute;  /* Position relative to the modal-content */
-    top: 10px;           /* Distance from the top */
-    right: 20px;         /* Distance from the right */
+    position: absolute;  
+    top: 10px;          
+    right: 20px;        
     cursor: pointer;
   }
 
@@ -386,6 +486,8 @@
   .repairbg h1{
     color: white;
     line-height: 2em;
+    font-weight: 600;
+    position: relative;
   }
 
   .repairbg .numberbg h1{
@@ -395,22 +497,19 @@
   }
 
   .repairbg{
-  z-index: 1000;
-  background-color: #E86312;
-  border-radius: 15px;
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  justify-content: center; 
-  align-items: center;
-  width: 90%; 
-  height: 90%; 
-  display: flex; 
-  flex-direction: column; 
-  text-align: center; 
-  overflow: auto;
-  }
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
   .numberbg{
     display: inline-block;
@@ -427,12 +526,40 @@
   
   }
 
+  .numberSquare{
+      display:flex;
+      align-self: center;
+      flex-direction: column;
+      background-color: #382F2F;
+      padding: 5px 40px; 
+      border-radius: 10px;
+      font-size: 8em; 
+      color: white; 
+      font-weight: bold; 
+      box-sizing: border-box;
+      margin-right: 25px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+  }
+
+  .numberSquare p{
+    line-height: 1.2em;
+  }
+
   .rightBlock, .leftBlock{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+  }
+
+  .repairbg h2{
+    text-align: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    align-self: center;
+    line-height: 1.5em;
   }
 
   .leftBlock{
@@ -460,13 +587,24 @@
     line-height: 1em;
     font-size:1.8em;
   }
+
   .row{
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    gap: clamp(0px,0em,00px); 
+    gap: clamp(0px,0em,00px);
   }
+
+  .row2{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
   .repairbg .btn{
     margin-top:10px;
     margin-bottom: 10px;
@@ -476,10 +614,10 @@
     max-width: 10em ;
     min-width: 10em;
     border: 4px solid hsl(0, 0%, 100%,40%);
-    color: #ffffff; /* Button text color */
-    font-size: 35px; /* Button text size */
-    font-weight: bold; /* Bold text */
-    transition: transform 0.3s ease,border 0.3s ease;; /* Hover effect transition */
+    color: #ffffff;
+    font-size: 35px; 
+    font-weight: bold; 
+    transition: transform 0.3s ease,border 0.3s ease;
   }
   .btn-complete{
     background-color: #18B64D;
@@ -523,20 +661,20 @@
 
 
   .button-row{
-    display: flex; /* Enable flexbox */
-    justify-content: center; /* Center buttons horizontally */
-    align-items: center; /* Center buttons vertically */
-    gap: clamp(0px,40vw,100px); /* Adds spacing between buttons */
-    height: 100%; /* Fill the available height of the parent */
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: clamp(0px,40vw,100px); 
+    height: 100%; 
   }
 
   .inc-form {
     margin-top: 0px;
     padding: 15px;
     margin-bottom: 20px;
-    background-color: #c7c7c7; /* Light background for the form */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    background-color: #c7c7c7; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
     display: flex;
     flex-direction: column;
   }
@@ -583,7 +721,7 @@
     width: 1.15em;
     height: 1.15em;
   }
-  /* Hide the default radio button while keeping it accessible */
+
   .inc-form input[type="radio"] {
     opacity: 0;
     position: absolute;
@@ -602,10 +740,10 @@
     position: relative;
     display: flex;
     align-items: center;
-    box-sizing: border-box;  /* Include padding in width calculation */
+    box-sizing: border-box; 
   }
 
-  /* Custom radio button style */
+
   .inc-form li::before {
     content: '';
     width: 1em;
@@ -617,22 +755,22 @@
     transition: all 0.2s ease;
   }
 
-  /* Hover state for list items */
+
   .inc-form li:hover {
     background-color: #5a5a5a;
   }
 
-  /* Checked state styles */
+
   .inc-form input[type="radio"]:checked + label li {
     background-color: #2d2E82;
   }
 
-  /* Custom radio button checked state */
+
   .inc-form input[type="radio"]:checked + label li::before {
     background-color: rgb(39, 39, 39);
   }
 
-  /* Focus state for accessibility */
+
   .inc-form input[type="radio"]:focus + label li {
     outline: 2px solid #ffffff;
     outline-offset: 2px;
@@ -654,6 +792,7 @@
     align-self: center;
     gap: 20px;
     overflow: auto;
+    margin-bottom: 15px;
   }
 
   .filter2{
@@ -711,8 +850,8 @@
     flex-wrap: wrap ;
     min-width: 200px; 
     word-break: break-word;
-    min-height: 3.5em; /* Set minimum height */
-    box-sizing: border-box; /* Include padding in height calculation */
+    min-height: 3.5em; 
+    box-sizing: border-box; 
   }
 
   .filter label , .filter2 label {
@@ -750,31 +889,14 @@
   }
 
   .center-con{
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     width: 100%;
-    margin: 20px 0;
+    margin-bottom: 5px;
+
   }
 
-  @media screen and (max-width: 768px) {
-    .filter, .filter2 {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
-      padding: 0.5em;
-    }
-
-    .filter p, .filter2 p {
-      margin: 0.25em;
-      width: auto;
-      min-height: 3.5em; /* Maintain minimum height on mobile */
-    }
-
-    .filter select, .filter2 select {
-      width: 100%;
-    }
-  }
 
     .left{
       float: left;
@@ -784,7 +906,7 @@
     .back-ground1{
       background-color: #F8F3ED;
       min-height: 100%;
-      margin: -20px 0 0 0;  /* Negative margin to remove the top gap */
+      margin: -20px 0 0 0; 
       padding: 20px 0;
     }
     .checkout-form{
@@ -804,9 +926,8 @@
       margin-top: 20px;
       margin-bottom: 20px;
       justify-content: flex-start;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better visibility */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
     }
-
     .checkout-form h1{
       padding: 10px;
       font-weight: 600;
@@ -860,21 +981,20 @@
   }
 
   input[type="radio"] {
-    width: 20px; /* Adjust the width */
-    height: 20px; /* Adjust the height */
-    cursor: pointer; /* Optional: Add a pointer cursor */
+    width: 20px; 
+    height: 20px;
+    cursor: pointer; 
     vertical-align: sub;
   }
-  
-  /* Optional: Add margin for spacing between buttons */
+
   input[type="radio"] + label {
     margin-left: 10px;
   }
 
   .checkout-form ul {
-  list-style-type: none; /* Removes the bullets */
-  padding: 0; /* Removes default padding */
-  margin: 0; /* Removes default margin */
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
 }
 
 .checkout-form.checkin ul{
@@ -887,35 +1007,47 @@
 
 .repairbg.purple{
   background-color: #2D2E82;
-  color: #fff; /* Adjusting color to ensure text is visible */
+  color: #fff; 
   display: flex;
-  flex-direction: column; /* Aligns child elements vertically */
-  align-items: flex-start; /* Aligns content to the left */
-  justify-content: flex-start; /* Keeps content aligned at the top */
+  flex-direction: column; 
+  align-items: flex-start; 
+  justify-content: flex-start; 
   padding: 3em;
 }
 
 .purp-bg{
   background-color: #2D2E82;
-  color: #fff; /* Adjusting color to ensure text is visible */
+  color: #fff; 
   display: flex;
-  flex-direction: column; /* Aligns child elements vertically */
-  align-items: flex-start; /* Aligns content to the left */
-  justify-content: flex-start; /* Keeps content aligned at the top */
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: flex-start; 
   padding: 3em;
   border-radius: 15px;
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
   justify-content: center; 
   align-items: center;
   width: 90%; 
-  height: 90%; 
   display: flex; 
   text-align: flex-start; 
   overflow: auto;
+  padding:30px;
+  margin: 2vw auto;
   }
+
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
 
 .purple h1{
   font-weight: 600;
@@ -925,13 +1057,13 @@
   align-self: flex-start;
 }
 .purp-bg.purple a {
-  color: white;        /* Changes the text color to white */
-  text-decoration: none; /* Underlines the text */
+  color: white;        
+  text-decoration: none;
 }
 .purp-bg.purple a:hover {
   color: rgb(159, 249, 255);
 
-  text-decoration: underline; /* Underlines the text */
+  text-decoration: underline; 
 }
   
 
@@ -972,5 +1104,232 @@ input[type="checkbox"] {
   vertical-align:sub;
   margin: 10px;
 }
+
+  .statsdiv {
+
+    display: inline-block;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin: 20px 10px; 
+    padding: 10px; 
+    border-radius: 12px; 
+    background-color: #e86312;
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 45%; 
+    max-width:1900px; 
+    height: 100%;
+}
+
+.statsdiv h2 {
+  
+  display: inline;
+}
+
+
+.statnumber {
+  font-size: 12vw;
+  display: inline ; 
+  line-height: 1;
+
+}
+
+.weak{
+  opacity: 95%;
+  font-weight: normal;
+}
+
+.dropdown-content h2{
+  display:flex;
+  
+}
+
+   /*
+    Beginning of mobile styling
+    */
+    
+    @media screen and (max-width: 768px) {
+      h2 {
+        display: flex; 
+        flex-wrap: wrap;
+      }
+
+      h2 .weak {
+        flex: 0 0 100%; 
+      }
+      h2 .inline {
+        margin-left: 2rem;
+        display: block; 
+      }
+
+      .inline{
+        display: block;
+        margin-left: 2rem;
+      }
+
+      .ticket-form img{
+        margin:0;
+        margin-left:10px;
+        width:70px;
+        height:70px;
+        flex-shrink: 0;
+      }
+      .ticket-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; 
+        padding-left: 0px; 
+        gap: 0 rem;
+        min-width: 0;
+      }
+
+      .dropdown-content{
+        margin-bottom: 10px;
+      }
+      .ticket-form h2 {
+        font-size:22px; 
+        margin:5px 0;
+        line-height: 1.3em;
+        margin-left:0px;
+        margin-right:0px;
+        padding-left: 0px;
+        margin-bottom: 5px !important;
+        flex-wrap: wrap;
+        }
+
+      .repairbg .numberSquare{
+        margin-right: 0px;
+        margin-bottom: 10px !important;
+        margin-top: 0px !important;
+        width: 100%;
+      }
+      .repairbg .numberSquare p{
+        margin-right: 0px;
+        font-size: .8em;
+      }
+      .repairbg .numberSquare h3{
+        line-height: 1.5em;
+      }
+      .repairbg h2{
+        font-size: 1.5em !important;
+        line-height: 1.5em !important;
+        margin:0 0 !important;
+        margin-bottom: 10px !important;
+        align-self: center !important;
+        text-align: center !important;
+      }
+
+      .purp-bg .numberSquare{
+        margin: 0 0;
+      }
+
+      .purp-bg h1{
+        line-height: 1.5em !important;
+      }
+
+      .repairbg h1 {
+        margin-bottom: 10px;
+        line-height: 1.5em !important;
+        font-size: 2em;
+      }
+
+      .repairbg h2 {
+
+        font-size: 1.8em;
+      }
+
+
+
+      .ticket-form {
+          flex-wrap: wrap; 
+          margin-left: 0px;
+          margin-right: 0px;
+      }
+      
+      .ticket-form .button-col {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center;
+        gap: 10px;
+        width: 100%; 
+        margin-top: 10px;
+          
+      }
+  
+      .ticket-form .button-wrapper {
+          margin: 0; 
+          display:flex;
+          flex-direction: row; 
+          justify-content: center;
+          align-items: center;
+          
+      }
+    
+      .ticket-form .btn-primary {
+        min-width: 120px;
+        align-self: center;
+        order: 1;
+      } 
+  
+      
+      .ticket-info {
+          padding-left: 10px;   
+          gap: 0 rem;
+      }
+      .leftBlock, .rightBlock {
+        margin: 0 !important;
+      }
+
+      .rightBlock .namebg{
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .modal-content{
+        width: 90% !important;
+      }
+      
+      #main{
+        padding: 10px;
+      }
+      .filter, .filter2 {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0.5em;
+      }
+  
+      .filter p, .filter2 p {
+        margin: 0.25em;
+        width: auto;
+        min-height: 3.5em; 
+        font-size: 1em;
+      }
+  
+      .filter select, .filter2 select {
+        width: 100%;
+        font-size: 1em;
+        
+      }
+      .filter button{
+        padding: 15px;
+        margin: 5px 5px;
+        font-size:1em;
+      }
+  
+
+    }
+
+    /*
+    End of mobile styling
+    */
+
+
+
+
+
+
 
 

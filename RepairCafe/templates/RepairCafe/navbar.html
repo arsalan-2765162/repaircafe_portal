@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,7 +28,7 @@
     <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
   </div>
   <div class="sidebarbutton">
-    <a href="#">Stats</a>
+    <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
   </div>
   <div class="sidebarbutton end link">
     <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
@@ -42,11 +42,14 @@
   {% block content %}
   {% endblock %}
 </div>
+{% block scripts %}
 <script src="{% static 'js/navbar.js' %}" defer></script>
 <script src="{% static 'js/modal.js' %}" defer></script>
+{% endblock %}
 <script>
   feather.replace();
 </script>
+
 {% block body_block %}
 {% endblock %}
 </body>

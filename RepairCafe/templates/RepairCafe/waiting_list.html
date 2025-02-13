@@ -1,7 +1,7 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %} 
 {% block content %}
-    <h1>Waiting List</h1>
+    <h1>Check-in Queue</h1>
     {% if Queue %}
     {% else %}
         <p>No Queue object found.</p>
@@ -19,11 +19,12 @@
         {% for message in messages %}
             <li class="{{ message.tags }}">{{ message }}</li>
         {% endfor %}
-    </ul>
+    </ul>       
     {% endif %}
     {% if Tickets %}
     <div class = "ticket-feed">
     {% for ticket in Tickets %}
+    <div class="center-con">
     <div class ="ticket-form">
             {% if ticket.get_itemCategory_display == "Electrical Mains" %}
                 <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
@@ -38,16 +39,23 @@
             {% endif %}
             <!--<img src="{% static 'images/whitedropdownicon.png' %}" alt="white drop down icon"id="dropdownbutton">-->
             <div class = "ticket-info">
-            <h2>Repair Request: {{ ticket.itemName }}</h2>
-            <h2>Position: {{ ticket.position}}</h2>
-            <h2>Issue: {{ ticket.itemDescription }}</h2>
-            <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
-            <h2>Visitor Details: {{ ticket.customer }} </h2>
+            <div class="ticket-header">
+                <h2>Repair Request: {{ ticket.itemName }}</h2>
+                <h2>Position: {{ ticket.position}}</h2>
+                <h2>Category: {{ ticket.get_itemCategory_display}}</h2>
+                <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
+            </div>
+            <div class="dropdown-content">
+                
+                <h2>Visitor Details: {{ ticket.customer }} </h2>
+                <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
+            </div>
             </div>
             <div class="button-col">
+                
                 <button 
                     type="button" 
-                    class="btn btn-primary"
+                    class="btn btn-primary maright"
                     onclick="openCategoryModal(
                         '{% url 'RepairCafe:change_category' ticket.repairNumber %}',
                         '{{ ticket.itemName }}',
@@ -56,6 +64,9 @@
                     )">
                     <i data-feather="edit-2"></i>
                 </button>
+            </div>
+            <div class="button-col">
+                
                 {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
                 <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
@@ -77,7 +88,9 @@
                     </form>
                 </div>
             </div>
+            
         </div>
+    </div>
         {% endfor %}
     </div>  
     {% else %}
@@ -141,4 +154,16 @@
             document.getElementById("category-form").action = url;
         }
     </script>
+    <script>
+        const mainQueueSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/waiting_queue/'
+        );
+    
+        mainQueueSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data.message);
+            location.reload(); // Simple refresh on any queue update
+        };
+    </script>
+    <script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}

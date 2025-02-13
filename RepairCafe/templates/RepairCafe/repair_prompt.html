@@ -1,16 +1,16 @@
 {% extends 'RepairCafe/base.html' %}
 {% load static %}
 {% block content %}
-<div class="purp-bg purple">
-    <h1>Your repair is now complete</h1>
-    <h3 id="status-message">Please bring your item to the check out desk</h3>
+<div class="repairbg">
+    <h1>We are ready to see you</h1>
+    <h2 id="status-message">Please make your way to "placeholder" at the "placeholder" repair desk</h2>
     <div class = "numberSquare">
         <h3>Your Repair Number</h3>
         <p>
         #{{ ticket.repairNumber }}
     </p>
     </div>  
-    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
+    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:wait_for_checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
 
 <script>
@@ -19,13 +19,13 @@
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        console.log(data.status + data.repairNumber)
-        if (data.status === 'CHECKOUT' && data.repairNumber == repairNumber) {
-            document.getElementById('status-message').textContent = 'Your ticket has been accepted!';
+        if (data.status === 'WAIT_FOR_CHECKOUT' && data.repairNumber == repairNumber || data.status === 'WAIT_FOR_PAT' && data.repairNumber == repairNumber ) {
+            document.getElementById('status-message').textContent = 'You are now ready to checkout!';
             document.getElementById('next-page').style.display = 'block';
             const nextPageUrl = document.getElementById('next-page').getAttribute('href');
             window.location.href = nextPageUrl;
         }
     };
 </script>
+
 {% endblock %}
