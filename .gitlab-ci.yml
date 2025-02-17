@@ -32,7 +32,7 @@ flake8_lint:
   script:
     - echo "Running Flake8..."
     - cd RepairCafe
-    - ./venv/bin/flake8 --format=pylint > flake8_report.txt
+    - ../venv/bin/flake8 --format=pylint > flake8_report.txt
   artifacts:
     paths:
       - RepairCafe/flake8_report.txt
