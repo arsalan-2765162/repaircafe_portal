@@ -1,19 +1,48 @@
-basic_check:
-  stage: test
+default:
   image: python:3.9
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
   script:
-    - echo "Running basic Django check..."
+    - echo "Installing dependencies..."
     - pip install -r requirements.txt
+
+basic_check:
+  stage: test 
+    - echo "Running basic Django check..."
     - cd RepairCafe
     - python manage.py check --deploy
   allow_failure: false
 
+
+flake8_lint:
+  stage: test
+  script:
+    - echo "Running Flake8..."
+    - cd RepairCafe
+    - flake8 --format=pylint > flake8_report.txt
+  artifacts:
+    paths:
+      - RepairCafe/flake8_report.txt
+  allow_failure: true
+
 run_tests:
   stage: test
-  image: python:3.9
   script:
     - echo "Running unit tests..."
-    - pip install -r requirements.txt
     - cd RepairCafe
     - pytest
   allow_failure: false
+
+deploy:
+  stage: deploy
+  script:
+    cd RepairCafe
+    - echo "Skipping deployment for now..."
+  only:
+    - main  
