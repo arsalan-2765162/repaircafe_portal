@@ -6,10 +6,7 @@
 #content {
     padding: 0;
     margin: 15px;
-}
-
-body{
-    background-color: blue;
+    
 }
 
 #header {
@@ -49,7 +46,7 @@ div.breadcrumbs a {
     display: inline;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
     div.breadcrumbs {
         border-bottom: 0;
     }

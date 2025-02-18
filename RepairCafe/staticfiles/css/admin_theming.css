@@ -8,15 +8,12 @@
     margin: 15px;
 }
 
-body{
-    background-color: blue;
-}
-
 #header {
     /* Reset the indents of django-flat-theme
       (need to restore 40px on branding+user-tools instead) */
     padding-left: 0;
     padding-right: 0;
+    color: blueviolet;
 }
 
 #header #branding h1 {
