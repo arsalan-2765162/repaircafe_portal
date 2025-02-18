@@ -310,6 +310,40 @@ def enter_password(request):
         
     return render(request, 'RepairCafe/enter_password.html')
 
+
+def volunteer_checkin(request):
+    context_dict = {}
+
+    if request.method == 'POST':
+        form = CheckinForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            customer = Customer.objects.create(
+                firstName=form_data['firstName'],
+                lastName=form_data['lastName']
+            )
+            ticket = Ticket.objects.create(
+                repairNumber=Ticket.generate_repair_number(),
+                itemName=form_data['itemName'],
+                itemCategory=form_data['itemCategory'],
+                itemDescription=form_data['itemDescription'],
+                customer=customer
+            )
+            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
+            ticket.add_to_queue(waiting_queue)
+            repairNumber = ticket.repairNumber
+
+            send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
+
+            return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
+        else:
+            context_dict['form'] = form
+    else:
+        form = CheckinForm()
+        context_dict['form'] = form
+    return render(request, 'RepairCafe/volunteer_checkin.html', context_dict)
+
+
 """
 Visitor Flow
 """
