@@ -335,7 +335,7 @@ def volunteer_checkin(request):
 
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
 
-            return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
+            return redirect('RepairCafe:volunteer_checkin_success.html', repairNumber=repairNumber)
         else:
             context_dict['form'] = form
     else:

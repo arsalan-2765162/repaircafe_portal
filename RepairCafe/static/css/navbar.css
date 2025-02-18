@@ -21,7 +21,7 @@
   }
 
 
-  .sidebar .btn-primary{
+  .sidebar .primary-btn{
     float: none;
     position: static;
     bottom: auto;
@@ -251,7 +251,7 @@
 
   
 
-  .btn-primary {
+  .primary-btn {
       margin-top: 10px;
       margin-left:15px;
       float:right;
@@ -272,14 +272,14 @@
 
 
 
-    .btn-primary:hover {
+    .primary-btn:hover {
       transform: scale(1.08);
       background-color: #cdcccc; 
       color: #000000;
       cursor: pointer;
       
     } 
-    .btn-primary:active {
+    .primary-btn:active {
       background-color: #3d3d3d; 
       color: #ffffff;
       transform: scale(0.98); 
@@ -324,7 +324,7 @@
       align-items: center;
   }
 
-    .ticket-form .button-col .btn-primary {
+    .ticket-form .button-col .primary-btn {
       align-self: flex-end;
       display: inline-flex;
       align-items: center;
@@ -334,7 +334,7 @@
       text-align: center;
     } 
     
-    .ticket-form .btn-primary {
+    .ticket-form .primary-btn {
  
       min-width: 220px;
 
@@ -940,12 +940,12 @@
       width: 100%;
       max-width: 700px;
     }
-    .checkout-form .btn-primary {
+    .checkout-form .primary-btn {
       float: none;
       margin: 20px auto;
       display: block;
     }
-    .checkout-form .btn-primary.demo {
+    .checkout-form .primary-btn.demo {
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -1145,6 +1145,12 @@ input[type="checkbox"] {
   
 }
 
+
+
+.volunteer-checkin {
+  background-color: #F8F3ED !important;  
+}
+
    /*
     Beginning of mobile styling
     */
@@ -1267,7 +1273,7 @@ input[type="checkbox"] {
           
       }
     
-      .ticket-form .btn-primary {
+      .ticket-form .primary-btn{
         min-width: 120px;
         align-self: center;
         order: 1;

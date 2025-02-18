@@ -1,6 +1,9 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %}
-{% block content %}
+
+{% block body_class %}volunteer-checkin{% endblock %}  
+
+{% block body_block %}
 <div class="back-ground1">
     <div class="checkout-form checkin">
         <h1>Volunteer Checkin Form <i data-feather="clipboard"></i></h1>
@@ -13,8 +16,8 @@
                 </div>
                 {% endif %}
                 {{ form.as_p }}
-                <button class="btn-primary" type="submit">Submit</button>
-                <button class="btn-primary demo" type="button" id="demo-autofill2">Demo Autofill</button>
+                <button class="primary-btn" type="submit">Submit</button>
+                <button class="primary-btn demo" type="button" id="demo-autofill2">Demo Autofill</button>
             </form>
         </div>
     </div>
