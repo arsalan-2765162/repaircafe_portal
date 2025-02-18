@@ -31,8 +31,10 @@ flake8_lint:
   stage: test
   script:
     - echo "Running Flake8..."
-    - cd RepairCafe
-    - ../venv/bin/python -m flake8 --format=pylint > flake8_report.txt
+    - ls -la venv/bin  
+    - venv/bin/python --version 
+    - venv/bin/flake8 --version 
+    - venv/bin/python -m flake8 --format=pylint > flake8_report.txt
   artifacts:
     paths:
       - RepairCafe/flake8_report.txt
