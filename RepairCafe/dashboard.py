@@ -22,31 +22,60 @@ from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
 from RepairCafe.models import Ticket
 class SuccessRateCategoriesModule(modules.DashboardModule):
-    title = 'Repair Success Rate'
+    title = 'Repair Success By Categories'
 
     def __init__(self, title=None, **kwargs):
         super().__init__(title, **kwargs)
         self.template = 'success_rate_categories.html'  # Path to your template
-
+        
     def init_with_context(self,context):
         successdict={}
         successdict['categories']={}
         for category in Ticket.ITEM_CATEGORY_CHOICES:
             successdict['categories'][category[1]]=(Ticket.objects.filter(itemCategory=category[0],repairStatus='COMPLETED').count(),Ticket.objects.filter(itemCategory=category[0],repairStatus='INCOMPLETE').count())
 
-        successdict['total']=(Ticket.objects.filter(repairStatus='COMPLETED').count(),Ticket.objects.filter(repairStatus='INCOMPLETE').count())
         self.children=successdict
-        print(self.children)
 
     def is_empty(self):
         # Return False to ensure the module is always displayed
         return False
     
+class   OtherStatsModule(modules.DashboardModule):
+    title = 'Total Repair Success Rate'
+
+    def __init__(self, title=None,**kwargs):
+        super().__init__(title,**kwargs)
+        self.template='other_stats.html'
+
+    def init_with_context(self,context):
+        
+        checkedin = Ticket.objects.exclude(repairStatus = "WAITING").count()
+        checkedout = Ticket.objects.filter(isCheckedOut = True).count()
+        successful = Ticket.objects.filter(repairStatus = "COMPLETED").count()#should tickets have a date? as this will be all completed tickets
+        unsuccessful = Ticket.objects.filter(repairStatus = "INCOMPLETE").count()
+        catpercentages = {}
+
+        for category in Ticket.ITEM_CATEGORY_CHOICES:
+            catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
+
+    
+
+        context_dict = {"checkedin":checkedin, "checkedout":checkedout, "successful":successful, "unsuccessful":unsuccessful, "catpercentages":catpercentages}
+
+
+        self.children=context_dict
+
+    def is_empty(self):
+        # Return False to ensure the module is always displayed
+        return False
+
+
 class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for RepairCafe.
     """
     def init_with_context(self, context):
+        self.columns=3
         site_name = get_admin_site_name(context)
         # append a link list module for "quick links"
         self.children.append(modules.LinkList(
@@ -71,11 +100,15 @@ class CustomIndexDashboard(Dashboard):
         
         self.children.append(SuccessRateCategoriesModule())
 
+        self.children.append(OtherStatsModule())
+
         # append an app list module for "Administration"
         self.children.append(modules.AppList(
             _('Administration'),
             models=('django.contrib.*',),
         ))
+
+        #self.children.append(TotalSuccessRateModule())
 
         '''# append a recent actions module
         self.children.append(modules.RecentActions(_('Recent Actions'), 5))'''
