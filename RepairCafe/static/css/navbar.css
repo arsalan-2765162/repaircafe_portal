@@ -2,6 +2,7 @@
   
   body {
       font-family: 'Inter', sans-serif;
+      font-size: 1em;
   }
   .btn {
     box-sizing:border-box;
@@ -268,23 +269,32 @@
       font-size: 1.5em; 
       font-weight: bold; 
       transition: transform 0.2s ease; 
+      -webkit-appearance: none !important;
     }
 
 
 
     .btn-primary:hover {
       transform: scale(1.08);
-      background-color: #cdcccc; 
-      color: #000000;
+      background-color: #cdcccc !important; 
+      color: #000000 !important;
       cursor: pointer;
+      border-color: #333 !important;
+      -webkit-appearance: none; 
       
     } 
     .btn-primary:active {
-      background-color: #3d3d3d; 
-      color: #ffffff;
+      background-color: #3d3d3d !important; 
+      color: #ffffff !important;
       transform: scale(0.98); 
       cursor: pointer;
+      -webkit-appearance: none; 
     } 
+    .btn-primary:focus {
+      outline: none;
+      box-shadow: none;
+      -webkit-appearance: none; 
+  }
     
 
     .ticket-form img{
@@ -1143,6 +1153,12 @@ input[type="checkbox"] {
 .dropdown-content h2{
   display:flex;
   
+}
+
+
+
+.volunteer-checkin {
+  background-color: #F8F3ED !important;  
 }
 
    /*

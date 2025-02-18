@@ -1,0 +1,29 @@
+{% extends 'RepairCafe/navbar.html' %}
+{% load static %}
+
+{% block content %}
+<div class="repairbg">
+    <div id="status-message">
+    <h1>You're Officially in the Queue!</h1>
+    <h2>Please relay this repair number to the visitor</h2>
+    </div>
+    <div class="row2">
+        <div class = "numberSquare">
+            <h3>Your Repair Number</h3>
+            <p>
+            #{{ ticket.repairNumber }}
+            </p>
+        </div>  
+        <div class = "numberSquare">
+            <h3>Position In Queue</h3>
+            <p>
+            {{ ticket.position }}
+            </p>
+        </div> 
+    </div>
+    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:waiting_list'  %}"><h1>Next Page</h1></a>
+</div>
+
+
+{% endblock %}
+
