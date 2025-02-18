@@ -34,7 +34,7 @@ flake8_lint:
     - venv/bin/python -m flake8 --format=pylint > flake8_report.txt || true
   artifacts:
     paths:
-      - RepairCafe/flake8_report.txt
+      - flake8_report.txt
   allow_failure: true
   dependencies:
     - build 
