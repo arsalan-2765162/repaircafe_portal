@@ -31,10 +31,11 @@ flake8_lint:
   stage: test
   script:
     - echo "Running Flake8..."
-    - venv/bin/python -m flake8 --format=pylint > flake8_report.txt || true
+    - cd RepairCafe
+    - ../venv/bin/flake8 --format=pylint > flake8_report.txt || true
   artifacts:
     paths:
-      - flake8_report.txt
+      - RepairCafe/flake8_report.txt
   allow_failure: true
   dependencies:
     - build 
