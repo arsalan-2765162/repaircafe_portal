@@ -55,7 +55,7 @@
             </div>
             
             {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
-                    <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
+            <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}" onsubmit="isRedirecting = true;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
                         {% if ticket.isVolunteerCreated %}
@@ -79,13 +79,16 @@
     {% endif %}
 
     <script>
+        let isRedirecting = false;
         const mainQueueSocket = new WebSocket(
             'ws://' + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
+            if (isRedirecting) {
+                return;
+            }
             const data = JSON.parse(e.data);
-            console.log(data.message);
             location.reload(); 
         };
     </script>

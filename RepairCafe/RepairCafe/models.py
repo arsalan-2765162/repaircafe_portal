@@ -146,7 +146,7 @@ class Ticket(models.Model):
         if self.repairStatus=='COMPLETED' or 'INCOMPLETE':
                 self.isCheckedOut = True
                 self.save()
-                self.decrement_positions(self.queue,self.position)
+                self.decrement_positions(self.queue, self.position)
 
         else:
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")

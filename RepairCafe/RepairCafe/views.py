@@ -272,14 +272,14 @@ def checkout_ticket(request,repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
         ticket.checkout()
-
         send_ticket_update("ticket_updates", repairNumber, "CHECKOUT")
         send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
-        if (not ticket.isVolunteerCreated):
-            return redirect('RepairCafe:volunteer_checkout',repairNumber=repairNumber)
+
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+    if (ticket.isVolunteerCreated):
+        return redirect('RepairCafe:volunteer_checkout', repairNumber=repairNumber)
     return redirect(reverse('RepairCafe:checkout_queue'))
 
 def change_category(request, repairNumber):
