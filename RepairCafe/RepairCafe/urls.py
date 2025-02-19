@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import include,path
 from RepairCafe import views
 from .views import enter_password
+from django.contrib import admin
 
 app_name = 'RepairCafe'
 
@@ -29,5 +30,10 @@ urlpatterns = [
         path('wait_for_repair/<int:repairNumber>/',views.wait_for_repair,name='wait_for_repair'),
         path('basic_stats/', views.basic_stats,name='basic_stats'),
         path('queue_position/<int:repairNumber>/', views.get_queue_position, name='queue_position'),
+        path('admin/', admin.site.urls),
+        path('admin_tools/', include('admin_tools.urls'))
+        
+        
+        
 
 ]
