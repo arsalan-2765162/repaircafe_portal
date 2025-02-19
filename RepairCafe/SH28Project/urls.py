@@ -23,5 +23,6 @@ urlpatterns = [
     path('', lambda request: redirect('RepairCafe:enter_password')),
     path('RepairCafe/', include('RepairCafe.urls')),
     path('admin/', admin.site.urls),
+    path('admin_tools/', include('admin_tools.urls'))
 ]
 

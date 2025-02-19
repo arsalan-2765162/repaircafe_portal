@@ -1,0 +1,1335 @@
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  
+  body {
+      font-family: 'Inter', sans-serif;
+  }
+  .btn {
+    box-sizing:border-box;
+  }
+
+  h1{
+    font-size: 1.8em;
+  }
+  /* The sidebar menu */
+  .sidebarbutton{
+    background-color: #0A2540;
+    border-radius: 15px;
+    outline: 2px solid black;
+    margin: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+  }
+
+
+  .sidebar .btn-primary{
+    float: none;
+    position: static;
+    bottom: auto;
+    right: auto;
+    margin: 0;
+    display: block;
+    color: #000000;
+    font-size: .9em;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px;
+    
+  }
+
+  .sidebarbutton:hover{
+    background-color: #ffbd99;
+  }
+
+  .sidebar {
+      height: 100%; 
+      display: flex;
+      flex-direction: column;
+      width: 0; 
+      position: fixed; 
+      z-index: 1;
+      top: 0;
+      left: 0;
+      overflow-x: hidden; 
+      padding-top: 60px; 
+      transition: 0.5s;
+      background-color: #2D2E82;
+      color: #ffffff;
+      
+    }
+    
+    /* The sidebar links */
+    .sidebar a , .sidebar .link {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+      white-space: nowrap;        
+      overflow: hidden;           
+      text-overflow: ellipsis; 
+    }
+    
+
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidebar a {
+      color: #f1f1f1;
+    }
+    
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+    
+    /* The button used to open the sidebar */
+    .openbtn {
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #2D2E82;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 15px;
+      outline: 2px solid black;
+      
+    }
+    
+    .openbtn:hover {
+      background-color: #ffbd99;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+    
+   
+    #main {
+      transition: margin-left .5s; 
+      padding: 20px;
+      padding-top: 10px;
+    }
+    
+    
+    @media screen and (max-height: 450px) {
+      .sidebar {padding-top: 15px;}
+      .sidebar a {font-size: 18px;}
+    }
+
+  
+    .ticket-feed {
+      display: flex; 
+      flex-direction: column; 
+      gap: 0px; 
+      align-items: center; 
+      width: 100%;
+      padding: 10px; 
+      justify-content: center; 
+      box-sizing: border-box;
+    }
+
+    .ticket-form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 30px;
+      
+      padding: 20px; 
+      border-radius: 12px; 
+      background-color: #e86312; 
+      color: white; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      width: 95%; 
+      max-width:1900px; 
+      height: 100%;
+      overflow: hidden;
+      }
+
+      .ticket-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; 
+        padding-left: 20px; 
+        gap: 0.5rem;
+        min-width: 0;
+      }
+    
+
+      .item-description{
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        max-width: 100%;
+        white-space: normal;
+      }
+      .ticket-form h2 {
+        font-size: 1.4rem;
+        margin: 8px 0;
+        font-weight: 600;
+    }
+        
+      .ticket-header{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .dropdown-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        padding: 0.rem;
+        text-align: center;
+        font-weight: bold;
+        align-self: center;
+        transition: color 0.2s ease;
+    }
+    .ticket-form .feather, .ticket-form .svg{
+      stroke-width: 3;
+      vertical-align: middle;
+      align-self: center;
+      width: 24px;
+      height: 24px;
+    }
+
+    .ticket-form .dropdown-btn svg{
+      width: 45px; 
+      height: 45px;
+      stroke: white; 
+      stroke-width: 2px;
+      transition: transform 0.3s ease;
+      transform: rotate(0deg);
+  }
+
+
+    .dropdown-btn:hover {
+      color: #ffffff;
+    
+    
+    }
+
+    .dropdown-btn:hover svg {
+      stroke: #ffffff;
+      transform: scale(1.1);
+    }
+
+
+
+    .ticket-form .dropdown-btn.open svg{
+      transform: rotate(180deg);
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      padding-left: 1rem;
+      margin-left: 0.5rem;
+      border-left: 3px solid #ffa778;
+  }
+
+  .dropdown-content.active {
+    max-height: 200px; 
+    transition: max-height 0.5s ease;
+}
+
+.dropdown-content h2 {
+  margin: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1em;
+}
+
+  
+
+  .btn-primary {
+      margin-top: 10px;
+      margin-left:15px;
+      float:right;
+      position: relative; 
+      align-self: center;
+      bottom: 10px; 
+      right: 10px; 
+      padding: 1vw 2vw;
+      border-radius: 15px; 
+      background-color: #ffffff; 
+      border-color:#333;
+      border-width: 3px;
+      color: #000000; 
+      font-size: 1.5em; 
+      font-weight: bold; 
+      transition: transform 0.2s ease; 
+    }
+
+
+
+    .btn-primary:hover {
+      transform: scale(1.08);
+      background-color: #cdcccc; 
+      color: #000000;
+      cursor: pointer;
+      
+    } 
+    .btn-primary:active {
+      background-color: #3d3d3d; 
+      color: #ffffff;
+      transform: scale(0.98); 
+      cursor: pointer;
+    } 
+    
+
+    .ticket-form img{
+      margin:0;
+      margin-left:10px;
+      width:100px;
+      height:100px;
+      flex-shrink: 0;
+    }
+
+
+    .ticket-form h2 {
+      text-align:left;
+      font-size:25px; 
+      color:white;
+      font-family:'Inter', sans-serif;
+      margin:5px 0;
+      line-height: 1.5em;
+      margin-left:10px;
+      margin-right:10px;
+      padding-left: 10px;
+      }
+
+    .ticket-form .button-col{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 40px;
+    }
+
+    .ticket-form .button-wrapper {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+  }
+
+    .ticket-form .button-col .btn-primary {
+      align-self: flex-end;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center; 
+      min-width: 80px;
+      box-sizing: border-box;
+      text-align: center;
+    } 
+    
+    .ticket-form .btn-primary {
+ 
+      min-width: 220px;
+
+    } 
+
+ 
+
+
+    #dropdownbutton{float:right; 
+      width:50px; 
+      height:50px; 
+      margin-top: 50px; 
+      margin-right: 30px; 
+      vertical-align: middle;
+    }
+
+    .modal {
+      display: none;
+      justify-content: center; 
+      align-items: center; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      background-color: rgba(0, 0, 0, 0.4); 
+      overflow: hidden; 
+    }
+
+
+    .modal-content,.modal-content2, .modal-content3{
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 30px;
+      border: 1px solid #888;
+      width: 60%; 
+      height: 70%;
+      position: absolute;
+      box-sizing: border-box;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow:auto; 
+      
+    
+    }
+
+
+  .modal-content2{
+    height: 90%;
+    padding-bottom: 5px;
+  }
+
+  .modal-content3{
+    height:70%;
+  }
+
+  
+  .modal-content h1{
+    margin-top:0px;
+    border-bottom: 2px solid #aaaaaa;
+    padding: 0.65em;
+    margin: -0.2em -0.2em; 
+    padding-bottom: 10px;
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+
+  .modal-content p{
+    padding-top:10px;
+    margin-bottom:10px;
+    font-size: 20px;
+    line-height: 1.6em;
+  }
+
+  .buttons {
+    padding-top: 10px;
+    display: flex; 
+    justify-content: space-between; 
+    box-sizing: border-box;
+    width: 100%; 
+  }
+
+  .btn-accept, .btn-reject {
+    margin-top:10px;
+    margin-bottom: 10px;
+    padding: 1.6vw 1.8vw; 
+    border-radius: 10px; 
+    border-style: outset;
+    bottom: 10px;
+    border: 3px solid #4d4d4d;
+    color: #333; 
+    font-size: 35px; 
+    font-weight: bold;
+    height: fit-content;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+  }
+
+
+
+  .btn-accept{
+    background-color: #74ff78; 
+
+  }
+
+  .btn-reject{
+    background-color: #fefefe; 
+
+    
+  }
+
+  .btn-accept:hover{
+    transform: scale(1.1);
+    background-color: #38ff3f; 
+    cursor: pointer;
+  }
+  .btn-reject:hover{
+    transform: scale(1.1);
+    background-color: #c5c4c4;
+    cursor: pointer;
+  }
+
+  .btn-accept:active, .btn-reject:active{
+    border: 4px solid #000000;
+    transform: scale(0.98);
+  }
+
+
+  .close{
+    color: #858585;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;  
+    top: 10px;          
+    right: 20px;        
+    cursor: pointer;
+  }
+
+
+
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
+  .repairbg h1{
+    color: white;
+    line-height: 2em;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .repairbg .numberbg h1{
+    color: white;
+    line-height: 1em;
+    font-size: 5em;
+  }
+
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
+
+  .numberbg{
+    display: inline-block;
+    margin-right: clamp(0px,10vw,10vw);
+    margin-bottom: 1em;
+    align-self: flex-start;
+    background-color: #382F2F;
+    padding: 5px 40px; 
+    border-radius: 10px;
+    font-size: 24px; 
+    color: white; 
+    font-weight: bold; 
+    box-sizing: border-box;
+  
+  }
+
+  .numberSquare{
+      display:flex;
+      align-self: center;
+      flex-direction: column;
+      background-color: #382F2F;
+      padding: 5px 40px; 
+      border-radius: 10px;
+      font-size: 8em; 
+      color: white; 
+      font-weight: bold; 
+      box-sizing: border-box;
+      margin-right: 25px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+  }
+
+  .numberSquare p{
+    line-height: 1.2em;
+  }
+
+  .rightBlock, .leftBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .repairbg h2{
+    text-align: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    align-self: center;
+    line-height: 1.5em;
+  }
+
+  .leftBlock{
+    margin-right: clamp(0px,10vw,10vw);
+    margin-bottom: 1em;
+    box-sizing: border-box;
+  }
+
+  .namebg{
+    display: inline-block;
+    margin-bottom: 2em;
+    background-color: #382F2F;
+    padding: 10px 30px; 
+    min-width: 19em;
+    font-size: 15px;
+    border-radius: 10px;
+    color: white; 
+    font-weight: bold; 
+  }
+  .namebg h1{
+    line-height: 1em;
+    font-size: 2.3em;
+  }
+  .namebg h2{
+    line-height: 1em;
+    font-size:1.8em;
+  }
+
+  .row{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(0px,0em,00px);
+  }
+
+  .row2{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .repairbg .btn{
+    margin-top:10px;
+    margin-bottom: 10px;
+    padding: 25px 40px; 
+    border-radius: 10px;
+    bottom: 10px;
+    max-width: 10em ;
+    min-width: 10em;
+    border: 4px solid hsl(0, 0%, 100%,40%);
+    color: #ffffff;
+    font-size: 35px; 
+    font-weight: bold; 
+    transition: transform 0.3s ease,border 0.3s ease;
+  }
+  .btn-complete{
+    background-color: #18B64D;
+  }
+  .btn-complete:hover{
+    background-color: #18B64D;
+    border: 7px solid hsl(0, 0%, 100%,40%);
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+  .btn-complete:active{
+    background-color: hsl(140, 77%, 50%);
+    transform: scale(0.98);
+    border: 7px solid hsl(0, 0%, 100%,60%);
+    cursor: pointer;
+  }
+  .btn-incomplete{
+    background-color: #2D2E82;
+  }
+
+  .btn-incomplete:hover{
+    background-color: hsl(239, 49%, 34%);
+    border: 7px solid hsl(0, 0%, 100%,40%);
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+  .btn-incomplete:active{
+    background-color: hsl(239, 43%, 44%);
+    border: 4px solid hsl(0, 0%, 100%,60%);
+    transform:scale(0.98);
+    cursor: pointer;
+  }
+
+  .numberbg h3{
+    color:hsl(0, 0%, 95%)
+  }
+
+  .repairbg h2{
+    color:hsl(0, 0%, 95%)
+  }
+
+
+  .button-row{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: clamp(0px,40vw,100px); 
+    height: 100%; 
+  }
+
+  .inc-form {
+    margin-top: 0px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #c7c7c7; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    display: flex;
+    flex-direction: column;
+  }
+
+  .inc-form p{
+    margin: 0px;
+    margin-bottom: .7em;
+    padding: 0px;
+    font-size:1.5em;
+    font-weight: 600;
+    
+
+  }
+
+  .inc-form li{
+    padding:15px;
+    margin-top:.5em;
+    background-color: #333;
+    font-size:1.3em;
+    color:white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .inc-form li:hover {
+    background-color: #5a5a5a;
+  }
+
+  .inc-form ul, .inc-form ol {
+    list-style: none; 
+    padding: 0;       
+    margin: 0;
+
+  }
+
+  .inc-form label{
+    cursor: pointer;
+  }
+
+
+  .inc-form input[type="radio"] {
+    cursor: pointer;
+    width: 1.15em;
+    height: 1.15em;
+  }
+
+  .inc-form input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+
+  /* Style for the list items containing radio buttons */
+  .inc-form li {
+    padding: 15px;
+    margin-top: .5em;
+    background-color: #333;
+    font-size: 1.3em;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box; 
+  }
+
+
+  .inc-form li::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    border: 3px solid white;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: inline-block;
+    transition: all 0.2s ease;
+  }
+
+
+  .inc-form li:hover {
+    background-color: #5a5a5a;
+  }
+
+
+  .inc-form input[type="radio"]:checked + label li {
+    background-color: #2d2E82;
+  }
+
+
+  .inc-form input[type="radio"]:checked + label li::before {
+    background-color: rgb(39, 39, 39);
+  }
+
+
+  .inc-form input[type="radio"]:focus + label li {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .filter , .filter2{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items: stretch;
+    background-color: hsl(0, 0%, 0%,20%);
+    border-radius: 10px;
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 0.1em;
+    width: 100%;
+    max-width: 1200px;
+    align-self: center;
+    gap: 20px;
+    overflow: auto;
+    margin-bottom: 15px;
+  }
+
+  .filter2{
+    justify-content: flex-start;
+  }
+
+  .filter select , .filter2 select {
+    font-size:1em;
+    border-radius: .5em;
+    padding:.3em;
+    font-weight: 200;
+    max-width: 100%;
+    min-width: 150px;
+    flex: 1;
+    cursor:pointer;
+  }
+
+  #categoryModal select {
+      font-size: 1em;
+      border-radius: .5em;
+      padding: .3em;
+      font-weight: 200;
+      width: 100%;
+      margin: 10px 0;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      min-width: 150px;
+      cursor: pointer;
+  }
+
+  #categoryModal select:hover {
+      border-color: #2D2E82;
+  }
+
+  #categoryModal select:focus {
+      outline: none;
+      border-color: #2D2E82;
+      box-shadow: 0 0 5px rgba(45, 46, 130, 0.5);
+  }
+
+  #category-form {
+      margin-top: 20px;
+      width: 100%;
+  }
+
+
+  .filter p , .filter2 p {
+    margin: .5em;
+    background-color: #333;
+    border-radius: .5em;
+    padding:1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap ;
+    min-width: 200px; 
+    word-break: break-word;
+    min-height: 3.5em; 
+    box-sizing: border-box; 
+  }
+
+  .filter label , .filter2 label {
+    margin: .5em;
+    background-color: #333;
+    border-radius: .5em;
+
+
+    margin-bottom: .5em;
+  }
+
+
+
+
+  .filter button, .filter2 button{
+    margin: .5em;
+    font-size:25px;
+    border-radius: 1em;
+    border-width: .2em;
+    padding:1em 1em;
+    font-weight: 450;
+    background-color: #2D2E82;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+  }
+
+  .filter button:hover , .filter2 button:hover {
+    background-color: #3d3e9e;
+  }
+  .filter button:active , filter2 button:active{
+    background-color: #3d3e9e;
+    transform: scale(0.98);
+  }
+
+  .center-con{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+    margin-bottom: 5px;
+
+  }
+
+
+    .left{
+      float: left;
+    }
+
+    
+    .back-ground1{
+      background-color: #F8F3ED;
+      min-height: 100%;
+      margin: -20px 0 0 0; 
+      padding: 20px 0;
+    }
+    .checkout-form{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      padding-top:20px;
+      background-color: #ffffff;
+      border-radius: 15px;
+      margin: 0 auto; 
+      width: 90%; 
+      max-width: 900px; 
+      height: auto; 
+      position: relative; 
+      top: 0; 
+      margin-top: 20px;
+      margin-bottom: 20px;
+      justify-content: flex-start;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    }
+    .checkout-form h1{
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .checkout-form form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 700px;
+    }
+    .checkout-form .btn-primary {
+      float: none;
+      margin: 20px auto;
+      display: block;
+    }
+    .checkout-form .btn-primary.demo {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      scale: 0.80;
+      margin: 0;
+      z-index: 100;
+    }
+
+  .checkout-form form p {
+      margin-bottom: 20px; 
+  }
+
+  .checkout-form  input[type="text"] {
+    width: 100%; 
+    max-width: 700px;
+    box-sizing: border-box; 
+    padding: 8px; 
+    margin-top: 5px; 
+    font-size: 1rem; 
+  }
+  .checkout-form textarea {
+    width: 100%;
+    height: 100px;
+    max-width: 700px;
+    box-sizing: border-box; 
+    padding: 8px; 
+    margin-top: 5px; 
+    font-size: 1rem; 
+  }
+  .checkout-form svg{
+    width: 35px;
+    height: 35px;
+  }
+
+  input[type="radio"] {
+    width: 20px; 
+    height: 20px;
+    cursor: pointer; 
+    vertical-align: sub;
+  }
+
+  input[type="radio"] + label {
+    margin-left: 10px;
+  }
+
+  .checkout-form ul {
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.checkout-form.checkin ul{
+  list-style-type:circle;
+  display: block; 
+  padding:20px;
+  margin:20px;
+}
+
+
+.repairbg.purple{
+  background-color: #2D2E82;
+  color: #fff; 
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  justify-content: flex-start; 
+  padding: 3em;
+}
+
+.purp-bg{
+  background-color: #2D2E82;
+  color: #fff; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: flex-start; 
+  padding: 3em;
+  border-radius: 15px;
+  justify-content: center; 
+  align-items: center;
+  width: 90%; 
+  display: flex; 
+  text-align: flex-start; 
+  overflow: auto;
+  padding:30px;
+  margin: 2vw auto;
+  }
+
+  .repairbg{
+    z-index: 1000;
+    background-color: #E86312;
+    border-radius: 15px;
+    justify-content: center; 
+    align-items: center;
+    width: 90%; 
+    margin: 2vw auto;
+    display: flex; 
+    flex-direction: column; 
+    text-align: center; 
+    overflow: auto;
+    padding: 20px;
+    }
+
+.purple h1{
+  font-weight: 600;
+}
+.purple h1,h2,h3{
+  line-height: 2em;
+  align-self: flex-start;
+}
+.purp-bg.purple a {
+  color: white;        
+  text-decoration: none;
+}
+.purp-bg.purple a:hover {
+  color: rgb(159, 249, 255);
+
+  text-decoration: underline; 
+}
+  
+
+
+
+
+
+
+.rulestitle {
+  background-color: #2D2E82;
+  border-radius: 15px;
+  margin: 10px;
+  text-align: center;
+  display:block;
+  justify-content: center;
+  padding: 10px;
+}
+
+.rulestitle h1 {
+ 
+ color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+}
+
+.rulestext {
+  font-family: 'Inter';
+}
+
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  vertical-align:sub;
+  margin: 10px;
+}
+
+  .statsdiv {
+
+    display: inline-block;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin: 20px 10px; 
+    padding: 10px; 
+    border-radius: 12px; 
+    background-color: #e86312;
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 45%; 
+    max-width:1900px; 
+    height: 100%;
+}
+
+.statsdiv h2 {
+  
+  display: inline;
+}
+
+
+.statnumber {
+  font-size: 12vw;
+  display: inline ; 
+  line-height: 1;
+
+}
+
+.weak{
+  opacity: 95%;
+  font-weight: normal;
+}
+
+.dropdown-content h2{
+  display:flex;
+  
+}
+
+   /*
+    Beginning of mobile styling
+    */
+    
+    @media screen and (max-width: 768px) {
+      h2 {
+        display: flex; 
+        flex-wrap: wrap;
+      }
+
+      h2 .weak {
+        flex: 0 0 100%; 
+      }
+      h2 .inline {
+        margin-left: 2rem;
+        display: block; 
+      }
+
+      .inline{
+        display: block;
+        margin-left: 2rem;
+      }
+
+      .ticket-form img{
+        margin:0;
+        margin-left:10px;
+        width:70px;
+        height:70px;
+        flex-shrink: 0;
+      }
+      .ticket-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; 
+        padding-left: 0px; 
+        gap: 0 rem;
+        min-width: 0;
+      }
+
+      .dropdown-content{
+        margin-bottom: 10px;
+      }
+      .ticket-form h2 {
+        font-size:22px; 
+        margin:5px 0;
+        line-height: 1.3em;
+        margin-left:0px;
+        margin-right:0px;
+        padding-left: 0px;
+        margin-bottom: 5px !important;
+        flex-wrap: wrap;
+        }
+
+      .repairbg .numberSquare{
+        margin-right: 0px;
+        margin-bottom: 10px !important;
+        margin-top: 0px !important;
+        width: 100%;
+      }
+      .repairbg .numberSquare p{
+        margin-right: 0px;
+        font-size: .8em;
+      }
+      .repairbg .numberSquare h3{
+        line-height: 1.5em;
+      }
+      .repairbg h2{
+        font-size: 1.5em !important;
+        line-height: 1.5em !important;
+        margin:0 0 !important;
+        margin-bottom: 10px !important;
+        align-self: center !important;
+        text-align: center !important;
+      }
+
+      .purp-bg .numberSquare{
+        margin: 0 0;
+      }
+
+      .purp-bg h1{
+        line-height: 1.5em !important;
+      }
+
+      .repairbg h1 {
+        margin-bottom: 10px;
+        line-height: 1.5em !important;
+        font-size: 2em;
+      }
+
+      .repairbg h2 {
+
+        font-size: 1.8em;
+      }
+
+
+
+      .ticket-form {
+          flex-wrap: wrap; 
+          margin-left: 0px;
+          margin-right: 0px;
+      }
+      
+      .ticket-form .button-col {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center;
+        gap: 10px;
+        width: 100%; 
+        margin-top: 10px;
+          
+      }
+  
+      .ticket-form .button-wrapper {
+          margin: 0; 
+          display:flex;
+          flex-direction: row; 
+          justify-content: center;
+          align-items: center;
+          
+      }
+    
+      .ticket-form .btn-primary {
+        min-width: 120px;
+        align-self: center;
+        order: 1;
+      } 
+  
+      
+      .ticket-info {
+          padding-left: 10px;   
+          gap: 0 rem;
+      }
+      .leftBlock, .rightBlock {
+        margin: 0 !important;
+      }
+
+      .rightBlock .namebg{
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .modal-content{
+        width: 90% !important;
+      }
+      
+      #main{
+        padding: 10px;
+      }
+      .filter, .filter2 {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0.5em;
+      }
+  
+      .filter p, .filter2 p {
+        margin: 0.25em;
+        width: auto;
+        min-height: 3.5em; 
+        font-size: 1em;
+      }
+  
+      .filter select, .filter2 select {
+        width: 100%;
+        font-size: 1em;
+        
+      }
+      .filter button{
+        padding: 15px;
+        margin: 5px 5px;
+        font-size:1em;
+      }
+  
+
+    }
+
+    /*
+    End of mobile styling
+    */
+
+
+
+
+
+
+
+
