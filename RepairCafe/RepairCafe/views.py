@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer
+from .models import Ticket, Queue, Customer, Repairer
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -309,6 +309,13 @@ def enter_password(request):
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
         
     return render(request, 'RepairCafe/enter_password.html')
+
+
+def repairer_login(request):
+    context_dict = {}
+    repairers = Repairer.objects.all()
+    context_dict['repairers'] = repairers
+    return render(request, 'RepairCafe/repairer_login.html')
 
 """
 Visitor Flow

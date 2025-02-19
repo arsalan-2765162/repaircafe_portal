@@ -13,6 +13,13 @@ class Queue(models.Model):
     def get_tickets(self):
         return self.ticket_set.order_by('position')
 
+
+class Repairer(models.Model):
+    NAME_MAX_LENGTH = 128
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
+
+
 class Customer(models.Model):
     NAME_MAX_LENGTH = 128
     firstName = models.CharField(max_length=NAME_MAX_LENGTH)
