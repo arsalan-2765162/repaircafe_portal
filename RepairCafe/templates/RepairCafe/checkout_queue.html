@@ -57,7 +57,7 @@
             {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn primary-btn">
+                        <button type="submit" class="btn btn-primary">
                             Checkout
                         </button>
                     </form>

@@ -1,4 +1,4 @@
-{% extends 'RepairCafe/navbar.html' %}
+{% extends 'RepairCafe/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -21,7 +21,7 @@
             </p>
         </div> 
     </div>
-    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:waiting_list'  %}"><h1>Next Page</h1></a>
+    <a id="next-page" style="display:block;" class="btn-primary" href="{% url 'RepairCafe:waiting_list'  %}">Back to Check-in Queue</a>
 </div>
 
 

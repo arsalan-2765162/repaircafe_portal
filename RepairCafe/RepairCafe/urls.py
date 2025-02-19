@@ -29,7 +29,6 @@ urlpatterns = [
         path('wait_for_repair/<int:repairNumber>/',views.wait_for_repair,name='wait_for_repair'),
         path('basic_stats/', views.basic_stats,name='basic_stats'),
         path('volunteer_checkin/', views.volunteer_checkin, name='volunteer_checkin'),
-        path('volunteer_checkin_success/<int:repairNumber>',
-              views.volunteer_checkin_success, name='volunteer_checkin_success'),
+        path('volunteer_checkin_success/<int:repairNumber>/', views.volunteer_checkin_success, name='volunteer_checkin_success'),
 
 ]

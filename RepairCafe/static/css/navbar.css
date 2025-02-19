@@ -2,7 +2,6 @@
   
   body {
       font-family: 'Inter', sans-serif;
-      font-size: 1em;
   }
   .btn {
     box-sizing:border-box;
@@ -22,7 +21,7 @@
   }
 
 
-  .sidebar .primary-btn{
+  .sidebar .btn-primary{
     float: none;
     position: static;
     bottom: auto;
@@ -252,7 +251,7 @@
 
   
 
-  .primary-btn {
+  .btn-primary {
       margin-top: 10px;
       margin-left:15px;
       float:right;
@@ -274,7 +273,7 @@
 
 
 
-    .primary-btn:hover {
+    .btn-primary:hover {
       transform: scale(1.08);
       background-color: #cdcccc !important; 
       color: #000000 !important;
@@ -334,7 +333,7 @@
       align-items: center;
   }
 
-    .ticket-form .button-col .primary-btn {
+    .ticket-form .button-col .btn-primary {
       align-self: flex-end;
       display: inline-flex;
       align-items: center;
@@ -344,7 +343,7 @@
       text-align: center;
     } 
     
-    .ticket-form .primary-btn {
+    .ticket-form .btn-primary {
  
       min-width: 220px;
 
@@ -950,12 +949,12 @@
       width: 100%;
       max-width: 700px;
     }
-    .checkout-form .primary-btn {
+    .checkout-form .btn-primary {
       float: none;
       margin: 20px auto;
       display: block;
     }
-    .checkout-form .primary-btn.demo {
+    .checkout-form .btn-primary.demo {
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -1283,7 +1282,7 @@ input[type="checkbox"] {
           
       }
     
-      .ticket-form .primary-btn{
+      .ticket-form .btn-primary{
         min-width: 120px;
         align-self: center;
         order: 1;

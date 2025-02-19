@@ -307,7 +307,6 @@ def enter_password(request):
             return redirect('RepairCafe:index')
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
-        
     return render(request, 'RepairCafe/enter_password.html')
 
 
@@ -332,10 +331,10 @@ def volunteer_checkin(request):
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
             repairNumber = ticket.repairNumber
-
+        
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
 
-            return redirect('RepairCafe:volunteer_checkin_success.html', repairNumber=repairNumber)
+            return redirect('RepairCafe:volunteer_checkin_success', repairNumber=repairNumber)
         else:
             context_dict['form'] = form
     else:
@@ -345,8 +344,10 @@ def volunteer_checkin(request):
 
 def volunteer_checkin_success(request, repairNumber):
     context_dict = {}
-    context_dict['repairNumber'] = repairNumber
-    return render(request, 'RepairCafe:volunteer_checkin_success.html', context_dict)
+
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
 
 
 """
@@ -463,6 +464,7 @@ def checkout(request,repairNumber):
 
 
 def checkout_success(request):
+    
     return render(request,'RepairCafe/checkout_success.html')
 
 

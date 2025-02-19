@@ -9,7 +9,7 @@ class Queue(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_tickets(self):
         return self.ticket_set.order_by('position')
 
@@ -41,6 +41,7 @@ class Ticket(models.Model):
                              ('CERA','Ceramics'),
                              ('OTHER','Other'),]
     
+    isVolunteerCreated = models.BooleanField(default=False)
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
