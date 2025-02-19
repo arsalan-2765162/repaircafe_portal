@@ -64,6 +64,7 @@ def send_queue_update(group_name, queue_name, update_type):
 def index(request):
     return render(request, 'RepairCafe/index.html', context={})
 
+
 """
 Repairer/Volunteer Flow
 """
@@ -230,7 +231,7 @@ def repair_item(request,repairNumber):
 
     send_ticket_update("ticket_updates", repairNumber, "REPAIRING")
     send_queue_update("main_queue_updates", "Main Queue", "ticket_being_repaired")
-    
+
     context_dict['incompleteForm'] = incompleteForm
     context_dict['ticket']=ticket
     return render(request,'RepairCafe/repair_item.html',context_dict)
@@ -331,7 +332,9 @@ def volunteer_checkin(request):
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
             repairNumber = ticket.repairNumber
-        
+            ticket.isVolunteerCreated = True
+            ticket.save()
+   
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
 
             return redirect('RepairCafe:volunteer_checkin_success', repairNumber=repairNumber)
@@ -348,6 +351,11 @@ def volunteer_checkin_success(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     context_dict['ticket'] = ticket
     return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
+
+
+
+
+
 
 
 """
@@ -464,16 +472,8 @@ def checkout(request,repairNumber):
 
 
 def checkout_success(request):
-    
     return render(request,'RepairCafe/checkout_success.html')
 
 
 
-
-
-        
-        
-
-
-    
 
