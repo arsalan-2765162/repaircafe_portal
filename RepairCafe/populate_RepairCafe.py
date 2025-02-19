@@ -76,10 +76,6 @@ def populate():
         {'repairNumber': 19, 'itemName': 'Sewing Machine', 'itemCategory': 'OTHER', 'itemDescription': 'Needle not moving', 'repairStatus': 'WAITING_TO_JOIN', 'position': 5, 'queue': 'Waiting List'},
 
 
-        # PAT Tickets
-        {'repairNumber': 20, 'itemName': 'Iron', 'itemCategory': 'ELECM', 'itemDescription': 'Not heating up', 'repairStatus': 'NEED_PAT', 'position': 1, 'queue': 'PAT Queue'},
-        {'repairNumber': 21, 'itemName': 'Electric Kettle', 'itemCategory': 'ELECM', 'itemDescription': 'Power issue', 'repairStatus': 'NEED_PAT', 'position': 2, 'queue': 'PAT Queue'},
-        {'repairNumber': 22, 'itemName': 'Table Lamp', 'itemCategory': 'ELECM', 'itemDescription': 'Wiring fault', 'repairStatus': 'NEED_PAT', 'position': 3, 'queue': 'PAT Queue'},
     ]
 
     customers_data = [

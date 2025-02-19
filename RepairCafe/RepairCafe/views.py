@@ -112,63 +112,6 @@ def main_queue(request):
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
 
 
-def pat_queue(request):
-    context_dict={}
-    try:
-        queue = Queue.objects.get(name="PAT Queue")
-        ticket_list = Ticket.objects.filter(repairStatus='NEED_PAT').order_by('position')
-        
-        #retrieve filter parameters for queue
-        form = TicketFilterForm(request.GET or None)
-        if form.is_valid():
-            category_filter = form.cleaned_data.get('itemCategory')
-            if category_filter and category_filter != 'ALL':
-                ticket_list = ticket_list.filter(itemCategory=category_filter)
-
-        #populate the list of forms used to display all tickets in the queue
-        ticketForms = [TicketForm(instance=ticket) for ticket in ticket_list]
-        context_dict['TicketForms']=ticketForms
-        
-        context_dict['Queue']=queue
-        context_dict['Tickets']=ticket_list
-        context_dict['FilterForm']=form
-    except Queue.DoesNotExist:
-        context_dict['Queue']=None
-    return render(request, 'RepairCafe/pat_queue.html', context=context_dict)
-
-def start_pat_test(request, repairNumber):
-    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    
-    if request.method == 'POST':
-        # Change ticket status to PAT_TESTING
-        ticket.repairStatus = 'PAT_TESTING'
-        ticket.save()
-        messages.success(request, f'PAT Test started for {ticket.itemName}')
-        return redirect('RepairCafe:pat_queue')
-    
-    return redirect('RepairCafe:pat_queue')
-
-def complete_pat_test(request, repairNumber):
-    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    
-    if request.method == 'POST':
-        test_result = request.POST.get('test_result')
-        
-        if test_result == 'pass':
-            # Use the existing accept_ticket logic
-            ticket.accept_ticket()  # Moves to Main Queue automatically
-            messages.success(request, f'{ticket.itemName} passed PAT testing and was added to Main Queue.')
-        
-        elif test_result == 'fail':
-            # Simply delete the ticket if it fails PAT test
-            ticket.delete()
-            messages.warning(request, f'{ticket.itemName} failed PAT testing and was removed')
-        
-        return redirect('RepairCafe:pat_queue')
-    
-    return redirect('RepairCafe:pat_queue')
-
-
 def waiting_list(request):
     context_dict={}
     try:
@@ -296,15 +239,8 @@ def repair_item(request,repairNumber):
 
 def complete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
-    if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
-        ticket.complete_ticket()
-
-        send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_PAT")
-        send_queue_update("main_queue_updates", "Main Queue", "ticket_updated")
-        
-
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been sent to PAT Testing.")
-    elif(ticket.repairStatus == 'BEING_REPAIRED' ):
+    
+    if(ticket.repairStatus == 'BEING_REPAIRED' ):
         ticket.complete_ticket()
 
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
