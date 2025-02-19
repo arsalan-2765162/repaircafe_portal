@@ -3,7 +3,27 @@
 {% block content %}
 <div class="purp-bg purple">
     <h1>Thank you for your repair request!</h1>
-    <h3>One of our check in volunteers is reviewing your repair request. You will be added to the repair queue shortly.</h3>
-    <a href="{% url 'RepairCafe:wait_for_checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
+    <h3 id="status-message">One of our check in volunteers is reviewing your repair request. You will be added to the repair queue shortly.</h3>
+
+    <a id="next-page" style="display:none;" href="{% url 'RepairCafe:wait_for_repair' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
+
+<script>
+    const repairNumber = "{{ ticket.repairNumber }}";
+    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    console.log(repairNumber)
+    
+    socket.onmessage = function(event) {
+        
+        const data = JSON.parse(event.data)
+        console.log(data.status + data.repairNumber)
+        if (data.status === 'ACCEPTED' && data.repairNumber == repairNumber) {
+            document.getElementById('status-message').textContent = 'Your ticket has been accepted!';
+            document.getElementById('next-page').style.display = 'block';
+            const nextPageUrl = document.getElementById('next-page').getAttribute('href');
+            window.location.href = nextPageUrl;
+        }
+    };
+</script>
+
 {% endblock %}

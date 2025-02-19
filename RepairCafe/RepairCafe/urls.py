@@ -1,13 +1,14 @@
-from django.urls import path
+from django.urls import include,path
 from RepairCafe import views
 from .views import enter_password
+from django.contrib import admin
 
 app_name = 'RepairCafe'
 
 urlpatterns = [
         path('', views.index, name='index'),
 	path('reset_data', views.reset_data, name='reset_data'),
-        path('repair/<int:repairNumber>',views.repair_item,name='repair_item'),
+        path('repair_item/<int:repairNumber>',views.repair_item,name='repair_item'),
         path('complete/<int:repairNumber>',views.complete_ticket,name='complete_ticket'),
         path('mark_incomplete_ticket/<int:repairNumber>', views.mark_incomplete_ticket, name='mark_incomplete_ticket'),
         path('main_queue', views.main_queue, name='main_queue'),
@@ -17,6 +18,7 @@ urlpatterns = [
         path('repair_ticket/<int:repairNumber>/',views.repair_ticket,name='repair_ticket'),
         path('delete-ticket/<int:repairNumber>/',views.delete_ticket,name='delete_ticket'),
         path('checkout_ticket/<int:repairNumber>/',views.checkout_ticket,name='checkout_ticket'),
+        path('ticket/<int:repairNumber>/pat-test/', views.pat_test, name='pat_test'),
         path('enter_password/', views.enter_password, name='enter_password'),
         path('house_rules/', views.house_rules, name='house_rules'),
         path('change-category/<int:repairNumber>/', views.change_category, name='change_category'),
@@ -28,6 +30,13 @@ urlpatterns = [
         path('pat_queue/', views.pat_queue, name='pat_queue'),
         path('start-pat-test/<int:repairNumber>/', views.start_pat_test, name='start_pat_test'),
         path('complete-pat-test/<int:repairNumber>/', views.complete_pat_test, name='complete_pat_test'),
+        path('repair_prompt/<int:repairNumber>/',views.repair_prompt,name='repair_prompt'),
+        path('wait_for_repair/<int:repairNumber>/',views.wait_for_repair,name='wait_for_repair'),
         path('basic_stats/', views.basic_stats,name='basic_stats'),
+        path('admin/', admin.site.urls),
+        path('admin_tools/', include('admin_tools.urls'))
+        
+        
+        
 
 ]

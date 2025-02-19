@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let isRedirecting = false;
+
     // Add event listeners to each li element to simulate radio button click
     const listItems = document.querySelectorAll('.inc-form li');
     listItems.forEach(function(item) {
         item.addEventListener('click', function() {
-            // Find the radio input inside the clicked li and check it
             const radioInput = item.querySelector('input[type="radio"]');
             if (radioInput) {
                 radioInput.checked = true;
-                // Optionally, you can trigger the change event if necessary
                 radioInput.dispatchEvent(new Event('change'));
             }
         });
@@ -18,8 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
 
+    if (!modal) {
+        console.error("Modal element not found in DOM");
+    }
+
     // Function to open the modal
     window.openModal = function (url, itemName, itemCategory, repairNumber) {
+        console.log("Opening Modal with:", { url, itemName, itemCategory, repairNumber });
+        sessionStorage.setItem("openModalRepairNumber", repairNumber);
+        sessionStorage.setItem("openModalType", "confirmation"); 
+
         modalDetails.innerHTML = `
             <strong>Repair #:</strong> ${repairNumber}<br>
             <strong>Item Name:</strong> ${itemName}<br>
@@ -40,21 +48,16 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.openCompleteModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log("Button clicked!"); // Debugging log
-        console.log("Repair Details:", { url, itemName, itemCategory, repairNumber });
-        console.log(modal)
-        // Update modal details
+        console.log(modal);
         modalDetails.innerHTML = `
             <strong>Repair #:</strong> ${repairNumber}<br>
             <strong>Item Name:</strong> ${itemName}<br>
             <strong>Category:</strong> ${itemCategory}
         `;
         acceptForm.setAttribute("action", url);
-        // Show the modal
         modal.style.display = "flex";
     };
 
-    // New function for PAT testing modal
     window.openPATResultModal = function (url, itemName, itemCategory, repairNumber, itemDescription) {
         console.log("openPATResultModal called with:", {
             url, 
@@ -64,43 +67,39 @@ document.addEventListener("DOMContentLoaded", function () {
             itemDescription
         });
 
-        // Use the same form and modal as other modals
         modalDetails.innerHTML = `
             <strong>Item:</strong> ${itemName}<br>
             <strong>Category:</strong> ${itemCategory}<br>
             <strong>Repair Number:</strong> ${repairNumber}<br>
             <strong>Description:</strong> ${itemDescription}
         `;
-
-        // Set form action to the complete PAT test URL
         acceptForm.setAttribute("action", url);
-
-        // Show modal
         modal.style.display = "flex";
     };
 
-    // Function to close the modal
     const closeModal = () => {
-        modal.style.display = "none";
-        modalIncomplete.style.display = "none";
+        if(modal) {
+            modal.style.display = "none";
+        }
+        if(modalIncomplete) {
+            modalIncomplete.style.display = "none";
+        }
+        sessionStorage.removeItem("openModalRepairNumber");
+        sessionStorage.removeItem("openModalType");
     };
 
-    // Attach event listeners to close buttons
     if (modal) modal.querySelector(".close").addEventListener("click", closeModal);
     if (modalIncomplete) modalIncomplete.querySelector(".close").addEventListener("click", closeModal);
 
     const cancelButtons = document.querySelectorAll(".cancel-btn");
-    console.log("Detected Cancel Buttons:", cancelButtons); // Debugging
-
     cancelButtons.forEach(button => {
         button.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent form submission (if inside a form)
+            event.preventDefault(); 
             closeModal();
-            console.log("Cancel Button Clicked"); // Debugging
         });
     });
-   
-    // Specific PAT test result buttons
+
+    // PAT test result buttons
     const patResultButtons = document.querySelectorAll('button[name="test_result"]');
     patResultButtons.forEach(button => {
         button.addEventListener('click', function(event) {
@@ -117,17 +116,50 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Close modal when clicking outside it
+    // Close modal when clicking outside
     window.addEventListener("click", event => {
-        if(modal){
-            if (event.target === modal) {
-                closeModal();
-            }
+        if(modal && event.target === modal) {
+            closeModal();
         }
-        if(modalIncomplete){
-            if (event.target === modalIncomplete) {
-                closeModal();
-            }
+        if(modalIncomplete && event.target === modalIncomplete) {
+            closeModal();
         }
     });
+
+    // Handle form submission
+    acceptForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const actionUrl = acceptForm.getAttribute("action");
+        redirectToRepairItem(actionUrl);
+    });
+
+    // Redirection function
+    function redirectToRepairItem(url) {
+        isRedirecting = true;
+        document.body.style.cursor = "wait";
+        window.location.href = url;
+    }
+
+    // Check session storage on load
+    window.onload = function () {
+        const repairNumber = sessionStorage.getItem("openModalRepairNumber");
+        const modalType = sessionStorage.getItem("openModalType");
+
+        if (repairNumber && modalType) {
+            const ticketElement = document.querySelector(
+                `.ticket-form[data-repair-number="${repairNumber}"]`
+            );
+            if (ticketElement) {
+                const itemName = ticketElement.querySelector("h2:nth-child(1)").textContent.split(": ")[1];
+                const itemCategory = ticketElement.querySelector("h2:nth-child(3)").textContent.split(": ")[1];
+                const url = `/accept_ticket/${repairNumber}/`;
+
+                if (modalType === "confirmation") {
+                    openModal(url, itemName, itemCategory, repairNumber);
+                }
+            }
+            sessionStorage.removeItem("openModalRepairNumber");
+            sessionStorage.removeItem("openModalType");
+        }
+    };
 });

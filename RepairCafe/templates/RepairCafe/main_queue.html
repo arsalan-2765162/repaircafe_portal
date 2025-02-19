@@ -1,7 +1,7 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %}
 {% block content %}
-    <h1>Main Queue</h1>
+    <h1>Repair Queue</h1>
     {% if Queue %}
     {% else %}
         <p>No Queue object found.</p>
@@ -22,38 +22,63 @@
     {% if Tickets %}
         <div class = "ticket-feed">
             {% for ticket in Tickets %}
-            <div class ="ticket-form">
-		{% if ticket.get_itemCategory_display == "Electrical Mains" %}
-                    <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
-		{% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
-		    <img src="{% static 'images/battery_icon.png' %}" alt="battery icon">
-		{% elif ticket.get_itemCategory_display == "Clothing & Textiles" %}
-		    <img src="{% static 'images/textile_icon.png' %}" alt="textiles icon">
-		{% elif ticket.get_itemCategory_display == "Ceramics" %}
-		    <img src="{% static 'images/ceramic_icon.png' %}" alt="ceramics icon">
-		{% else %}
+        <div class="center-con">
+        <div class ="ticket-form" data-repair-number="{{ ticket.repairNumber }}">
+            {% if ticket.get_itemCategory_display == "Electrical Mains" %}
+                        <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
+            {% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
+                <img src="{% static 'images/battery_icon.png' %}" alt="battery icon">
+            {% elif ticket.get_itemCategory_display == "Clothing & Textiles" %}
+                <img src="{% static 'images/textile_icon.png' %}" alt="textiles icon">
+            {% elif ticket.get_itemCategory_display == "Ceramics" %}
+                <img src="{% static 'images/ceramic_icon.png' %}" alt="ceramics icon">
+            {% else %}
 		    <img src="{% static 'images/other_icon.png' %}" alt="other icon">
                 {% endif %}
-                <div class="ticket-info">
-                    <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
-                    <h2>Position:  {{ ticket.position }}</h2>
-                    <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
-                    <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
-                    {% if ticket.repairStatus == "INCOMPLETE" %}
-                        <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
-                    {% endif %}
-                    <h2>Repair Description: {{ ticket.itemDescription}}</h2>
+                <div class="ticket-info" >
+                    <div class="ticket-header">
+                        <h2>Repair #{{ ticket.repairNumber }}: {{ ticket.itemName }}</h2>
+                        <h2>Position:  {{ ticket.position }}</h2>
+                        <h2>Category: {{ ticket.get_itemCategory_display }}</h2>
+                        <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
+                    </div>
+                    <div class="dropdown-content">
+                        <h2>Visitor Details: {{ ticket.customer }} </h2>
+                        <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                        {% if ticket.repairStatus == "INCOMPLETE" %}
+                            <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                        {% endif %}
+                        <h2 class="item-description">Repair Description: {{ ticket.itemDescription}}</h2>
+                    </div>
                 </div>
                 {% if ticket.repairStatus == "WAITING" %}
                     <button 
-                    type="button" 
-                    class="btn btn-primary" 
-                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', '{{ ticket.repairNumber }}','{{ ticket.itemDescription }}')">
-                    Accept Repair
+                        type="button" 
+                        class="btn btn-primary" 
+                        onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                        '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
+                        '{{ ticket.repairNumber }}',
+                        'accept')"
+                    >
+                        Accept Repair
+                    </button>
+                {% endif %}
+
+                {% if ticket.repairStatus == "NEED_PAT" %}
+                    <button 
+                        type="button" 
+                        class="btn btn-primary" 
+                        onclick="openPatModal('{% url 'RepairCafe:pat_test' repairNumber=ticket.repairNumber %}', 
+                        '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
+                        '{{ ticket.repairNumber }}')"
+                    >
+                        PAT Test
                     </button>
                 {% endif %}
             </div>
+            </div>
             {% endfor %}
+        
         </div>  
 
     {% else %}
@@ -64,16 +89,44 @@
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h1>Accept Repair?</h1>
-            <p id ="modal-item-details"></p>
-            <div class = "buttons">
-                <button class="btn btn-reject cancel-btn">Go Back</button>
+            <h1 id="modal-title">Accept Repair?</h1>
+            <p id="modal-item-details"></p>
+            <div class="buttons">
+                <button class="btn btn-reject cancel-btn">Back</button>
                 <form id="accept-form" action="" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-accept">Accept</button>
+                    <button type="submit" class="btn btn-accept" id="modal-submit-button">Accept</button>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- PAT Test Modal -->
+    <div id="patTestModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Confirm PAT Test?</h1>
+            <p id="pat-modal-item-details"></p>
+            <div class="buttons">
+                <button class="btn btn-reject cancel-btn">Back</button>
+                <form id="pat-test-form" action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="accept">
+                    <button type="submit" class="btn btn-accept">Complete PAT Test</button>
+                </form>
+                <form id="reject-pat-form" action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit" class="btn btn-reject">Reject PAT Test</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'js/main_queue_modal.js' %}" defer></script>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/navbar.js' %}" defer></script>
+<script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}
