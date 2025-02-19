@@ -1043,6 +1043,10 @@
   margin: 2vw auto;
   }
 
+  .purpbg .btn-primary{
+    color: black !important;
+  }
+
   .repairbg{
     z-index: 1000;
     background-color: #E86312;
@@ -1073,6 +1077,10 @@
   color: rgb(159, 249, 255);
 
   text-decoration: underline; 
+}
+
+.purp-bg .black{
+  color: #000000 !important;
 }
   
 

@@ -269,14 +269,15 @@ def delete_ticket(request,repairNumber):
     return redirect('RepairCafe:waiting_list')
 
 def checkout_ticket(request,repairNumber):
-    ticket = get_object_or_404(Ticket,repairNumber=repairNumber)
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus =='INCOMPLETE':
         ticket.checkout()
 
         send_ticket_update("ticket_updates", repairNumber, "CHECKOUT")
         send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
-
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
+        if (not ticket.isVolunteerCreated):
+            return redirect('RepairCafe:volunteer_checkout',repairNumber=repairNumber)
+        messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
         messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     return redirect(reverse('RepairCafe:checkout_queue'))
@@ -345,6 +346,7 @@ def volunteer_checkin(request):
         context_dict['form'] = form
     return render(request, 'RepairCafe/volunteer_checkin.html', context_dict)
 
+
 def volunteer_checkin_success(request, repairNumber):
     context_dict = {}
 
@@ -353,7 +355,29 @@ def volunteer_checkin_success(request, repairNumber):
     return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
 
 
+def volunteer_checkout(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
+        raise Http404("The ticket is not in the desired state.")
+    if not ticket.isCheckedOut:
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['event_date'] = date.today()
+            print(form_data)
+            return redirect('RepairCafe:volunteer_checkout_success')
+    else:
+        form = CheckoutForm
+        context_dict['form'] = form
 
+    return render(request, 'RepairCafe/volunteer_checkout.html', context_dict)
+
+
+def volunteer_checkout_success(request):
+    return render(request, 'RepairCafe/volunteer_checkout_success.html')
 
 
 

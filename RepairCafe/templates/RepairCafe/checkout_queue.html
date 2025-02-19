@@ -58,7 +58,11 @@
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
+                        {% if ticket.isVolunteerCreated %}
+                            Manual Checkout
+                        {% else %}
                             Checkout
+                        {% endif %}
                         </button>
                     </form>
                 {% else %}
