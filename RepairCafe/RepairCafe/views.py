@@ -190,13 +190,25 @@ def accept_ticket(request,repairNumber):
         messages.error(request,f"Error, ticket {ticket.repairNumber}:{ticket.itemName}, not accepted.")
     return redirect(reverse('RepairCafe:waiting_list'))
 
-def repair_ticket(request,repairNumber):
+
+def repair_ticket(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    if ticket.repairStatus == "WAITING":
-        ticket.repair_ticket()
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
+
+    repairer_name = request.session.get('repairer_name', None)
+    if repairer_name:
+        repairer = Repairer.objects.filter(name=repairer_name).first()
     else:
+        repairer = None
+
+    if repairer and ticket.repairStatus == "WAITING":
+        ticket.repairer = repairer
+        ticket.repair_ticket()
+        ticket.save()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
+    elif ticket.repairStatus != "WAITING":
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
+    else:
+        messages.error(request, "No repairer is logged in.")
     return redirect('RepairCafe:repair_item', repairNumber=repairNumber)
 
 def mark_incomplete_ticket(request,repairNumber):
@@ -410,7 +422,8 @@ def repair_prompt(request,repairNumber):
     print(ticket.repairStatus,ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
         raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
+    repairer = ticket.repairer
+    context_dict = {'ticket': ticket, 'repairer': repairer} 
     return render(request,'RepairCafe/repair_prompt.html',context_dict)
 
 def wait_for_checkout(request,repairNumber):

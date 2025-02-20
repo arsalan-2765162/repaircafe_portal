@@ -59,6 +59,7 @@ class Ticket(models.Model):
     position = models.IntegerField(default=None,null=True,blank=True,)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE,default=None,null=True,blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
+    repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"

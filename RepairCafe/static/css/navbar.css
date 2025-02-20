@@ -571,6 +571,7 @@
     margin-right: 40px;
     align-self: center;
     line-height: 1.5em;
+    color:hsl(0, 0%, 100%)
   }
 
   .leftBlock{
@@ -666,9 +667,6 @@
     color:hsl(0, 0%, 95%)
   }
 
-  .repairbg h2{
-    color:hsl(0, 0%, 95%)
-  }
 
 
   .button-row{
@@ -1223,6 +1221,13 @@ input[type="checkbox"] {
   margin-bottom: 20px;
 }
 
+.repairer-prompt-img{
+  width: 220px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
    /*
     Beginning of mobile styling
     */
@@ -1308,7 +1313,7 @@ input[type="checkbox"] {
 
       .repairbg h1 {
         margin-bottom: 10px;
-        line-height: 1.5em !important;
+        line-height: 1.2em !important;
         font-size: 2em;
       }
 
