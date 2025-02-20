@@ -98,13 +98,16 @@ class CustomerModelTest(TestCase):
         self.assertEqual(self.customer.firstName, "Jane")
         self.assertEqual(self.customer.lastName, "Doe")
 
+
 class RepairerModelTest(TestCase):
     def setUp(self):
-        self.repairer = Repairer.objects.create(firstName="Bob", lastName="Fixer")
+        self.repairer = Repairer.objects.create(name="Bob")
 
     def test_repairer_creation(self):
-        self.assertEqual(self.repairer.firstName, "Bob")
-        self.assertEqual(self.repairer.lastName, "Fixer")
+        self.assertEqual(self.repairer.name, "Bob")
+
+    def test_repairer_picture_default(self):
+        self.assertIsNone(self.repairer.picture)
 
 class TestRedirectToEnterPassword(TestCase):
     def setup(self):

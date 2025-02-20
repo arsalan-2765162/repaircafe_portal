@@ -17,7 +17,7 @@ class Queue(models.Model):
 class Repairer(models.Model):
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
+    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True) 
 
 
 class Customer(models.Model):
@@ -156,6 +156,9 @@ class Ticket(models.Model):
 
         else:
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
+
+
+
 
 
 
