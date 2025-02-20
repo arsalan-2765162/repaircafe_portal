@@ -31,9 +31,12 @@ urlpatterns = [
         path('repair_prompt/<int:repairNumber>/', views.repair_prompt,name='repair_prompt'),
         path('wait_for_repair/<int:repairNumber>/',views.wait_for_repair,name='wait_for_repair'),
         path('repairer_login/', views.repairer_login, name='repairer_login'),
+        path("repairer_logout/", views.repairer_logout, name="repairer_logout"),
+        path('settings_page/', views.settings_page, name='settings_page'),
         path('basic_stats/', views.basic_stats, name='basic_stats'),
         path('admin/', admin.site.urls),
         path('admin_tools/', include('admin_tools.urls')),
+        
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

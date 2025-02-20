@@ -334,10 +334,22 @@ def repairer_login(request):
             repairer = Repairer.objects.filter(name=selected_repairer_name).first()
             if repairer:
                 request.session['repairer_name'] = repairer.name
+                request.session["repairer_picture"] = (
+                    repairer.picture.url if repairer.picture else "/static/images/default.jpg"
+                ) 
                 return redirect('RepairCafe:main_queue')
     context_dict['repairers'] = repairers
 
     return render(request, 'RepairCafe/repairer_login.html', context_dict)
+
+
+def repairer_logout(request):
+    request.session.flush()
+    return redirect("RepairCafe:enter_password")
+
+
+def settings_page(request):
+    return render(request, 'RepairCafe/settings_page.html')
 
 
 
