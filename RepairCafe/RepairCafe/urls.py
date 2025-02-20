@@ -2,12 +2,14 @@ from django.urls import include,path
 from RepairCafe import views
 from .views import enter_password
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'RepairCafe'
 
 urlpatterns = [
         path('', views.index, name='index'),
-	path('reset_data', views.reset_data, name='reset_data'),
+        path('reset_data', views.reset_data, name='reset_data'),
         path('repair_item/<int:repairNumber>',views.repair_item,name='repair_item'),
         path('complete/<int:repairNumber>',views.complete_ticket,name='complete_ticket'),
         path('mark_incomplete_ticket/<int:repairNumber>', views.mark_incomplete_ticket, name='mark_incomplete_ticket'),
@@ -31,9 +33,7 @@ urlpatterns = [
         path('repairer_login/', views.repairer_login, name='repairer_login'),
         path('basic_stats/', views.basic_stats, name='basic_stats'),
         path('admin/', admin.site.urls),
-        path('admin_tools/', include('admin_tools.urls'))
-        
-        
-        
-
-]
+        path('admin_tools/', include('admin_tools.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1145,6 +1145,49 @@ input[type="checkbox"] {
   
 }
 
+.repair_prof{
+  background-color: #e86312;
+  padding: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.repair_prof:hover {
+  transform: scale(1.1); 
+  background-color: #f07b35; 
+}
+
+
+
+.repair_prof.selected {
+
+  transform: scale(1.1);
+  border: 5px solid #333 
+}
+
+
+.repair_prof h2{
+  align-self: center;
+  text-align: center;
+  line-height: 1em;
+  color: white;
+}
+
+.repairers{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
    /*
     Beginning of mobile styling
     */

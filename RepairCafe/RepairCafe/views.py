@@ -304,7 +304,7 @@ def enter_password(request):
             return redirect('RepairCafe:house_rules')
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
             request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:index')
+            return redirect('RepairCafe:repairer_login')
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
         
@@ -314,8 +314,18 @@ def enter_password(request):
 def repairer_login(request):
     context_dict = {}
     repairers = Repairer.objects.all()
+    if request.method == "POST":
+        selected_repairer_name = request.POST.get('selected_repairer')
+        repairer = Repairer.objects.filter(name=selected_repairer_name).first()
+        if repairer:
+            request.session['repairer_name'] = repairer.name
+            return redirect('RepairCafe:main_queue')
     context_dict['repairers'] = repairers
-    return render(request, 'RepairCafe/repairer_login.html')
+    return render(request, 'RepairCafe/repairer_login.html', context_dict)
+
+
+
+
 
 """
 Visitor Flow

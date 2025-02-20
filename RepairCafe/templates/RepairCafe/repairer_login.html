@@ -1,11 +1,52 @@
-{% extends 'RepairCafe/navbar.html' %}
+{% extends 'RepairCafe/base.html' %}
 {% load static %}
 {% block content %}
+<h1>Repairer Login</h1>
 
-{% for r in repairers %}
+<div class="repairers">
+    {% for r in repairers %}
+        <button class="repair_prof" onclick="selectRepairer(this, '{{ r.name }}')" type="button">
+            <div class="repair_prof_content">
+                <h2>{{ r.name }}</h2>
+                {% if r.picture %}
+                    <img src="{{ r.picture.url }}" alt="{{ r.name }}'s picture" style="width: 200px; height: auto;">
+                {% else %}
+                    <img src="{% static 'images/default.jpg' %}" alt="{{ r.name }}'s picture" style="width: 150px; height: auto;">
+                {% endif %}
+            </div>
+        </button>
+    {% empty %}
+        <p>No repairers available.</p>
+    {% endfor %}
+</div>
 
-<div class="repairProf"><h2> {{ r.name }} </h2></div>
 
 
-{% endfor %}
+<!-- Submit Button -->
+<form id="repairerForm" method="POST" action="{% url 'RepairCafe:repairer_login' %}">
+    {% csrf_token %}
+    <input type="hidden" name="selected_repairer" id="selectedRepairer">
+    <button id="submitBtn" class="btn-primary" type="submit" disabled>Confirm Selection</button>
+</form>
+
+<script>
+    let selectedButton = null;
+
+    function selectRepairer(button, name) {
+        // Remove highlight from previous selection
+        if (selectedButton) {
+            selectedButton.classList.remove("selected");
+        }
+
+        // Highlight the new selection
+        selectedButton = button;
+        button.classList.add("selected");
+
+        // Set hidden input value
+        document.getElementById('selectedRepairer').value = name;
+
+        // Enable submit button
+        document.getElementById('submitBtn').disabled = false;
+    }
+</script>
 {% endblock %}

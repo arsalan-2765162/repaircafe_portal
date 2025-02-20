@@ -160,10 +160,3 @@ class Ticket(models.Model):
 
 
 
-class Repairer(models.Model):
-    NAME_MAX_LENGTH = 128
-    firstName = models.CharField(max_length=NAME_MAX_LENGTH)
-    lastName = models.CharField(max_length=NAME_MAX_LENGTH)
-
-
-
