@@ -38,7 +38,12 @@
 </div>
 
 <div id="main">
-  <button class="openbtn" onclick="openNav()">&#9776;</button>
+  <div class="header">
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
+    {% if request.session.repairer_name %}
+      <p class="logged-in-text">Logged in as: {{ request.session.repairer_name }}</p>
+    {% endif %}
+  </div>
   {% block content %}
   {% endblock %}
 </div>

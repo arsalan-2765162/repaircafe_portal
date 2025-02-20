@@ -316,11 +316,15 @@ def repairer_login(request):
     repairers = Repairer.objects.all()
     if request.method == "POST":
         selected_repairer_name = request.POST.get('selected_repairer')
-        repairer = Repairer.objects.filter(name=selected_repairer_name).first()
-        if repairer:
-            request.session['repairer_name'] = repairer.name
-            return redirect('RepairCafe:main_queue')
+        if not selected_repairer_name:
+            context_dict['errors'] = "Error: Please select a repairer before confirming."
+        else:
+            repairer = Repairer.objects.filter(name=selected_repairer_name).first()
+            if repairer:
+                request.session['repairer_name'] = repairer.name
+                return redirect('RepairCafe:main_queue')
     context_dict['repairers'] = repairers
+
     return render(request, 'RepairCafe/repairer_login.html', context_dict)
 
 

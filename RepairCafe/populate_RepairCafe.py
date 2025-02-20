@@ -105,6 +105,7 @@ def populate():
         {'name': 'Michael', 'picture': 'michael.jpg'},
         {'name': 'David', 'picture': 'david.jpg'},
         {'name': 'Milchick', 'picture': 'milchick.jpg'},
+        {'name': 'Bjork', 'picture': 'bjork.png'},
         {'name': 'Guest Repairer'}
     ]
     customers = []
