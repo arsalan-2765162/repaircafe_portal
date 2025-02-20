@@ -51,7 +51,7 @@
                         <h2 class="item-description">Repair Description: {{ ticket.itemDescription}}</h2>
                     </div>
                 </div>
-                {% if ticket.repairStatus == "WAITING" %}
+                {% if ticket.repairStatus == "WAITING" and "repairer" in request.user.roles %}
                 <button 
                     type="button" 
                     class="btn btn-primary" 

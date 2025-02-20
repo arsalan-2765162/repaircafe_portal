@@ -127,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 VISITOR_PRESET_PASSWORD = "visitor" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
 REPAIRER_PRESET_PASSWORD = "repairer" #same with repairer
-
+VOLUNTEER_PRESET_PASSWORD = "volunteer"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -148,3 +148,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
+
+
+#Authentication settings
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  
+]
+
+AUTH_USER_MODEL = 'RepairCafe.UserRoles'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 3600 
+SESSION_SAVE_EVERY_REQUEST = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

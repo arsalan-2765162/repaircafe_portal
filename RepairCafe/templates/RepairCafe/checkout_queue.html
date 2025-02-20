@@ -53,8 +53,9 @@
                     <h2><div class="weak">Repair Description: </div> <div class="inline">&thinsp; {{ ticket.itemDescription}}</div></h2>
                 </div>
             </div>
+
             
-            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
+            {% if "volunteer" in request.user.roles and ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">

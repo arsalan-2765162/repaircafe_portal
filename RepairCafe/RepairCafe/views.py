@@ -1,8 +1,9 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer
+from .models import Ticket, Queue, Customer, UserRoles
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
@@ -78,6 +79,14 @@ def reset_data(request):
 
 
 def main_queue(request):
+
+    print(request.user)
+    
+    #if user has multiple roles, redirect to a page where they select the role they use to access this page
+
+
+
+
     context_dict={}
     try:
         queue = Queue.objects.get(name="Main Queue")
@@ -111,6 +120,13 @@ def main_queue(request):
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
 
 def waiting_list(request):
+
+    print(request.user)
+    #if user has multiple roles, redirect to a page where they select the role they use to access this page
+
+
+
+
     context_dict={}
     try:
         queue = Queue.objects.get(name="Waiting List")
@@ -135,7 +151,12 @@ def waiting_list(request):
         context_dict['Queue']=None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
-def checkout_queue(request):
+def checkout_queue(request, activerole=""):
+
+    #if user has multiple roles, redirect to a page where they select the role they use to access this page    
+
+
+
     context_dict={}
     try:
         queue = Queue.objects.get(name="Checkout Queue")
@@ -295,19 +316,41 @@ def change_category(request, repairNumber):
     return redirect(request.META.get('HTTP_REFERER', 'RepairCafe:waiting_list'))
 
 
+def authenticate_roles(request):
+
+    new_roles = UserRoles.objects.create(roles=[])
+    login(request, new_roles,backend='django.contrib.auth.backends.ModelBackend')
+    
+    return new_roles
 
 def enter_password(request):
+    if not request.user.is_authenticated:  
+        user = authenticate_roles(request)  
+        
+        if user is None:  
+            return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
+        
+        login(request, user)  
+
     if request.method == 'POST':
         entered_password = request.POST.get('password')
+        
         if entered_password == settings.VISITOR_PRESET_PASSWORD:
-            request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:house_rules')
+            role = "visitor"
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
-            request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:index')
+            role = "repairer"
+        elif entered_password == settings.VOLUNTEER_PRESET_PASSWORD:
+            role = "volunteer"
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
+
         
+        if role not in request.user.roles:
+            request.user.roles.append(role)
+            request.user.save()
+
+        return redirect('RepairCafe:index' if role in ["repairer", "volunteer"] else 'RepairCafe:house_rules')
+
     return render(request, 'RepairCafe/enter_password.html')
 
 """
@@ -315,6 +358,11 @@ Visitor Flow
 """
 
 def house_rules(request):
+
+    
+
+    #turn away volunteers and repairers by checking active role
+
     if request.method == 'POST':
         form = RulesButton(request.POST)
         if form.is_valid():

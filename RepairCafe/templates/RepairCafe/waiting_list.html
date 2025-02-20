@@ -51,6 +51,7 @@
                 <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
             </div>
             </div>
+            {% if "volunteer" in request.user.roles %}
             <div class="button-col">
                 
                 <button 
@@ -64,21 +65,26 @@
                     )">
                     <i data-feather="edit-2"></i>
                 </button>
+                
             </div>
+            {% endif %}
             <div class="button-col">
                 
-                {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
+                {% if ticket.repairStatus == 'WAITING_TO_JOIN' and "volunteer" in request.user.roles %}
                 <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
+                        
                         <button type="submit" class="btn btn-primary">
                             <i data-feather="check"></i>
                         </button>
+
                     </form>
                 </div>
                 {% else %}
                     <p>Ticket cannot be accepted</p>
                 {% endif %}
+                {% if "volunteer" in request.user.roles %}
                 <div class="button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:delete_ticket' ticket.repairNumber %}">     
                         {% csrf_token %}
@@ -87,6 +93,7 @@
                         </button>
                     </form>
                 </div>
+                {% endif %}
             </div>
             
         </div>
