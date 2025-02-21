@@ -391,7 +391,8 @@ def checkin_form(request):
                 itemName=form_data['itemName'],
                 itemCategory=form_data['itemCategory'],
                 itemDescription=form_data['itemDescription'],
-                customer=customer
+                customer=customer,
+                checkinFormData=form_data
             )
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
@@ -453,20 +454,20 @@ def checkout(request,repairNumber):
         raise Http404("The ticket is not in the desired state.")
     if ticket.isCheckedOut != True:
         raise Http404("The ticket is not in the desired state.")
-    context_dict={}
+    context_dict = {}
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
-            form_data['event_date'] = date.today()
-            print(form_data)
+            form_data['event_date'] = date.today().isoformat()
+            ticket.checkoutFormData = form_data
+            ticket.save()
             return redirect('RepairCafe:checkout_success')
     else:
-        form=CheckoutForm
+        form = CheckoutForm
         context_dict['form']=form
 
     return render(request,'RepairCafe/checkout.html',context_dict)
-
 
 
 def checkout_success(request):
