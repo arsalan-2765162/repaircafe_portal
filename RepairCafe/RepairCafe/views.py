@@ -80,7 +80,8 @@ def reset_data(request):
 
 def main_queue(request):
 
-    print(request.user)
+    print(request.user.roles)
+    print(request.user.username)
     
     #if user has multiple roles, redirect to a page where they select the role they use to access this page
 
@@ -121,7 +122,8 @@ def main_queue(request):
 
 def waiting_list(request):
 
-    print(request.user)
+    print(request.user.roles)
+    print(request.user.username)
     #if user has multiple roles, redirect to a page where they select the role they use to access this page
 
 
@@ -324,13 +326,14 @@ def authenticate_roles(request):
     return new_roles
 
 def enter_password(request):
-    if not request.user.is_authenticated:  
-        user = authenticate_roles(request)  
+      
+    if not request.user.is_authenticated:
+     user = authenticate_roles(request)  
         
-        if user is None:  
-            return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
+    #if user is None:  
+     #       return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
         
-        login(request, user)  
+          
 
     if request.method == 'POST':
         entered_password = request.POST.get('password')
@@ -344,12 +347,22 @@ def enter_password(request):
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
 
+        if role == "visitor" and request.user.roles == ["visitor"]:
+         return render(request, 'RepairCafe/enter_password.html', {'error': 'Visitors can only log in once at a time.'})
         
-        if role not in request.user.roles:
+        else:
+         
+         if role not in request.user.roles:
             request.user.roles.append(role)
             request.user.save()
 
-        return redirect('RepairCafe:index' if role in ["repairer", "volunteer"] else 'RepairCafe:house_rules')
+        if role in ["repairer","volunteer"]:
+            return redirect('RepairCafe:index')
+        
+        if role == "visitor":
+            return redirect('RepairCafe:house_rules')
+
+        
 
     return render(request, 'RepairCafe/enter_password.html')
 
@@ -472,6 +485,7 @@ def checkout(request,repairNumber):
 
 
 def checkout_success(request):
+    request.user.delete()
     return render(request,'RepairCafe/checkout_success.html')
 
 

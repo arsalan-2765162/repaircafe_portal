@@ -1,17 +1,22 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser, Group, Permission
+import uuid
 
 
 class UserRoles(AbstractUser):
-
-    
 
     #groups = models.ManyToManyField(Group, related_name="user_roles_set", blank=True)
     #user_permissions = models.ManyToManyField(Permission, related_name="user_roles_permissions_set", blank=True)
 
     roles = models.JSONField(default=list)
     activerole = models.CharField(max_length=50)
+
+    def save(self, *args, **kwargs):
+        
+        if not self.username:
+            self.username = f"user_{uuid.uuid4().hex[:8]}"  
+        super().save(*args, **kwargs)
 
 
 class Queue(models.Model):

@@ -30,6 +30,11 @@
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
   </div>
+  {% if "volunteer" in request.user.roles or "repairer" in request.user.roles %}
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:enter_password'%}">Log in</a>
+  </div>
+  {% endif %}
   <div class="sidebarbutton end link">
     <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
       <input class ="btn-primary" type="submit" value="RELOAD DATA">
