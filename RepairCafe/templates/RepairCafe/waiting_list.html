@@ -70,7 +70,7 @@
             {% endif %}
             <div class="button-col">
                 
-                {% if ticket.repairStatus == 'WAITING_TO_JOIN' and "volunteer" in request.user.roles %}
+                {% if ticket.repairStatus == 'WAITING_TO_JOIN' and request.user.activerole == "volunteer" %}
                 <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}

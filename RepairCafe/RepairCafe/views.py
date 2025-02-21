@@ -82,8 +82,11 @@ def main_queue(request):
 
     print(request.user.roles)
     print(request.user.username)
+
+    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
+        return redirect(f'/RepairCafe/role_selection/?redirect_to={request.path}')
     
-    #if user has multiple roles, redirect to a page where they select the role they use to access this page
+    
 
 
 
@@ -124,7 +127,11 @@ def waiting_list(request):
 
     print(request.user.roles)
     print(request.user.username)
-    #if user has multiple roles, redirect to a page where they select the role they use to access this page
+
+    
+    
+    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
+        redirect('RepairCafe:role_selection')
 
 
 
@@ -155,7 +162,8 @@ def waiting_list(request):
 
 def checkout_queue(request, activerole=""):
 
-    #if user has multiple roles, redirect to a page where they select the role they use to access this page    
+    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
+        redirect('RepairCafe:role_selection')  
 
 
 
@@ -356,6 +364,8 @@ def enter_password(request):
             request.user.roles.append(role)
             request.user.save()
 
+        
+
         if role in ["repairer","volunteer"]:
             return redirect('RepairCafe:index')
         
@@ -365,6 +375,26 @@ def enter_password(request):
         
 
     return render(request, 'RepairCafe/enter_password.html')
+
+
+def role_selection(request): #users with multiple roles are redirected here and made to choose a role
+
+
+    if request.method == 'POST':
+        selected = request.POST.get('role')
+        if selected:
+            print(selected)           
+            request.user.activerole = selected
+            request.user.save()
+
+            redirect_url = request.GET.get('redirect_to', '/')
+            print(f"Redirecting to: {redirect_url}") 
+            
+            return redirect(redirect_url)#redirects to whichever page redirected here
+
+    return render(request, 'RepairCafe/role_selection.html', {
+        'roles': request.user.roles
+    })
 
 """
 Visitor Flow
@@ -485,6 +515,7 @@ def checkout(request,repairNumber):
 
 
 def checkout_success(request):
+    print(request.user.roles)
     request.user.delete()
     return render(request,'RepairCafe/checkout_success.html')
 
