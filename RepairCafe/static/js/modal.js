@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to open the modal
     window.openModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log("Opening Modal with:", { url, itemName, itemCategory, repairNumber });
         sessionStorage.setItem("openModalRepairNumber", repairNumber);
         sessionStorage.setItem("openModalType", "confirmation"); 
 
@@ -48,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.openCompleteModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log(modal);
         modalDetails.innerHTML = `
             <strong>Repair #:</strong> ${repairNumber}<br>
             <strong>Item Name:</strong> ${itemName}<br>

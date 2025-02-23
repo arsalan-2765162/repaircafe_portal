@@ -68,6 +68,14 @@ Repairer/Volunteer Flow
 """
 
 
+
+def get_queue_position(request, repairNumber):
+    try:
+        ticket = Ticket.objects.get(repairNumber=repairNumber)
+        return JsonResponse({'position': ticket.position})
+    except Ticket.DoesNotExist:
+        return JsonResponse({'error': 'Ticket not found'}, status=404)
+
 def reset_data(request):
     script.populate()
     referer_url = request.META.get('HTTP_REFERER')

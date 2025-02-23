@@ -1,5 +1,10 @@
 {% extends 'RepairCafe/navbar.html' %}
 {% load static %} 
+
+{% block title_block %}
+Check-in Queue
+{% endblock %}
+
 {% block content %}
     <h1>Check-in Queue</h1>
     {% if Queue %}
@@ -161,7 +166,6 @@
     
         mainQueueSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log(data.message);
             location.reload(); // Simple refresh on any queue update
         };
     </script>

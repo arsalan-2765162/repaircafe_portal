@@ -1,5 +1,10 @@
 {% extends 'RepairCafe/base.html' %}
 {% load static %}
+
+{% block title_block %}
+Waiting Page for Checkout
+{% endblock %}
+
 {% block content %}
 <div class="purp-bg purple">
     <h1>Your repair is now complete</h1>
@@ -19,7 +24,6 @@
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        console.log(data.status + data.repairNumber)
         if (data.status === 'CHECKOUT' && data.repairNumber == repairNumber) {
             document.getElementById('status-message').textContent = 'Your ticket has been accepted!';
             document.getElementById('next-page').style.display = 'block';

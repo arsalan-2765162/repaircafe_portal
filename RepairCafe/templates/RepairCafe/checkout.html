@@ -1,5 +1,10 @@
 {% extends 'RepairCafe/base.html' %}
 {% load static %}
+
+{% block title_block %}
+Checkout
+{% endblock %}
+
 {% block content %}
 <div class="back-ground1">
     <div class="checkout-form ">
@@ -20,5 +25,4 @@
     </div>
 </div>
 <script src="{% static 'js/autofillCheckout.js' %}" defer></script>
-<script src="% static 'js/yesno.js' %" defer></script>
 {% endblock %}
