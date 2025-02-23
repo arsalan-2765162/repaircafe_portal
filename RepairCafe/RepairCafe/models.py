@@ -25,13 +25,17 @@ class Customer(models.Model):
 class Ticket(models.Model):
     MAX_ITEM_NAME_LENGTH = 128
     MAX_ITEM_DESC_LENGTH = 256
-    REPAIR_STATUS_CHOICES = [('WAITING','Waiting'),
-                             ('WAITING_TO_JOIN','Waiting to Join Queue'),
-                      ('COMPLETED','Completed'),
-                      ('NEED_PAT','Needs PAT tested'),
-                      ('INCOMPLETE','Incomplete'),
-                      ('BEING_REPAIRED','Currently being Repaired'),
-                      ]
+    REPAIR_STATUS_CHOICES = [
+        ('WAITING','Waiting'),
+        ('WAITING_TO_JOIN','Waiting to Join Queue'),
+        ('COMPLETED','Completed'),
+        ('NEED_PAT','Needs PAT tested'),
+        ('INCOMPLETE','Incomplete'),
+        ('BEING_REPAIRED','Currently being Repaired'),
+        ('PAT_TESTING', 'Currently being PAT tested'),  
+        ('PAT_PASSED', 'PAT Test Passed'),              
+        ('PAT_FAILED', 'PAT Test Failed'),              
+    ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
                                  ('COM_BACK','Coming back next time'),
                                  ('TAKEN_HOME','Repairer has taken it home')]
@@ -51,7 +55,7 @@ class Ticket(models.Model):
                                         default=None,blank=True,null=True)
     position = models.IntegerField(default=None,null=True,blank=True,)
     queue = models.ForeignKey(Queue,on_delete=models.CASCADE,default=None,null=True,blank=True,)
-    customer = models.OneToOneField(Customer, on_delete=models.PROTECT,null=True,blank=True)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, null=True, blank=True)
     
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"

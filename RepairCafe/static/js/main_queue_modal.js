@@ -81,13 +81,38 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "flex";
     };
 
+    window.openPatModal = function (url, itemName, itemCategory, repairNumber) {
+        console.log("Opening PAT Modal with:", { url, itemName, itemCategory, repairNumber });
+        
+        const patModal = document.getElementById("patTestModal");
+        const patModalDetails = document.getElementById("pat-modal-item-details");
+        const patTestForm = document.getElementById("pat-test-form");
+        const rejectPatForm = document.getElementById("reject-pat-form");
+    
+        patModalDetails.innerHTML = `
+            <strong>Repair #:</strong> ${repairNumber}<br>
+            <strong>Item Name:</strong> ${itemName}<br>
+            <strong>Category:</strong> ${itemCategory}
+        `;
+        
+        // Set action URLs for both forms
+        patTestForm.setAttribute("action", url);
+        rejectPatForm.setAttribute("action", url);
+        
+        patModal.style.display = "flex";
+    };
+
 
     const closeModal = () => {
         if(modal){
-        modal.style.display = "none";
+            modal.style.display = "none";
         }
         if(modalIncomplete){
-        modalIncomplete.style.display = "none";
+            modalIncomplete.style.display = "none";
+        }
+        const patModal = document.getElementById("patTestModal");
+        if(patModal){
+            patModal.style.display = "none";
         }
         sessionStorage.removeItem("openModalRepairNumber");
         sessionStorage.removeItem("openModalType");
