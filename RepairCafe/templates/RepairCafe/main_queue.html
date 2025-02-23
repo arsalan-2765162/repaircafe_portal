@@ -109,15 +109,15 @@
             <p id="pat-modal-item-details"></p>
             <div class="buttons">
                 <button class="btn btn-reject cancel-btn">Back</button>
-                <form id="pat-test-form" action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="accept">
-                    <button type="submit" class="btn btn-accept">Complete PAT Test</button>
-                </form>
                 <form id="reject-pat-form" action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="reject">
-                    <button type="submit" class="btn btn-reject">Reject PAT Test</button>
+                    <button type="submit" class="btn btn-reject">Reject PAT</button>
+                </form>
+                <form id="pat-test-form" action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="accept">
+                    <button type="submit" class="btn btn-accept">Approve PAT</button>
                 </form>
             </div>
         </div>
