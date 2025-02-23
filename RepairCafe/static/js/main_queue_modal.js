@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isRedirecting = false;
 
-    console.log("Script loaded and running");
     const mainQueueSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/main_queue/'
     );
@@ -36,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalIncomplete = document.getElementById("incompleteModal");
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
+    const patModal = document.getElementById("patTestModal");
 
     
 
@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.openPatModal = function (url, itemName, itemCategory, repairNumber) {
         console.log("Opening PAT Modal with:", { url, itemName, itemCategory, repairNumber });
         
-        const patModal = document.getElementById("patTestModal");
         const patModalDetails = document.getElementById("pat-modal-item-details");
         const patTestForm = document.getElementById("pat-test-form");
         const rejectPatForm = document.getElementById("reject-pat-form");
@@ -110,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if(modalIncomplete){
             modalIncomplete.style.display = "none";
         }
-        const patModal = document.getElementById("patTestModal");
+
         if(patModal){
             patModal.style.display = "none";
         }
@@ -121,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (modal) modal.querySelector(".close").addEventListener("click", closeModal);
     if (modalIncomplete) modalIncomplete.querySelector(".close").addEventListener("click", closeModal);
+    if (patModal) patModal.querySelector(".close").addEventListener("click", closeModal);
 
     const cancelButtons = document.querySelectorAll(".cancel-btn");
 
@@ -137,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("click", event => {
         if (modal && event.target === modal) closeModal();
         if (modalIncomplete && event.target === modalIncomplete) closeModal();
+        if (patModal && event.target === patModal) closeModal();
     })
 
     
@@ -155,33 +156,27 @@ function redirectToRepairItem(url) {
 }
 
 function checkSessionAndOpenModal() {
-    console.log("Checking session storage for modal data"); // Debug: Ensure this function runs
+
     const repairNumber = sessionStorage.getItem("openModalRepairNumber");
     const modalType = sessionStorage.getItem("openModalType");
 
-    console.log("Session Storage - Repair Number:", repairNumber); // Debug: Check the stored repair number
-    console.log("Session Storage - Modal Type:", modalType); // Debug: Check the stored modal type
+
 
     if (repairNumber && modalType) {
-        console.log("Repair number and modal type exist"); // Debug: Ensure both session values are present
-
+       
         const ticketElement = document.querySelector(
             `.ticket-form[data-repair-number="${repairNumber}"]`
         );
-        console.log("Ticket Element:", ticketElement); // Debug: Check if the ticket element exists
 
         if (ticketElement) {
             const itemName = ticketElement.querySelector("h2:nth-child(1)").textContent.split(": ")[1];
             const itemCategory = ticketElement.querySelector("h2:nth-child(3)").textContent.split(": ")[1];
             const url = `/RepairCafe/repair_ticket/${repairNumber}/`;
 
-            console.log("Item Name:", itemName); // Debug: Check the item name
-            console.log("Item Category:", itemCategory); // Debug: Check the item category
-            console.log("URL for Modal:", url); // Debug: Check the URL being passed to openModal
+
 
             openModal(url, itemName, itemCategory, repairNumber);
         } else {
-            console.log("No ticket element found, clearing session storage"); // Debug: No matching ticket element
             sessionStorage.removeItem("openModalRepairNumber");
             sessionStorage.removeItem("openModalType");
         }
