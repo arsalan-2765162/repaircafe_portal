@@ -18,6 +18,7 @@ urlpatterns = [
         path('repair_ticket/<int:repairNumber>/', views.repair_ticket, name='repair_ticket'),
         path('delete-ticket/<int:repairNumber>/', views.delete_ticket, name='delete_ticket'),
         path('checkout_ticket/<int:repairNumber>/', views.checkout_ticket, name='checkout_ticket'),
+        path('ticket/<int:repairNumber>/pat-test/', views.pat_test, name='pat_test'),
         path('enter_password/', views.enter_password, name='enter_password'),
         path('house_rules/', views.house_rules, name='house_rules'),
         path('change-category/<int:repairNumber>/', views.change_category, name='change_category'),

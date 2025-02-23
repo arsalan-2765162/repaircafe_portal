@@ -6,6 +6,7 @@ from django.contrib import messages
 import populate_RepairCafe as script
 from django.conf import settings
 from datetime import date
+from django.db.models import Max
 from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -104,6 +105,7 @@ def main_queue(request):
     except Queue.DoesNotExist:
         context_dict['Queue'] = None
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
+
 
 
 def waiting_list(request):
@@ -259,7 +261,34 @@ def complete_ticket(request, repairNumber):
     return redirect(reverse('RepairCafe:main_queue'))
 
 
-def delete_ticket(request, repairNumber):
+def pat_test(request, repairNumber):
+    if request.method == 'POST':
+        ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+        action = request.POST.get('action')
+
+        if action == 'accept':
+            # Use the complete_ticket function's logic
+            ticket.add_to_checkout()  # This will move it to checkout queue
+            ticket.repairStatus = 'COMPLETED'
+            ticket.save()
+
+            send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
+            send_queue_update("main_queue_updates", "Main Queue", "ticket_removed")
+            send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_added")
+
+            messages.success(request, f'PAT Test completed for Repair #{repairNumber}. Ticket moved to checkout queue.')
+            
+        elif action == 'reject':
+            # Delete the ticket
+            ticket.delete()
+            messages.warning(request, f'PAT Test rejected for Repair #{repairNumber}. Ticket has been deleted.')
+
+        return redirect('RepairCafe:main_queue')
+
+    return HttpResponseBadRequest("Invalid request method")
+
+
+def delete_ticket(request,repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     ticket.delete_ticket()
     messages.success(request, f"Ticket: {ticket.itemName}, has been removed")
