@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalIncomplete = document.getElementById("incompleteModal");
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
+    const patModal = document.getElementById("patTestModal");
 
     
 
@@ -76,13 +77,37 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "flex";
     };
 
+    window.openPatModal = function (url, itemName, itemCategory, repairNumber) {
+        console.log("Opening PAT Modal with:", { url, itemName, itemCategory, repairNumber });
+        
+        const patModalDetails = document.getElementById("pat-modal-item-details");
+        const patTestForm = document.getElementById("pat-test-form");
+        const rejectPatForm = document.getElementById("reject-pat-form");
+    
+        patModalDetails.innerHTML = `
+            <strong>Repair #:</strong> ${repairNumber}<br>
+            <strong>Item Name:</strong> ${itemName}<br>
+            <strong>Category:</strong> ${itemCategory}
+        `;
+        
+        // Set action URLs for both forms
+        patTestForm.setAttribute("action", url);
+        rejectPatForm.setAttribute("action", url);
+        
+        patModal.style.display = "flex";
+    };
+
 
     const closeModal = () => {
         if(modal){
-        modal.style.display = "none";
+            modal.style.display = "none";
         }
         if(modalIncomplete){
-        modalIncomplete.style.display = "none";
+            modalIncomplete.style.display = "none";
+        }
+
+        if(patModal){
+            patModal.style.display = "none";
         }
         sessionStorage.removeItem("openModalRepairNumber");
         sessionStorage.removeItem("openModalType");
@@ -91,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (modal) modal.querySelector(".close").addEventListener("click", closeModal);
     if (modalIncomplete) modalIncomplete.querySelector(".close").addEventListener("click", closeModal);
+    if (patModal) patModal.querySelector(".close").addEventListener("click", closeModal);
 
     const cancelButtons = document.querySelectorAll(".cancel-btn");
 
@@ -107,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("click", event => {
         if (modal && event.target === modal) closeModal();
         if (modalIncomplete && event.target === modalIncomplete) closeModal();
+        if (patModal && event.target === patModal) closeModal();
     })
 
     
@@ -129,11 +156,10 @@ function checkSessionAndOpenModal() {
     const modalType = sessionStorage.getItem("openModalType");
 
     if (repairNumber && modalType) {
-        
+       
         const ticketElement = document.querySelector(
             `.ticket-form[data-repair-number="${repairNumber}"]`
         );
-
 
         if (ticketElement) {
             const itemName = ticketElement.querySelector("h2:nth-child(1)").textContent.split(": ")[1];
