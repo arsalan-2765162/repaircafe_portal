@@ -51,6 +51,7 @@ def populate():
         'Main Queue': "The queue for tickets that have been accepted.",
         'Waiting List': "The queue for tickets to be checked by the check-in person before adding to the Main Queue.",
         'Checkout Queue': "The queue for tickets to be checked out.",
+        'PAT Queue': "The queue for items that need PAT testing."  
     }
 
     tickets_data = [
@@ -78,6 +79,8 @@ def populate():
         {'repairNumber': 17, 'itemName': 'Garden Shears', 'itemCategory': 'OTHER', 'itemDescription': 'Rusty blade', 'repairStatus': 'WAITING_TO_JOIN', 'position': 3, 'queue': 'Waiting List'},
         {'repairNumber': 18, 'itemName': 'Curtains', 'itemCategory': 'TEXT', 'itemDescription': 'Stitching torn', 'repairStatus': 'WAITING_TO_JOIN', 'position': 4, 'queue': 'Waiting List'},
         {'repairNumber': 19, 'itemName': 'Sewing Machine', 'itemCategory': 'OTHER', 'itemDescription': 'Needle not moving', 'repairStatus': 'WAITING_TO_JOIN', 'position': 5, 'queue': 'Waiting List'},
+
+
     ]
 
     customers_data = [
@@ -119,8 +122,8 @@ def populate():
     # Adding Ticket objects (ensure the queue is correctly passed)
     for i, ticket_data in enumerate(tickets_data):
         queue = queue_objects[ticket_data['queue']]
-        # Use modulo to cycle through customers if there are more tickets than customers
-        customer = customers[i]
+        # Use modulo to cycle through customers if tickets > customers
+        customer = customers[i % len(customers)]
         add_ticket(
             ticket_data['repairNumber'], 
             ticket_data['itemName'], 
