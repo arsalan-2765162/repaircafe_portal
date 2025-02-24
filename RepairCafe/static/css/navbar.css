@@ -279,6 +279,8 @@
       font-size: 1.5em; 
       font-weight: bold; 
       transition: transform 0.2s ease; 
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
 
@@ -288,13 +290,15 @@
       background-color: #cdcccc; 
       color: #000000;
       cursor: pointer;
+      border-color: #000000;
       
     } 
     .btn-primary:active {
-      background-color: #3d3d3d; 
+      background-color: #3d3d3d !important; 
       color: #ffffff;
       transform: scale(0.98); 
       cursor: pointer;
+      border-color: #000000!important;
     } 
     
 
