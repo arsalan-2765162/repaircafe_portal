@@ -17,9 +17,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
+ADMIN_TOOLS_MENU= 'menu.CustomMenu'
+ADMIN_TOOLS_THEMING_CSS = 'css/admin_theming.css'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -32,20 +38,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1']
 
-
+SITE_ID=1
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
+    'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.admin',
     'daphne',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'RepairCafe',
     'channels',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -65,13 +76,18 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR, ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                'admin_tools.template_loaders.Loader',  # Make sure this is at the beginning
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -145,7 +161,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',  # Searches for static files in the STATICFILES_DIRS
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',  # Searches for static files in the 'static' subdirectory of each app
+]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 

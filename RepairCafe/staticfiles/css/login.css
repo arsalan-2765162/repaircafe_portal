@@ -1,0 +1,20 @@
+
+.container {
+    display: flex;          
+    justify-content: center; 
+    align-items: center;     
+    height: 100vh;        
+    background-color: #fff;
+}
+
+.content {
+    text-align: center;      
+    padding: 20px;            
+    background: #fff;          
+    border-radius: 10px; 
+    border: 10px solid #2D2E82;     
+}
+
+#error-message {
+    transition: opacity 0.5s ease;
+}
