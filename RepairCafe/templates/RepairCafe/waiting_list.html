@@ -51,7 +51,7 @@
                 <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
             </div>
             </div>
-            {% if "volunteer" in request.user.roles %}
+            {% if request.user.activerole == "volunteer" %}
             <div class="button-col">
                 
                 <button 
@@ -84,7 +84,7 @@
                 {% else %}
                     <p>Ticket cannot be accepted</p>
                 {% endif %}
-                {% if "volunteer" in request.user.roles %}
+                {% if request.user.activerole == "volunteer" %}
                 <div class="button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:delete_ticket' ticket.repairNumber %}">     
                         {% csrf_token %}

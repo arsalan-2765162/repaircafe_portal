@@ -83,8 +83,11 @@ def main_queue(request):
     print(request.user.roles)
     print(request.user.username)
 
-    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
-        return redirect(f'/RepairCafe/role_selection/?redirect_to={request.path}')
+    if len(request.user.roles) > 1 or not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
+        redirect('RepairCafe:role_selection')
+    if len(request.user.roles) == 1: #defaults to the only role available in case a user logs out of their active role
+        request.user.activerole = request.user.roles[0]
+        request.user.save()
     
     
 
@@ -126,12 +129,15 @@ def main_queue(request):
 def waiting_list(request):
 
     print(request.user.roles)
-    print(request.user.username)
+    print(request.user.activerole)
 
     
     
     if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
         redirect('RepairCafe:role_selection')
+    elif len(request.user.roles) == 1:
+        request.user.activerole = request.user.roles[0]
+        request.user.save()
 
 
 
@@ -163,7 +169,10 @@ def waiting_list(request):
 def checkout_queue(request, activerole=""):
 
     if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
-        redirect('RepairCafe:role_selection')  
+        redirect('RepairCafe:role_selection')
+    elif len(request.user.roles) == 1:
+        request.user.activerole = request.user.roles[0]
+        request.user.save()
 
 
 
@@ -365,15 +374,13 @@ def enter_password(request):
             request.user.save()
 
         
-
-        if role in ["repairer","volunteer"]:
-            return redirect('RepairCafe:index')
-        
-        if role == "visitor":
+        if role == "visitor" and len(request.user.roles) == 1:
             return redirect('RepairCafe:house_rules')
+        else:
+            return redirect('RepairCafe:index')
 
         
-
+    
     return render(request, 'RepairCafe/enter_password.html')
 
 
@@ -390,11 +397,25 @@ def role_selection(request): #users with multiple roles are redirected here and 
             redirect_url = request.GET.get('redirect_to', '/')
             print(f"Redirecting to: {redirect_url}") 
             
-            return redirect(redirect_url)#redirects to whichever page redirected here
+            return redirect('RepairCafe:index')#should redirect to whichever page redirected here, but hardcoded to index for now
 
     return render(request, 'RepairCafe/role_selection.html', {
         'roles': request.user.roles
     })
+
+def logout(request):
+
+    if request.method == 'POST':
+        selected = request.POST.get('role')
+        if selected:
+            print(selected)      
+            request.user.roles.remove(selected)     
+            request.user.activerole = ""
+            request.user.save()
+            
+            return redirect('RepairCafe:index')
+        
+    return render(request, 'RepairCafe/logout.html', {'roles': request.user.roles})
 
 """
 Visitor Flow
@@ -404,6 +425,8 @@ def house_rules(request):
 
     
 
+    request.user.activerole = "visitor"
+    request.user.save()
     #turn away volunteers and repairers by checking active role
 
     if request.method == 'POST':
@@ -445,13 +468,21 @@ def checkin_form(request):
 
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
             
-            return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
+            if request.user.activerole == "volunteer":
+                return redirect('RepairCafe:index')
+            else:
+                return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
         else:  
             context_dict['form'] = form
     else:
         form=CheckinForm()
         context_dict['form']=form
-    return render(request, 'RepairCafe/checkin_form.html', context_dict)
+
+    if request.user.activerole == "visitor":
+        return render(request, 'RepairCafe/checkin_form.html', context_dict)
+    elif request.user.activerole == "volunteer":
+        return render(request, 'RepairCafe/volunteer_check_in.html', context_dict)
+
 
 
 

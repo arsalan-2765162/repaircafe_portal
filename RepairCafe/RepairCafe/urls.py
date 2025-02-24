@@ -29,5 +29,7 @@ urlpatterns = [
         path('wait_for_repair/<int:repairNumber>/',views.wait_for_repair,name='wait_for_repair'),
         path('basic_stats/', views.basic_stats,name='basic_stats'),
         path('role_selection/', views.role_selection, name='role_selection'),
+        #path('volunteer_check_in/', views.volunteer_check_in, name='volunteer_check_in'),
+        path('logout/', views.logout, name='logout'),
 
 ]
