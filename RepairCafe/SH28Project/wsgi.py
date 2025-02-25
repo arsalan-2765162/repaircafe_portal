@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RepairCafe.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
+
 
 application = get_wsgi_application()
