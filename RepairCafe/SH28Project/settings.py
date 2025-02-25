@@ -122,6 +122,9 @@ DATABASES = {
     )
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mysite-9mgc.onrender.com"
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
