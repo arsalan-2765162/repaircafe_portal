@@ -9,8 +9,8 @@ services:
     plan: free
     name: RepairCafeDeployed
     runtime: python
-    buildCommand: "cd RepairCafe && ./build.sh"
-    startCommand: "cd RepairCafe && python -m gunicorn SH28Project.asgi:application -k uvicorn.workers.UvicornWorker"
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn SH28Project.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
