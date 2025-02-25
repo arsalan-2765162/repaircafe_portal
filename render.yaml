@@ -8,9 +8,11 @@ services:
   - type: web
     plan: free
     name: mysite
+    rootDir: RepairCafe
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn SH28Project.asgi:application -k uvicorn.workers.UvicornWorker"
+    
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: SH28Project.settings

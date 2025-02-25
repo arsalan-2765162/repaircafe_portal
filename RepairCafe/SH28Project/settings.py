@@ -37,7 +37,7 @@ SECRET_KEY = 't1#aj@10-snk50%a!&%@p7kh^ky&vviq87x@d48k2(n^cdvmd='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1', 'repaircafedeployed.onrender.com']
+ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1', 'mysite-9mgc.onrender.com']
 
 SITE_ID=1
 # Application definition
