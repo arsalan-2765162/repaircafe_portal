@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isRedirecting = false;
 
-
     const mainQueueSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/main_queue/'
+        'wss://' + window.location.host + '/ws/main_queue/'
     );
 
     mainQueueSocket.onmessage = function (e) {

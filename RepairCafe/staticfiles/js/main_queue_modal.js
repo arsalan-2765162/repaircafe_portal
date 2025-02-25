@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Script loaded and running");
     const mainQueueSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/main_queue/'
+        'wss://' + window.location.host + '/ws/main_queue/'
     );
 
     mainQueueSocket.onmessage = function (e) {

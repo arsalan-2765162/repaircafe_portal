@@ -161,7 +161,7 @@ Check-in Queue
     </script>
     <script>
         const mainQueueSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/waiting_queue/'
+            'wss://' + window.location.host + '/ws/waiting_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {

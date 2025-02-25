@@ -81,7 +81,7 @@ Checkout Queue
 
     <script>
         const mainQueueSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/checkout_queue/'
+            'wss://' + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
