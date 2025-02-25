@@ -1,8 +1,8 @@
 databases:
   - name: SH28Projectdb
     plan: free
-    databaseName: SH28Project
-    user: SH28Project
+    databaseName: sh28_project_db
+    user: sh28_project_user
 
 services:
   - type: web
