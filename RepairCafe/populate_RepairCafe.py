@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')  # Replace with your project's settings path
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
 import django
 django.setup()
 

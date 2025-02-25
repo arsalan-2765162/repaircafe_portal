@@ -4,7 +4,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from RepairCafe.routing import websocket_urlpatterns
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RepairCafe.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
