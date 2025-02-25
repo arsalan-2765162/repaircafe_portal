@@ -25,4 +25,4 @@ services:
       - key: WEB_CONCURRENCY
         value: 4
       - key: REDIS_URL
-        value: redis://default:AU2HAAIjcDE2YTU4MjU4NWFiZWM0MmNlOWMyZTY1NzcxMzAyMDlmNXAxMA@romantic-katydid-19847.upstash.io:6379
+        value: rediss://default:AU2HAAIjcDE2YTU4MjU4NWFiZWM0MmNlOWMyZTY1NzcxMzAyMDlmNXAxMA@romantic-katydid-19847.upstash.io:6379
