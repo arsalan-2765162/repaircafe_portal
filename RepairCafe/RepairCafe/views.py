@@ -368,14 +368,13 @@ def volunteer_checkin(request):
                 customer=customer
             )
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
-            ticket.add_to_queue(waiting_queue)
-            repairNumber = ticket.repairNumber
+            ticket.accept_ticket()
             ticket.isVolunteerCreated = True
             ticket.save()
    
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
 
-            return redirect('RepairCafe:volunteer_checkin_success', repairNumber=repairNumber)
+            return redirect('RepairCafe:volunteer_checkin_success', repairNumber=ticket.repairNumber)
         else:
             context_dict['form'] = form
     else:
