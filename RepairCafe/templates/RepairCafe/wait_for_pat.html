@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block title_block %}
-Meet Your Repairer
+Go to PAT desk
 {% endblock %}
 
 {% block content %}
 <div class="repairbg">
-    <h1>We are ready to see you</h1>
-    <h2 id="status-message">Please make your way to "placeholder" at the "placeholder" repair desk</h2>
+    <h1>Your item needs PAT testing</h1>
+    <h2 id="status-message">Please make your way to the PAT Testing Desk</h2>
     <div class = "numberSquare">
         <h3>Your Repair Number</h3>
         <p>
@@ -28,12 +28,6 @@ Meet Your Repairer
             document.getElementById('status-message').textContent = 'You are now ready to checkout!';
             document.getElementById('next-page').style.display = 'block';
             const nextPageUrl = document.getElementById('next-page').getAttribute('href');
-            window.location.href = nextPageUrl;
-        }
-        if (data.status === 'WAIT_FOR_PAT' && data.repairNumber == repairNumber) {
-            document.getElementById('status-message').textContent = 'You are now ready to have your item PAT tested!';
-            document.getElementById('next-page').style.display = 'block';
-            const nextPageUrl = "{% url 'RepairCafe:wait_for_pat' ticket.repairNumber %}"
             window.location.href = nextPageUrl;
         }
     };
