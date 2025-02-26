@@ -245,7 +245,7 @@ def repair_item(request, repairNumber):
 
     context_dict['incompleteForm'] = incompleteForm
     context_dict['ticket'] = ticket
-    return render(request, 'RepairCafe/repair_item.html',context_dict)
+    return render(request, 'RepairCafe/repair_item.html', context_dict)
 
 
 def complete_ticket(request, repairNumber):
@@ -449,7 +449,7 @@ def wait_for_checkout(request, repairNumber):
 def wait_for_pat(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     context_dict = {}
-    if ticket.repairStatus != "PAT_TESTING":
+    if ticket.repairStatus != "NEED_PAT":
         raise Http404("The ticket is not in the desired state.")
     if ticket.isCheckedOut:
         raise Http404("Ticket is already checked out.")

@@ -18,6 +18,8 @@ Meet Your Repairer
     <a id="next-page" style="display:none;" href="{% url 'RepairCafe:wait_for_checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
 
+<audio id="chime" src="{% static 'sounds/chime.wav' %}" preload="auto"></audio>
+
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
     const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
@@ -33,8 +35,18 @@ Meet Your Repairer
         if (data.status === 'WAIT_FOR_PAT' && data.repairNumber == repairNumber) {
             document.getElementById('status-message').textContent = 'You are now ready to have your item PAT tested!';
             document.getElementById('next-page').style.display = 'block';
-            const nextPageUrl = "{% url 'RepairCafe:wait_for_pat' ticket.repairNumber %}"
+            const nextPageUrl = `/RepairCafe/wait_for_pat/${repairNumber}/`
             window.location.href = nextPageUrl;
+        }
+    };
+</script>
+<script>
+    window.onload = function() {
+        const chime = document.getElementById('chime');
+        chime.play();
+        
+        if ("vibrate" in navigator) {
+            navigator.vibrate(200) 
         }
     };
 </script>
