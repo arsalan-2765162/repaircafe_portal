@@ -5,11 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const listItems = document.querySelectorAll('.inc-form li');
     listItems.forEach(function(item) {
         item.addEventListener('click', function() {
-            // Find the radio input inside the clicked li and check it
             const radioInput = item.querySelector('input[type="radio"]');
             if (radioInput) {
                 radioInput.checked = true;
-                // Optionally, you can trigger the change event if necessary
                 radioInput.dispatchEvent(new Event('change'));
             }
         });
@@ -20,15 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
 
-    
-
     if (!modal) {
         console.error("Modal element not found in DOM");
     }
 
     // Function to open the modal
     window.openModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log("Opening Modal with:", { url, itemName, itemCategory, repairNumber });
         sessionStorage.setItem("openModalRepairNumber", repairNumber);
         sessionStorage.setItem("openModalType", "confirmation"); 
 
@@ -41,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "flex";
     };
 
-
     window.openIncompleteModal = function (url, itemName, itemCategory, repairNumber) {
         modalDetails.innerHTML = `
             <strong>Repairrrr #:</strong> ${repairNumber}<br>
@@ -52,9 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modalIncomplete.style.display = "flex";
     };
 
-
     window.openCompleteModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log(modal)
         modalDetails.innerHTML = `
             <strong>Repair #:</strong> ${repairNumber}<br>
             <strong>Item Name:</strong> ${itemName}<br>
@@ -64,25 +56,40 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "flex";
     };
 
+    window.openPATResultModal = function (url, itemName, itemCategory, repairNumber, itemDescription) {
+        console.log("openPATResultModal called with:", {
+            url, 
+            itemName, 
+            itemCategory, 
+            repairNumber, 
+            itemDescription
+        });
+
+        modalDetails.innerHTML = `
+            <strong>Item:</strong> ${itemName}<br>
+            <strong>Category:</strong> ${itemCategory}<br>
+            <strong>Repair Number:</strong> ${repairNumber}<br>
+            <strong>Description:</strong> ${itemDescription}
+        `;
+        acceptForm.setAttribute("action", url);
+        modal.style.display = "flex";
+    };
 
     const closeModal = () => {
-        if(modal){
-        modal.style.display = "none";
+        if(modal) {
+            modal.style.display = "none";
         }
-        if(modalIncomplete){
-        modalIncomplete.style.display = "none";
+        if(modalIncomplete) {
+            modalIncomplete.style.display = "none";
         }
         sessionStorage.removeItem("openModalRepairNumber");
         sessionStorage.removeItem("openModalType");
     };
 
-
     if (modal) modal.querySelector(".close").addEventListener("click", closeModal);
     if (modalIncomplete) modalIncomplete.querySelector(".close").addEventListener("click", closeModal);
 
     const cancelButtons = document.querySelectorAll(".cancel-btn");
-
-
     cancelButtons.forEach(button => {
         button.addEventListener("click", function (event) {
             event.preventDefault(); 
@@ -90,12 +97,48 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-   
-    // Close modal when clicking outside it
+    // PAT test result buttons
+    const patResultButtons = document.querySelectorAll('button[name="test_result"]');
+    patResultButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = this.closest('form');
+            const url = form.getAttribute('action');
+            const testResult = this.value;
+
+            console.log("PAT Test Result Button Clicked");
+            console.log("Form URL:", url);
+            console.log("Test Result:", testResult);
+
+            form.submit();
+        });
+    });
+
+    // Close modal when clicking outside
     window.addEventListener("click", event => {
-        if (modal && event.target === modal) closeModal();
-        if (modalIncomplete && event.target === modalIncomplete) closeModal();
-    })
+        if(modal && event.target === modal) {
+            closeModal();
+        }
+        if(modalIncomplete && event.target === modalIncomplete) {
+            closeModal();
+        }
+    });
+
+    // Handle form submission
+    acceptForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const actionUrl = acceptForm.getAttribute("action");
+        redirectToRepairItem(actionUrl);
+    });
+
+    // Redirection function
+    function redirectToRepairItem(url) {
+        isRedirecting = true;
+        document.body.style.cursor = "wait";
+        window.location.href = url;
+    }
+
+    // Check session storage on load
     window.onload = function () {
         const repairNumber = sessionStorage.getItem("openModalRepairNumber");
         const modalType = sessionStorage.getItem("openModalType");
@@ -111,26 +154,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (modalType === "confirmation") {
                     openModal(url, itemName, itemCategory, repairNumber);
-                } else{
-                sessionStorage.removeItem("openModalRepairNumber");
-                sessionStorage.removeItem("openModalType");
+                }
             }
+            sessionStorage.removeItem("openModalRepairNumber");
+            sessionStorage.removeItem("openModalType");
         }
     };
-}
-
-acceptForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
-    const actionUrl = acceptForm.getAttribute("action");
-    redirectToRepairItem(actionUrl); // Call the redirect function
 });
-
-// Redirection function
-function redirectToRepairItem(url) {
-    isRedirecting = true; // Prevent WebSocket interference
-    document.body.style.cursor = "wait"; // Optional: Show loading indicator
-    window.location.href = url; // Redirect to the repair item page
-}
-
-});
-
