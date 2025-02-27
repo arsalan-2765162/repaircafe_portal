@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Queue(models.Model):
     name = models.CharField(max_length=128)
@@ -55,6 +55,7 @@ class Ticket(models.Model):
     position = models.IntegerField(default=None, null=True, blank=True,)
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=None, null=True, blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT, null=True, blank=True)
+    time_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
