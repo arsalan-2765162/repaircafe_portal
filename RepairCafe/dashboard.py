@@ -56,7 +56,10 @@ class   OtherStatsModule(modules.DashboardModule):
         catpercentages = {}
 
         for category in Ticket.ITEM_CATEGORY_CHOICES:
-            catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
+            if Ticket.objects.count>0:
+                catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
+            else:
+                catpercentages=0
 
     
 
