@@ -33,7 +33,7 @@ class SuccessRateCategoriesModule(modules.DashboardModule):
     def init_with_context(self,context):
         request=context['request']
         start_date_str=request.GET.get('graph_start_date')
-        print(start_date_str)
+        #print(start_date_str)
         end_date_str=request.GET.get('graph_end_date')
         start_date_provided=False
         end_date_provided=False
@@ -75,29 +75,56 @@ class SuccessRateCategoriesModule(modules.DashboardModule):
         return False
     
 class   OtherStatsModule(modules.DashboardModule):
-    title = 'Total Repair Success Rate'
+    title = 'Other statistics'
 
     def __init__(self, title=None,**kwargs):
         super().__init__(title,**kwargs)
         self.template='other_stats.html'
 
     def init_with_context(self,context):
+        request=context['request']
+        start_date_str=request.GET.get('other_stats_start_date')
+        end_date_str=request.GET.get('other_stats_end_date')
+        start_date_provided=False
+        end_date_provided=False
+
+        if not start_date_str:
+            start_date=datetime(1870, 1, 1, 0, 0, 0).strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            start_date_provided=True
+            start_date=start_date_str.replace("T", " ")
+
+        if not end_date_str:
+            end_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            end_date_provided=True
+            end_date=end_date_str.replace("T", " ")
+
+        successdict={}
+        if start_date_provided and end_date_provided:
+            message=f"showing repairs between {start_date} and {end_date}"
+        elif start_date_provided:
+            message=f"showing repairs after {start_date}"
+        elif end_date_provided:
+            message=f"showing repairs before {end_date}"
+        else:
+            message=""
         
-        checkedin = Ticket.objects.exclude(repairStatus = "WAITING").count()
-        checkedout = Ticket.objects.filter(isCheckedOut = True).count()
-        successful = Ticket.objects.filter(repairStatus = "COMPLETED").count()#should tickets have a date? as this will be all completed tickets
-        unsuccessful = Ticket.objects.filter(repairStatus = "INCOMPLETE").count()
+        checkedin = Ticket.objects.exclude(repairStatus = "WAITING").filter(time_created__range=[start_date,end_date]).count()
+        checkedout = Ticket.objects.filter(isCheckedOut = True,time_created__range=[start_date,end_date]).count()
+        successful = Ticket.objects.filter(repairStatus = "COMPLETED",time_created__range=[start_date,end_date]).count()#should tickets have a date? as this will be all completed tickets
+        unsuccessful = Ticket.objects.filter(repairStatus = "INCOMPLETE",time_created__range=[start_date,end_date]).count()
         catpercentages = {}
 
         for category in Ticket.ITEM_CATEGORY_CHOICES:
-            if Ticket.objects.count()>0:
-                catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
+            if Ticket.objects.filter(time_created__range=[start_date,end_date]).count()>0:
+                catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0],time_created__range=[start_date,end_date]).count())/ (Ticket.objects.filter(time_created__range=[start_date,end_date]).count()) * 100), 1)
             else:
-                catpercentages=0
+                catpercentages[category]=0
 
     
 
-        context_dict = {"checkedin":checkedin, "checkedout":checkedout, "successful":successful, "unsuccessful":unsuccessful, "catpercentages":catpercentages}
+        context_dict = {"checkedin":checkedin, "checkedout":checkedout, "successful":successful, "unsuccessful":unsuccessful, "catpercentages":catpercentages,"message":message}
 
 
         self.children=context_dict
@@ -135,7 +162,7 @@ class CustomIndexDashboard(Dashboard):
             exclude=('django.contrib.*','repairCafe.Models.Queue'),
         ))
         
-        self.children.append(SuccessRateCategoriesModule())
+        
 
         self.children.append(OtherStatsModule())
 
@@ -144,6 +171,10 @@ class CustomIndexDashboard(Dashboard):
             _('Administration'),
             models=('django.contrib.*',),
         ))
+
+        
+
+        self.children.append(SuccessRateCategoriesModule())
 
         #self.children.append(TotalSuccessRateModule())
 
