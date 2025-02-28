@@ -21,6 +21,8 @@ except ImportError:
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
 from RepairCafe.models import Ticket
+from datetime import datetime
+from django.utils import timezone
 class SuccessRateCategoriesModule(modules.DashboardModule):
     title = 'Repair Success By Categories'
 
@@ -29,10 +31,42 @@ class SuccessRateCategoriesModule(modules.DashboardModule):
         self.template = 'success_rate_categories.html'  # Path to your template
         
     def init_with_context(self,context):
+        request=context['request']
+        start_date_str=request.GET.get('graph_start_date')
+        print(start_date_str)
+        end_date_str=request.GET.get('graph_end_date')
+        start_date_provided=False
+        end_date_provided=False
+
+        if not start_date_str:
+            start_date=datetime(1870, 1, 1, 0, 0, 0).strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            start_date_provided=True
+            start_date=start_date_str.replace("T", " ")
+
+        if not end_date_str:
+            end_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            end_date_provided=True
+            end_date=end_date_str.replace("T", " ")
+
         successdict={}
+        if start_date_provided and end_date_provided:
+            message=f"showing repairs between {start_date} and {end_date}"
+        elif start_date_provided:
+            message=f"showing repairs after {start_date}"
+        elif end_date_provided:
+            message=f"showing repairs before {end_date}"
+        else:
+            message=""
+
+        successdict['message']=message
+
+
+        
         successdict['categories']={}
         for category in Ticket.ITEM_CATEGORY_CHOICES:
-            successdict['categories'][category[1]]=(Ticket.objects.filter(itemCategory=category[0],repairStatus='COMPLETED').count(),Ticket.objects.filter(itemCategory=category[0],repairStatus='INCOMPLETE').count())
+            successdict['categories'][category[1]]=(Ticket.objects.filter(itemCategory=category[0],repairStatus='COMPLETED',time_created__range=[start_date,end_date]).count(),Ticket.objects.filter(itemCategory=category[0],repairStatus='INCOMPLETE',time_created__range=[start_date,end_date]).count())
 
         self.children=successdict
 
@@ -56,7 +90,7 @@ class   OtherStatsModule(modules.DashboardModule):
         catpercentages = {}
 
         for category in Ticket.ITEM_CATEGORY_CHOICES:
-            if Ticket.objects.count>0:
+            if Ticket.objects.count()>0:
                 catpercentages[category] = round(((Ticket.objects.filter(itemCategory = category[0]).count())/ (Ticket.objects.count()) * 100), 1)
             else:
                 catpercentages=0
