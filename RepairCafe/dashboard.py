@@ -23,6 +23,8 @@ from admin_tools.utils import get_admin_site_name
 from RepairCafe.models import Ticket
 from datetime import datetime
 from django.utils import timezone
+import json
+
 class SuccessRateCategoriesModule(modules.DashboardModule):
     title = 'Repair Success By Categories'
 
@@ -58,7 +60,7 @@ class SuccessRateCategoriesModule(modules.DashboardModule):
         elif end_date_provided:
             message=f"showing repairs before {end_date}"
         else:
-            message=""
+            message="showing all repairs"
 
         successdict['message']=message
 
@@ -74,7 +76,71 @@ class SuccessRateCategoriesModule(modules.DashboardModule):
         # Return False to ensure the module is always displayed
         return False
     
-class   OtherStatsModule(modules.DashboardModule):
+class TicketStatsModule(modules.DashboardModule):
+    title = 'Ticket statuses'
+    def __init__(self, title=None,**kwargs):
+        super().__init__(title,**kwargs)
+        self.template='ticket_statuses.html'
+    
+    def init_with_context(self,context):
+        request=context['request']
+        contextdict={}
+        contextdict['categories']=[i[1] for i in Ticket.ITEM_CATEGORY_CHOICES]
+        self.children=contextdict
+        start_date_str=request.GET.get('status_start_date')
+        end_date_str=request.GET.get('status_end_date')
+        chosen_category=request.GET.get('status_repair_category')
+        start_date_provided=False
+        end_date_provided=False
+
+        if not start_date_str:
+            start_date=datetime(1870, 1, 1, 0, 0, 0).strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            start_date_provided=True
+            start_date=start_date_str.replace("T", " ")
+
+        if not end_date_str:
+            end_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            end_date_provided=True
+            end_date=end_date_str.replace("T", " ")
+
+        if start_date_provided and end_date_provided:
+            message=f"showing repairs between {start_date} and {end_date}"
+        elif start_date_provided:
+            message=f"showing repairs after {start_date}"
+        elif end_date_provided:
+            message=f"showing repairs before {end_date}"
+        else:
+            message="showing all repairs"
+
+        if chosen_category:
+            message+=f" from {chosen_category}"
+        else:
+            message+=" from all categories"
+
+        contextdict['message']=message
+        contextdict['graphData']={}
+        
+        self.children=contextdict
+
+        for i in Ticket.ITEM_CATEGORY_CHOICES:
+            if chosen_category==i[1]:
+                chosen_category=i[0]
+
+        for i in Ticket.REPAIR_STATUS_CHOICES:
+            if chosen_category:
+                contextdict['graphData'][i[1]]=Ticket.objects.filter(time_created__range=[start_date,end_date],itemCategory=chosen_category,repairStatus=i[0]).count()
+            else:
+                contextdict['graphData'][i[1]]=Ticket.objects.filter(time_created__range=[start_date,end_date],repairStatus=i[0]).count()
+        
+        self.children=contextdict
+        
+    
+    def is_empty(self):
+        return False
+    
+class OtherStatsModule(modules.DashboardModule):
     title = 'Other statistics'
 
     def __init__(self, title=None,**kwargs):
@@ -108,7 +174,7 @@ class   OtherStatsModule(modules.DashboardModule):
         elif end_date_provided:
             message=f"showing repairs before {end_date}"
         else:
-            message=""
+            message="showing all repairs"
         
         checkedin = Ticket.objects.exclude(repairStatus = "WAITING").filter(time_created__range=[start_date,end_date]).count()
         checkedout = Ticket.objects.filter(isCheckedOut = True,time_created__range=[start_date,end_date]).count()
@@ -161,6 +227,8 @@ class CustomIndexDashboard(Dashboard):
             _('Modify or delete records'),
             exclude=('django.contrib.*','repairCafe.Models.Queue'),
         ))
+
+        self.children.append(TicketStatsModule())
         
         
 
