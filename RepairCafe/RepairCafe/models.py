@@ -31,9 +31,6 @@ class Ticket(models.Model):
         ('NEED_PAT', 'Needs PAT tested'),
         ('INCOMPLETE', 'Incomplete'),
         ('BEING_REPAIRED', 'Currently being Repaired'),
-        ('PAT_TESTING', 'Currently being PAT tested'),
-        ('PAT_PASSED', 'PAT Test Passed'),
-        ('PAT_FAILED', 'PAT Test Failed'),
     ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP', 'Not repairable'),
                                  ('COM_BACK', 'Coming back next time'),
