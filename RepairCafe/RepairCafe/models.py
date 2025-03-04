@@ -25,24 +25,24 @@ class Ticket(models.Model):
     MAX_ITEM_NAME_LENGTH = 128
     MAX_ITEM_DESC_LENGTH = 256
     REPAIR_STATUS_CHOICES = [
-        ('WAITING','Waiting'),
-        ('WAITING_TO_JOIN','Waiting to Join Queue'),
-        ('COMPLETED','Completed'),
-        ('NEED_PAT','Needs PAT tested'),
-        ('INCOMPLETE','Incomplete'),
-        ('BEING_REPAIRED','Currently being Repaired'),
-        ('PAT_TESTING', 'Currently being PAT tested'),  
-        ('PAT_PASSED', 'PAT Test Passed'),              
-        ('PAT_FAILED', 'PAT Test Failed'),              
+        ('WAITING', 'Waiting'),
+        ('WAITING_TO_JOIN', 'Waiting to Join Queue'),
+        ('COMPLETED', 'Completed'),
+        ('NEED_PAT', 'Needs PAT tested'),
+        ('INCOMPLETE', 'Incomplete'),
+        ('BEING_REPAIRED', 'Currently being Repaired'),
+        ('PAT_TESTING', 'Currently being PAT tested'),
+        ('PAT_PASSED', 'PAT Test Passed'),
+        ('PAT_FAILED', 'PAT Test Failed'),
     ]
-    REPAIR_INCOMPLETE_CHOICES = [('NOT_REP','Not repairable'),
-                                 ('COM_BACK','Coming back next time'),
-                                 ('TAKEN_HOME','Repairer has taken it home')]
-    ITEM_CATEGORY_CHOICES = [('ELECM','Electrical Mains'),
-                             ('ELEC','Electrical Low-Voltage/Battery'),
-                             ('TEXT','Clothing & Textiles'),
-                             ('CERA','Ceramics'),
-                             ('OTHER','Other'),]
+    REPAIR_INCOMPLETE_CHOICES = [('NOT_REP', 'Not repairable'),
+                                 ('COM_BACK', 'Coming back next time'),
+                                 ('TAKEN_HOME', 'Repairer has taken it home')]
+    ITEM_CATEGORY_CHOICES = [('ELECM', 'Electrical Mains'),
+                             ('ELEC', 'Electrical Low-Voltage/Battery'),
+                             ('TEXT', 'Clothing & Textiles'),
+                             ('CERA', 'Ceramics'),
+                             ('OTHER', 'Other'),]
     
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
@@ -86,10 +86,9 @@ class Ticket(models.Model):
         if position is None:
             return
         Ticket.objects.filter(
-                                queue=queue,
-                                position__isnull=False,
-                                position__gt=position
-                                ).update(position=models.F('position') - 1)
+            queue=queue,
+            position__isnull=False,
+            position__gt=position).update(position=models.F('position') - 1)
 
     def accept_ticket(self):
         waiting_list = self.queue
