@@ -57,14 +57,13 @@ Repair Queue
                         <h2 class="item-description">Repair Description: {{ ticket.itemDescription}}</h2>
                     </div>
                 </div>
-                {% if ticket.repairStatus == "WAITING" %}
-                    <button 
-                        type="button" 
-                        class="btn btn-primary" 
-                        onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
-                        '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
-                        '{{ ticket.repairNumber }}',
-                        'accept')"
+                {% if ticket.repairStatus == "WAITING" and request.user.activerole == "repairer" %}
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                    '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
+                    '{{ ticket.repairNumber }}')"
                     >
                         Accept Repair
                     </button>

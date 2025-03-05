@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Role</title>
+</head>
+<body>
+    <h1>Select Your Role</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <ul>
+            {% for role in roles %}
+                <li>
+                    <button type="submit" name="role" value="{{ role }}">{{ role }}</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </form>
+</body>
+</html>

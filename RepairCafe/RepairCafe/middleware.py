@@ -16,7 +16,7 @@ class PasswordProtectionMiddleware:
             return self.get_response(request)
 
         # Check if password verified
-        if not request.session.get('preset_password_verified'):
-            return redirect('RepairCafe:enter_password')
-
+       # if request.session.get('sessionpassword') not in ["undefined", "visitor", "repairer", "volunteer"]:
+        #    return redirect('RepairCafe:enter_password')
+        
         return self.get_response(request)
