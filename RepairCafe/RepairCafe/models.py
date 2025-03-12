@@ -1,24 +1,46 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Queue(models.Model):
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256, default="This is a Queue")
 
     def __str__(self):
         return self.name
 
+
     def get_tickets(self):
         return self.ticket_set.order_by('position')
 
 
+class Repairer(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    NAME_MAX_LENGTH = 128
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id} - {self.firstName}  {self.lastName}"
+
+
 class Customer(models.Model):
+    id = models.BigAutoField(primary_key=True)
     NAME_MAX_LENGTH = 128
     firstName = models.CharField(max_length=NAME_MAX_LENGTH)
     lastName = models.CharField(max_length=NAME_MAX_LENGTH)
 
     def __str__(self):
         return f"{self.firstName}  {self.lastName}"
+
+
+class Carbon_footprint_categories(models.Model):
+    NAME_MAX_LENGTH = 123
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.name} - {self.co2_emission_kg}kg of co2"
 
 
 class Ticket(models.Model):
@@ -41,6 +63,7 @@ class Ticket(models.Model):
                              ('CERA', 'Ceramics'),
                              ('OTHER', 'Other'),]
     
+    isVolunteerCreated = models.BooleanField(default=False)
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
@@ -52,6 +75,12 @@ class Ticket(models.Model):
     position = models.IntegerField(default=None, null=True, blank=True,)
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=None, null=True, blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT, null=True, blank=True)
+    time_created = models.DateTimeField(default=timezone.now)
+    carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories',on_delete=models.SET_DEFAULT,default=None,null=True)
+    repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
+    checkinFormData = models.JSONField(null=True, blank=True)
+    checkoutFormData = models.JSONField(null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
@@ -140,7 +169,7 @@ class Ticket(models.Model):
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
-class Repairer(models.Model):
-    NAME_MAX_LENGTH = 128
-    firstName = models.CharField(max_length=NAME_MAX_LENGTH)
-    lastName = models.CharField(max_length=NAME_MAX_LENGTH)
+
+
+
+

@@ -146,9 +146,9 @@ acceptForm.addEventListener("submit", function (event) {
 
 // Redirection function
 function redirectToRepairItem(url) {
-    isRedirecting = true; // Prevent WebSocket interference
-    document.body.style.cursor = "wait"; // Optional: Show loading indicator
-    window.location.href = url; // Redirect to the repair item page
+    isRedirecting = true; 
+    document.body.style.cursor = "wait"; 
+    window.location.href = url; 
 }
 
 function checkSessionAndOpenModal() {

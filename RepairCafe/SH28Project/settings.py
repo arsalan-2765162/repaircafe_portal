@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
+
+VISITOR_PRESET_PASSWORD="visitor"
+REPAIRER_PRESET_PASSWORD="repairer"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -23,7 +27,7 @@ MEDIA_URL = '/media/'
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
-ADMIN_TOOLS_MENU= 'menu.CustomMenu'
+ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_THEMING_CSS = 'css/admin_theming.css'
 
 
@@ -141,8 +145,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-VISITOR_PRESET_PASSWORD = "visitor" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
-REPAIRER_PRESET_PASSWORD = "repairer" #same with repairer
+
+
+
+
+VISITOR_PRESET_PASSWORD = "visitor"
+REPAIRER_PRESET_PASSWORD = "repairer"
 
 
 # Internationalization
