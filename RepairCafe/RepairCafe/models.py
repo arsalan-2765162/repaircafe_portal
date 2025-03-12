@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class Queue(models.Model):
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256, default="This is a Queue")
 
@@ -12,7 +13,15 @@ class Queue(models.Model):
         return self.ticket_set.order_by('position')
 
 
+class Repairer(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    NAME_MAX_LENGTH = 128
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True) 
+
+
 class Customer(models.Model):
+    id = models.BigAutoField(primary_key=True)
     NAME_MAX_LENGTH = 128
     firstName = models.CharField(max_length=NAME_MAX_LENGTH)
     lastName = models.CharField(max_length=NAME_MAX_LENGTH)
@@ -65,6 +74,10 @@ class Ticket(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT, null=True, blank=True)
     time_created = models.DateTimeField(default=timezone.now)
     carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories',on_delete=models.SET_DEFAULT,default=None,null=True)
+    repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
+    checkinFormData = models.JSONField(null=True, blank=True)
+    checkoutFormData = models.JSONField(null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
@@ -161,3 +174,6 @@ class Repairer(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.firstName}  {self.lastName}"
+
+
+
