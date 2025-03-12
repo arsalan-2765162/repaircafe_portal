@@ -174,7 +174,7 @@ def basic_stats(request):
 
     for category in Ticket.ITEM_CATEGORY_CHOICES:
         catpercentages[category] = round(((Ticket.objects.filter(itemCategory=category[0])
-                                           .count()) / (Ticket.objects.count()) * 100), 1)
+                                           .count()) / (Ticket.objects.count()) * 100), )
 
     context_dict = {"checkedin": checkedin, "checkedout": checkedout,
                     "successful": successful, "unsuccessful": unsuccessful,
@@ -361,9 +361,9 @@ def house_rules(request):
             if agreed:
                 return redirect('RepairCafe:checkin_form')
             else:
-                return redirect('RepairCafe:house_rules')         
+                return redirect('RepairCafe:house_rules')   
     else:
-        form = RulesButton() 
+        form = RulesButton()
     return render(request, 'RepairCafe/house_rules.html', {'form': form})
 
 
