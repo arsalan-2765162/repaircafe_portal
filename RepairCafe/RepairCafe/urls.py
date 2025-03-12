@@ -29,6 +29,7 @@ urlpatterns = [
         path('checkin_form/', views.checkin_form, name='checkin_form'),
         path('wait_for_accept/<int:repairNumber>/', views.wait_for_accept, name='wait_for_accept'),
         path('wait_for_checkout/<int:repairNumber>/',  views.wait_for_checkout, name='wait_for_checkout'),
+        path('wait_for_pat/<int:repairNumber>/', views.wait_for_pat, name='wait_for_pat'),
         path('repair_prompt/<int:repairNumber>/',  views.repair_prompt, name='repair_prompt'),
         path('wait_for_repair/<int:repairNumber>/', views.wait_for_repair, name='wait_for_repair'),
         path('repairer_login/', views.repairer_login, name='repairer_login'),

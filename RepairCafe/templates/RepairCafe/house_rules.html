@@ -7,15 +7,14 @@ House Rules
 
 {% block content %}
    
-    
+<div class="back-ground1">
     <div class="rulestitle">
-        <h1>House Rules</h1><br><br>
+        <h1>House Rules</h1>
     </div>
        
 
 
     <div class="rulestext">
-        
         
         To ensure a smooth and positive experience for everyone,
         we ask all customers to review and accept our House Rules before we begin your repair.
@@ -64,23 +63,25 @@ House Rules
         
         <li>RCG takes no responsibility for any item, repaired or otherwise, once it has left the premises.</li>
     
-        </ul></div>
+        </ul>
 
-        <form method="POST">
+        <form method="POST" class ="full-width">
             {% csrf_token %}
             {{ form.as_p }}
             
             {% if form.acceptrules.errors %}
-        <div style="color: red;">
-            {% for error in form.acceptrules.errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-            
-
-            <button type="submit" class="btn-primary">Accept Rules</button>
+                <div style="color: red;">
+                {% for error in form.acceptrules.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+            <div class="button-center-container">
+                <button type="submit" class="btn-primary center-btn">Accept Rules</button>
+            </div>
         </form>
+    </div>
+
+</div>
    
 {% endblock %}

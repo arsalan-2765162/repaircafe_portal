@@ -37,6 +37,17 @@
     
   }
 
+  .center-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; 
+  }
+  
+  .full-width{
+    width: 100%;
+  }
+
   .sidebarbutton:hover{
     background-color: #ffbd99;
   }
@@ -1111,7 +1122,6 @@
 }
 
 .rulestitle h1 {
- 
  color: white;
   font-family: 'Inter', sans-serif;
   font-weight: bold;
@@ -1119,8 +1129,22 @@
 
 .rulestext {
   font-family: 'Inter';
+  background-color: white;
+  padding: 20px;
+  display:flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px;
+  border-radius: 15px;
 }
 
+.button-center-container{
+  width: 100%; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
 input[type="checkbox"] {
   width: 25px;
   height: 25px;

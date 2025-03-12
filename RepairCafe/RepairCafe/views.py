@@ -10,6 +10,8 @@ from django.db.models import Max
 from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.http import HttpResponseBadRequest
+
 
 
 def send_ticket_update(group_name, repairNumber, status):
@@ -254,14 +256,13 @@ def repair_item(request, repairNumber):
 
     context_dict['incompleteForm'] = incompleteForm
     context_dict['ticket'] = ticket
-    return render(request, 'RepairCafe/repair_item.html',context_dict)
+    return render(request, 'RepairCafe/repair_item.html', context_dict)
 
 
 def complete_ticket(request, repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
         ticket.complete_ticket()
-
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_PAT")
         send_queue_update("main_queue_updates", "Main Queue", "ticket_updated")
 
@@ -286,8 +287,7 @@ def pat_test(request, repairNumber):
         action = request.POST.get('action')
 
         if action == 'accept':
-            # Use the complete_ticket function's logic
-            ticket.add_to_checkout()  # This will move it to checkout queue
+            ticket.add_to_checkout()  
             ticket.repairStatus = 'COMPLETED'
             ticket.save()
 
@@ -296,11 +296,17 @@ def pat_test(request, repairNumber):
             send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_added")
 
             messages.success(request, f'PAT Test completed for Repair #{repairNumber}. Ticket moved to checkout queue.')
-            
+
         elif action == 'reject':
-            # Delete the ticket
-            ticket.delete()
-            messages.warning(request, f'PAT Test rejected for Repair #{repairNumber}. Ticket has been deleted.')
+            ticket.add_to_checkout()  
+            ticket.repairStatus = 'COMPLETED'
+            ticket.save()
+
+            send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_CHECKOUT")
+            send_queue_update("main_queue_updates", "Main Queue", "ticket_removed")
+            send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_added")
+
+            messages.warning(request, f'PAT Test rejected for Repair #{repairNumber}. Ticket moved to checkout queue.')
 
         return redirect('RepairCafe:main_queue')
 
@@ -531,7 +537,7 @@ def wait_for_repair(request, repairNumber):
         print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
         raise Http404("The ticket is not in the desired state.")
     context_dict = {'ticket': ticket} 
-    return render(request, 'RepairCafe/wait_for_repair.html',context_dict)
+    return render(request, 'RepairCafe/wait_for_repair.html', context_dict)
 
 
 def repair_prompt(request, repairNumber):
@@ -544,13 +550,25 @@ def repair_prompt(request, repairNumber):
     return render(request,'RepairCafe/repair_prompt.html',context_dict)
 
 def wait_for_checkout(request, repairNumber):
+    context_dict = {}
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
         raise Http404("The ticket is not in the desired state.")
     if ticket.isCheckedOut:
+        raise Http404("Ticket is already checked out.")
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/wait_for_checkout.html', context_dict)
+
+
+def wait_for_pat(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    context_dict = {}
+    if ticket.repairStatus != "NEED_PAT":
         raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket}
-    return render(request, 'RepairCafe/wait_for_checkout.html',context_dict)
+    if ticket.isCheckedOut:
+        raise Http404("Ticket is already checked out.")
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/wait_for_pat.html', context_dict)
 
 
 def checkout(request, repairNumber):
@@ -572,7 +590,7 @@ def checkout(request, repairNumber):
         form = CheckoutForm
         context_dict['form'] = form
 
-    return render(request, 'RepairCafe/checkout.html',context_dict)
+    return render(request, 'RepairCafe/checkout.html', context_dict)
 
 
 def checkout_success(request):
