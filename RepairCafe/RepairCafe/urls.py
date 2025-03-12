@@ -36,6 +36,10 @@ urlpatterns = [
         path('settings_page/', views.settings_page, name='settings_page'),
         path('basic_stats/', views.basic_stats,  name='basic_stats'),
         path('queue_position/<int:repairNumber>/', views.get_queue_position, name='queue_position'),
+        path('volunteer_checkin/', views.volunteer_checkin, name='volunteer_checkin'),
+        path('volunteer_checkin_success/<int:repairNumber>/', views.volunteer_checkin_success, name='volunteer_checkin_success'),
+        path('volunteer_checkout/<int:repairNumber>/', views.volunteer_checkout, name='volunteer_checkout'),
+        path('volunteer_checkout_success/', views.volunteer_checkout_success, name='volunteer_checkout_success'),
         path('admin/', admin.site.urls),
         path('admin_tools/', include('admin_tools.urls')),
         

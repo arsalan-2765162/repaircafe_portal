@@ -287,19 +287,25 @@
 
     .btn-primary:hover {
       transform: scale(1.08);
-      background-color: #cdcccc; 
-      color: #000000;
+      background-color: #cdcccc !important; 
+      color: #000000 !important;
       cursor: pointer;
-      border-color: #000000;
+      border-color: #333 !important;
+      -webkit-appearance: none; 
       
     } 
     .btn-primary:active {
       background-color: #3d3d3d !important; 
-      color: #ffffff;
+      color: #ffffff !important;
       transform: scale(0.98); 
       cursor: pointer;
-      border-color: #000000!important;
+      -webkit-appearance: none; 
     } 
+    .btn-primary:focus {
+      outline: none;
+      box-shadow: none;
+      -webkit-appearance: none; 
+  }
     
 
     .ticket-form img{
@@ -1048,6 +1054,10 @@
   margin: 2vw auto;
   }
 
+  .purpbg .btn-primary{
+    color: black !important;
+  }
+
   .repairbg{
     z-index: 1000;
     background-color: #E86312;
@@ -1078,6 +1088,10 @@
   color: rgb(159, 249, 255);
 
   text-decoration: underline; 
+}
+
+.purp-bg .black{
+  color: #000000 !important;
 }
   
 
@@ -1157,6 +1171,12 @@ input[type="checkbox"] {
 .dropdown-content h2{
   display:flex;
   
+}
+
+
+
+.volunteer-checkin {
+  background-color: #F8F3ED !important;  
 }
 
 .messages {
@@ -1420,7 +1440,7 @@ input[type="checkbox"] {
           
       }
     
-      .ticket-form .btn-primary {
+      .ticket-form .btn-primary{
         min-width: 120px;
         align-self: center;
         order: 1;

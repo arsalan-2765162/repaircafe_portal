@@ -9,6 +9,7 @@ class Queue(models.Model):
     def __str__(self):
         return self.name
 
+
     def get_tickets(self):
         return self.ticket_set.order_by('position')
 
@@ -17,7 +18,10 @@ class Repairer(models.Model):
     id = models.BigAutoField(primary_key=True)
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True) 
+    picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id} - {self.firstName}  {self.lastName}"
 
 
 class Customer(models.Model):
@@ -29,9 +33,10 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.firstName}  {self.lastName}"
 
+
 class Carbon_footprint_categories(models.Model):
-    NAME_MAX_LENGTH=123
-    name=models.CharField(max_length=NAME_MAX_LENGTH)
+    NAME_MAX_LENGTH = 123
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
     co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -61,6 +66,7 @@ class Ticket(models.Model):
                              ('CERA','Ceramics'),
                              ('OTHER','Other'),]
     
+    isVolunteerCreated = models.BooleanField(default=False)
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
     itemName = models.CharField(max_length=MAX_ITEM_NAME_LENGTH)
@@ -167,13 +173,7 @@ class Ticket(models.Model):
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
-class Repairer(models.Model):
-    NAME_MAX_LENGTH = 128
-    firstName = models.CharField(max_length=NAME_MAX_LENGTH)
-    lastName = models.CharField(max_length=NAME_MAX_LENGTH)
 
-    def __str__(self):
-        return f"{self.id} - {self.firstName}  {self.lastName}"
 
 
 

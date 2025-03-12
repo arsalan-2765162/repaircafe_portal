@@ -10,12 +10,14 @@
       {% block title_block %}
         Repair Cafe
       {% endblock %}
-    </title>
+  </title>
+  {% block stylesheets %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-
-    
 </head>
+
+<body class="{% block body_class %}{% endblock %}"></body>
+
 <body>
   <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -32,6 +34,9 @@
     <div class="sidebarbutton">
       <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
     </div>
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:volunteer_checkin'%}">Volunteer </br> Check-in</a>
+  </div>
     <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:settings_page'%}">Settings</a>
   </div>

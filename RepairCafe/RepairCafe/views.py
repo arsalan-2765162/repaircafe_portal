@@ -319,13 +319,15 @@ def checkout_ticket(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus == 'INCOMPLETE':
         ticket.checkout()
-
         send_ticket_update("ticket_updates", repairNumber, "CHECKOUT")
         send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
+        messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
-        messages.error(request, f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+        messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+    if (ticket.isVolunteerCreated):
+        return redirect('RepairCafe:volunteer_checkout', repairNumber=repairNumber)
     return redirect(reverse('RepairCafe:checkout_queue'))
 
 
@@ -355,7 +357,6 @@ def enter_password(request):
             return redirect('RepairCafe:repairer_login')
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
-
     return render(request, 'RepairCafe/enter_password.html')
 
 
@@ -387,6 +388,75 @@ def repairer_logout(request):
 def settings_page(request):
     return render(request, 'RepairCafe/settings_page.html')
 
+
+
+
+
+def volunteer_checkin(request):
+    context_dict = {}
+
+    if request.method == 'POST':
+        form = CheckinForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            customer = Customer.objects.create(
+                firstName=form_data['firstName'],
+                lastName=form_data['lastName']
+            )
+            ticket = Ticket.objects.create(
+                repairNumber=Ticket.generate_repair_number(),
+                itemName=form_data['itemName'],
+                itemCategory=form_data['itemCategory'],
+                itemDescription=form_data['itemDescription'],
+                customer=customer
+            )
+            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
+            ticket.accept_ticket()
+            ticket.isVolunteerCreated = True
+            ticket.save()
+   
+            send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
+
+            return redirect('RepairCafe:volunteer_checkin_success', repairNumber=ticket.repairNumber)
+        else:
+            context_dict['form'] = form
+    else:
+        form = CheckinForm()
+        context_dict['form'] = form
+    return render(request, 'RepairCafe/volunteer_checkin.html', context_dict)
+
+
+def volunteer_checkin_success(request, repairNumber):
+    context_dict = {}
+
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
+
+
+def volunteer_checkout(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
+        raise Http404("The ticket is not in the desired state.")
+    if not ticket.isCheckedOut:
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['event_date'] = date.today()
+            print(form_data)
+            return redirect('RepairCafe:volunteer_checkout_success')
+    else:
+        form = CheckoutForm
+        context_dict['form'] = form
+
+    return render(request, 'RepairCafe/volunteer_checkout.html', context_dict)
+
+
+def volunteer_checkout_success(request):
+    return render(request, 'RepairCafe/volunteer_checkout_success.html')
 
 
 
