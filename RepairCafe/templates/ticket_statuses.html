@@ -1,0 +1,123 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% load i18n %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block module_content %}
+<h3>filter by date, time and category</h3>
+
+<form method="get" id="statusFilterForm">
+    <label for="status_start_date">{% trans "Dates after" %}:</label>
+    <input type="datetime-local" id="status_start_date" name="status_start_date" value="{{ request.GET.status_start_date }}">
+    <br>
+    
+    <label for="status_end_date">{% trans "Dates before" %}:</label>
+    <input type="datetime-local" id="status_end_date" name="status_end_date" value="{{ request.GET.status_end_date }}">
+    <br>
+
+    <label for="repair_category">{% trans "Repair Category" %}:</label>
+    <select id="status_repair_category" name="status_repair_category">
+        <option value="">All categories</option>
+        {% for category in module.children.categories %}
+            <option value="{{category}}" {% if request.GET.status_repair_category == category %}selected{% endif %}>{{category}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <button type="submit">{% trans "Filter" %}</button>
+    <!-- Reset for Graph -->
+    <button type="button" onclick="clearStatusData()">{% trans "Reset" %}</button>
+</form>
+
+<script>
+    // Function to handle the form submission and preserve other query parameters
+    document.getElementById('statusFilterForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const currentUrl = new URL(window.location.href); // Get the current URL
+
+        // Get the graph date values
+        const statusStartDate = document.getElementById("status_start_date").value;
+        const statusEndDate = document.getElementById("status_end_date").value;
+        const statusCategory = document.getElementById("status_repair_category").value;
+
+        // Update the URL with the graph start and end dates
+        if (statusStartDate) {
+            currentUrl.searchParams.set('status_start_date', statusStartDate);
+        } else {
+            currentUrl.searchParams.delete('status_start_date');
+        }
+
+        if (statusEndDate) {
+            currentUrl.searchParams.set('status_end_date', statusEndDate);
+        } else {
+            currentUrl.searchParams.delete('status_end_date');
+        }
+
+        if (statusCategory) {
+            currentUrl.searchParams.set('status_repair_category', statusCategory);
+        } else {
+            currentUrl.searchParams.delete('status_repair_category');
+        }
+
+        // Now redirect the user to the updated URL with all parameters intact
+        window.location.href = currentUrl.toString();
+    }
+
+    // Function to clear both graph date fields and preserve other parameters
+    function clearStatusData() {
+        const currentUrl = new URL(window.location.href);
+
+        // Clear the graph date fields
+        document.getElementById("status_start_date").value = "";
+        document.getElementById("status_end_date").value = "";
+        document.getElementById("status_repair_category").value = "";
+
+        // Remove the graph date parameters from the query string
+        currentUrl.searchParams.delete('status_start_date');
+        currentUrl.searchParams.delete('status_end_date');
+        currentUrl.searchParams.delete('status_repair_category');
+
+        // Redirect to the updated URL with other parameters intact
+        window.location.href = currentUrl.toString();
+    }
+</script>
+
+<hr style="height: 10px; background-color: grey; border: none;">
+<p>{{module.children.message}}</p>
+<canvas id="simpleBarChart" width="400" height="400"></canvas>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('simpleBarChart').getContext('2d');
+
+    
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+            {% for status, counts in module.children.graphData.items %}
+                '{{ status }}',
+                {% endfor %}
+            ], // Label for the bar
+            datasets: [{
+                label: 'Number of Items',
+                data: [
+                        {% for category, counts in module.children.graphData.items %}
+                            {{ counts }},
+                        {% endfor %}
+                ], // Static data for the bar
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Ensures that the y-axis starts at 0
+                }
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}

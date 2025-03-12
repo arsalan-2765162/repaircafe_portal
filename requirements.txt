@@ -64,3 +64,4 @@ typing_extensions==4.12.2
 tzdata==2025.1
 uc-micro-py==1.0.3
 zope.interface==7.2
+django-environ==0.12.0
