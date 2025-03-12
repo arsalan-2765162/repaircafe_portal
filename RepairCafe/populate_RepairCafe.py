@@ -15,6 +15,15 @@ def populate():
         queue.description = description  # Add the description
         queue.save()
         return queue
+    
+    def add_repairer(name, picture_filename=None):
+        repairer, created = Repairer.objects.get_or_create(name=name)
+
+        if picture_filename:  # Assign image if provided
+            repairer.picture = f'repairer_pictures/{picture_filename}'
+            repairer.save()
+
+        return repairer
 
     def add_ticket(repair_number, item_name, item_category, item_description, repair_status, position, queue, customer):
         ticket = Ticket.objects.get_or_create(
@@ -36,10 +45,6 @@ def populate():
         customer.save()
         return customer
 
-    def add_repairer(first_name, last_name):
-        repairer = Repairer.objects.get_or_create(firstName=first_name, lastName=last_name)[0]
-        repairer.save()
-        return repairer
 
     # Queue descriptions
     queue_data = {
@@ -100,11 +105,12 @@ def populate():
         {'firstName': 'Bob', 'lastName': 'Dylan'}
     ]
     repairers_data = [
-        {'firstName': 'Alice', 'lastName': 'Johnson'},
-        {'firstName': 'Bob', 'lastName': 'Williams'},
-        {'firstName': 'Eve', 'lastName': 'Clark'}
+        {'name': 'Michael', 'picture': 'michael.jpg'},
+        {'name': 'David', 'picture': 'david.jpg'},
+        {'name': 'Milchick', 'picture': 'milchick.jpg'},
+        {'name': 'Bjork', 'picture': 'bjork.png'},
+        {'name': 'Guest Repairer'}
     ]
-
     customers = []
     for customer_data in customers_data:
         customers.append(add_customer(customer_data['firstName'], customer_data['lastName']))
@@ -133,7 +139,7 @@ def populate():
 
     # Adding Repairer objects
     for repairer_data in repairers_data:
-        add_repairer(repairer_data['firstName'], repairer_data['lastName'])
+        add_repairer(repairer_data['name'], repairer_data.get('picture'))
 
     # Printing the results
     for queue in Queue.objects.all():

@@ -23,7 +23,7 @@ MEDIA_URL = '/media/'
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
-ADMIN_TOOLS_MENU= 'menu.CustomMenu'
+ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_THEMING_CSS = 'css/admin_theming.css'
 
 

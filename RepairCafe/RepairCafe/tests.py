@@ -104,11 +104,13 @@ class CustomerModelTest(TestCase):
 
 class RepairerModelTest(TestCase):
     def setUp(self):
-        self.repairer = Repairer.objects.create(firstName="Bob", lastName="Fixer")
+        self.repairer = Repairer.objects.create(name="Bob")
 
     def test_repairer_creation(self):
-        self.assertEqual(self.repairer.firstName, "Bob")
-        self.assertEqual(self.repairer.lastName, "Fixer")
+        self.assertEqual(self.repairer.name, "Bob")
+
+    def test_repairer_picture_default(self):
+        self.assertFalse(bool(self.repairer.picture), "Expected picture field to be empty by default")
 
 
 class TestRedirectToEnterPassword(TestCase):

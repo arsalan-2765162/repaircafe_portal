@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer
+from .models import Ticket, Queue, Customer, Repairer
 from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -202,11 +202,22 @@ def accept_ticket(request, repairNumber):
 
 def repair_ticket(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    if ticket.repairStatus == "WAITING":
-        ticket.repair_ticket()
-        messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
+
+    repairer_name = request.session.get('repairer_name', None)
+    if repairer_name:
+        repairer = Repairer.objects.filter(name=repairer_name).first()
     else:
+        repairer = None
+
+    if repairer and ticket.repairStatus == "WAITING":
+        ticket.repairer = repairer
+        ticket.repair_ticket()
+        ticket.save()
+        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
+    elif ticket.repairStatus != "WAITING":
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
+    else:
+        messages.error(request, "No repairer is logged in.")
     return redirect('RepairCafe:repair_item', repairNumber=repairNumber)
 
 
@@ -341,11 +352,43 @@ def enter_password(request):
             return redirect('RepairCafe:house_rules')
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
             request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:index')
+            return redirect('RepairCafe:repairer_login')
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
 
     return render(request, 'RepairCafe/enter_password.html')
+
+
+def repairer_login(request):
+    context_dict = {}
+    repairers = Repairer.objects.all()
+    if request.method == "POST":
+        selected_repairer_name = request.POST.get('selected_repairer')
+        if not selected_repairer_name:
+            context_dict['errors'] = "Error: Please select a repairer before confirming."
+        else:
+            repairer = Repairer.objects.filter(name=selected_repairer_name).first()
+            if repairer:
+                request.session['repairer_name'] = repairer.name
+                request.session["repairer_picture"] = (
+                    repairer.picture.url if repairer.picture else "/static/images/default.jpg"
+                ) 
+                return redirect('RepairCafe:main_queue')
+    context_dict['repairers'] = repairers
+
+    return render(request, 'RepairCafe/repairer_login.html', context_dict)
+
+
+def repairer_logout(request):
+    request.session.flush()
+    return redirect("RepairCafe:enter_password")
+
+
+def settings_page(request):
+    return render(request, 'RepairCafe/settings_page.html')
+
+
+
 
 
 """
@@ -383,7 +426,8 @@ def checkin_form(request):
                 itemName=form_data['itemName'],
                 itemCategory=form_data['itemCategory'],
                 itemDescription=form_data['itemDescription'],
-                customer=customer
+                customer=customer,
+                checkinFormData=form_data
             )
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
@@ -425,9 +469,9 @@ def repair_prompt(request, repairNumber):
     print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
         raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket}
-    return render(request, 'RepairCafe/repair_prompt.html',context_dict)
-
+    repairer = ticket.repairer
+    context_dict = {'ticket': ticket, 'repairer': repairer} 
+    return render(request,'RepairCafe/repair_prompt.html',context_dict)
 
 def wait_for_checkout(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
@@ -450,8 +494,9 @@ def checkout(request, repairNumber):
         form = CheckoutForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
-            form_data['event_date'] = date.today()
-            print(form_data)
+            form_data['event_date'] = date.today().isoformat()
+            ticket.checkoutFormData = form_data
+            ticket.save()
             return redirect('RepairCafe:checkout_success')
     else:
         form = CheckoutForm
