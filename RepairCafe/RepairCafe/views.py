@@ -11,6 +11,7 @@ from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponseBadRequest
+from django.utils import timezone
 
 
 
@@ -112,6 +113,10 @@ def main_queue(request):
         context_dict['Queue'] = queue
         context_dict['Tickets'] = ticket_list
         context_dict['FilterForm'] = form
+
+        for ticket in ticket_list:
+            ticket.age_minutes = (timezone.now() - ticket.time_created).total_seconds() / 60
+
     except Queue.DoesNotExist:
         context_dict['Queue'] = None
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)

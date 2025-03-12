@@ -50,12 +50,12 @@ Checkout Queue
                     <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
                 </div>
                 <div class="dropdown-content">
-                    <h2><div class="weak">Category: </div><div class="inline"> &thinsp; {{ ticket.get_itemCategory_display }}</div></h2>
-                    <h2><div class="weak">Repair Status: </div> <div class="inline">&thinsp;{{ ticket.get_repairStatus_display }}</div></h2>
+                    <h2><div class="weak">Category: </div><div class="inline">  {{ ticket.get_itemCategory_display }}</div></h2>
+                    <h2><div class="weak">Repair Status: </div> <div class="inline">{{ ticket.get_repairStatus_display }}</div></h2>
                     {% if ticket.repairStatus == "INCOMPLETE" %}
-                        <h2><div class="weak">Incomplete Reason: </div> <div class="inline">&thinsp; {{ ticket.get_incompleteReason_display }}</div></h2>
+                        <h2><div class="weak">Incomplete Reason: </div> <div class="inline">{{ ticket.get_incompleteReason_display }}</div></h2>
                     {% endif %}
-                    <h2><div class="weak">Repair Description: </div> <div class="inline">&thinsp; {{ ticket.itemDescription}}</div></h2>
+                    <h2><div class="weak">Repair Description: </div> <div class="inline"> {{ ticket.itemDescription}}</div></h2>
                 </div>
             </div>
             

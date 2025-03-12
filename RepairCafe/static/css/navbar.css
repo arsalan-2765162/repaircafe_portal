@@ -372,6 +372,19 @@
 
     } 
 
+    .new-ticket {
+      background-color: #e86312; 
+  }
+    
+    .mid-ticket {
+        background-color: #e83212; 
+    }
+    
+    .old-ticket {
+        background-color: #e81212;
+    }
+    
+
  
 
 
@@ -1345,6 +1358,15 @@ input[type="checkbox"] {
   border-radius: 5px;
 }
 
+h2 .inline {
+  margin-left: 5px;
+  display: block; 
+}
+@media screen and (max-width: 1000px) {
+  .statsdiv{
+    width: 40%;
+  }
+}
    /*
     Beginning of mobile styling
     */
@@ -1549,6 +1571,15 @@ input[type="checkbox"] {
         margin: 5px 5px;
         font-size:1em;
       }
+
+      .statsdiv {
+        margin: 15px 10px; 
+        width: 80%; 
+    }
+    .statsdiv h2 {
+      line-height: 1.5em;
+      display: inline;
+    }
   
 
     }
