@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Customer',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(primary_key=True, serialize=False)),
                 ('firstName', models.CharField(max_length=128)),
                 ('lastName', models.CharField(max_length=128)),
             ],
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Queue',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=128)),
                 ('description', models.CharField(default='This is a Queue', max_length=256)),
             ],
@@ -35,9 +35,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Repairer',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('firstName', models.CharField(max_length=128)),
-                ('lastName', models.CharField(max_length=128)),
+                ('id', models.BigAutoField(primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=128)),
+                ('picture', models.ImageField(blank=True, null=True, upload_to='repairer_pictures/')),
             ],
         ),
         migrations.CreateModel(
@@ -76,11 +76,11 @@ class Migration(migrations.Migration):
                 ('itemName', models.CharField(max_length=128)),
                 ('itemCategory', models.CharField(choices=[('ELECM', 'Electrical Mains'), ('ELEC', 'Electrical Low-Voltage/Battery'), ('TEXT', 'Clothing & Textiles'), ('CERA', 'Ceramics'), ('OTHER', 'Other')], max_length=128)),
                 ('itemDescription', models.CharField(max_length=256)),
-                ('repairStatus', models.CharField(choices=[('WAITING', 'Waiting'), ('WAITING_TO_JOIN', 'Waiting to Join Queue'), ('COMPLETED', 'Completed'), ('NEED_PAT', 'Needs PAT tested'), ('INCOMPLETE', 'Incomplete'), ('BEING_REPAIRED', 'Currently being Repaired')], default='WAITING_TO_JOIN', max_length=128)),
+                ('repairStatus', models.CharField(choices=[('WAITING', 'Waiting'), ('WAITING_TO_JOIN', 'Waiting to Join Queue'), ('COMPLETED', 'Completed'), ('NEED_PAT', 'Needs PAT tested'), ('INCOMPLETE', 'Incomplete'), ('BEING_REPAIRED', 'Currently being Repaired')], default='WAITING', max_length=128)),
                 ('incompleteReason', models.CharField(blank=True, choices=[('NOT_REP', 'Not repairable'), ('COM_BACK', 'Coming back next time'), ('TAKEN_HOME', 'Repairer has taken it home')], default=None, max_length=128, null=True)),
                 ('position', models.IntegerField(blank=True, default=None, null=True)),
-                ('customer', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='RepairCafe.customer')),
-                ('queue', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='RepairCafe.queue')),
+                ('customer', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='RepairCafe.Customer')),
+                ('queue', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='RepairCafe.Queue')),
             ],
         ),
     ]

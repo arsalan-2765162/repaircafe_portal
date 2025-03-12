@@ -8,7 +8,10 @@ Meet Your Repairer
 {% block content %}
 <div class="repairbg">
     <h1>We are ready to see you</h1>
-    <h2 id="status-message">Please make your way to "placeholder" at the "placeholder" repair desk</h2>
+    <h2 id="status-message">Please make your way to {{ repairer.name }}</h2>
+    {% if ticket.repairer.picture %}
+        <img src="{{ ticket.repairer.picture.url }}" alt="{{ ticket.repairer.name }}'s picture"  class="repairer-prompt-img">
+    {% endif %}
     <div class = "numberSquare">
         <h3>Your Repair Number</h3>
         <p>

@@ -75,7 +75,7 @@
     .sidebar a:hover {
       color: #f1f1f1;
     }
-
+    
     .sidebar a {
       color: #f1f1f1;
     }
@@ -109,6 +109,17 @@
       font-weight: bold;
     }
     
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Pushes elements apart */
+    }
+
+    .logged-in-text {
+      margin-left: auto; /* Pushes text to the right */
+      font-size: 16px;
+      font-weight: 450;
+    }
    
     #main {
       transition: margin-left .5s; 
@@ -268,7 +279,8 @@
       font-size: 1.5em; 
       font-weight: bold; 
       transition: transform 0.2s ease; 
-      -webkit-appearance: none !important;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
 
@@ -570,6 +582,7 @@
     margin-right: 40px;
     align-self: center;
     line-height: 1.5em;
+    color:hsl(0, 0%, 100%)
   }
 
   .leftBlock{
@@ -665,9 +678,6 @@
     color:hsl(0, 0%, 95%)
   }
 
-  .repairbg h2{
-    color:hsl(0, 0%, 95%)
-  }
 
 
   .button-row{
@@ -1206,6 +1216,108 @@ input[type="checkbox"] {
 }
 
 
+.repair-prof{
+  background-color: #e86312;
+  padding: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.repair-prof:hover {
+  transform: scale(1.1); 
+  background-color: #f07b35; 
+}
+
+.repair-prof-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings .repair-prof:hover{
+  transform:none;
+  background-color: #e86312;
+  cursor: auto;
+}
+
+.settings{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.settings .btn-primary{
+  margin-top: 30px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+
+
+.repair-prof.selected {
+
+  transform: scale(1.1);
+  border: 5px solid #333 
+}
+
+
+.repair-prof h2{
+  align-self: center;
+  text-align: center;
+  line-height: 1em;
+  color: white;
+}
+
+.repair-login-bg{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.repair-login-bg .error {
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: rgb(255, 53, 53);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
+.repairers{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.repairer-prompt-img{
+  width: 220px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.repairer-pfp-icon{
+  width: 35px;
+  height: 35px; 
+  margin: 3px;
+  border-radius: 5px;
+}
+
    /*
     Beginning of mobile styling
     */
@@ -1291,7 +1403,7 @@ input[type="checkbox"] {
 
       .repairbg h1 {
         margin-bottom: 10px;
-        line-height: 1.5em !important;
+        line-height: 1.2em !important;
         font-size: 2em;
       }
 
