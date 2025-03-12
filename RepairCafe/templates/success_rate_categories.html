@@ -2,6 +2,71 @@
 {% load i18n %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% block module_content %}
+<h3>filter by date and time (inclusive)</h3>
+
+<form method="get" id="graphFilterForm">
+    <label for="graph_start_date">{% trans "Dates after" %}:</label>
+    <input type="datetime-local" id="graph_start_date" name="graph_start_date" value="{{ request.GET.graph_start_date }}">
+    <br>
+    
+    <label for="graph_end_date">{% trans "Dates before" %}:</label>
+    <input type="datetime-local" id="graph_end_date" name="graph_end_date" value="{{ request.GET.graph_end_date }}">
+    <br>
+
+    <button type="submit">{% trans "Filter" %}</button>
+    <!-- Reset for Graph -->
+    <button type="button" onclick="clearGraphDates()">{% trans "Reset" %}</button>
+</form>
+
+<script>
+    // Function to handle the form submission and preserve other query parameters
+    document.getElementById('graphFilterForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const currentUrl = new URL(window.location.href); // Get the current URL
+
+        // Get the graph date values
+        const graphStartDate = document.getElementById("graph_start_date").value;
+        const graphEndDate = document.getElementById("graph_end_date").value;
+
+        // Update the URL with the graph start and end dates
+        if (graphStartDate) {
+            currentUrl.searchParams.set('graph_start_date', graphStartDate);
+        } else {
+            currentUrl.searchParams.delete('graph_start_date');
+        }
+
+        if (graphEndDate) {
+            currentUrl.searchParams.set('graph_end_date', graphEndDate);
+        } else {
+            currentUrl.searchParams.delete('graph_end_date');
+        }
+
+        // Now redirect the user to the updated URL with all parameters intact
+        window.location.href = currentUrl.toString();
+    }
+
+    // Function to clear both graph date fields and preserve other parameters
+    function clearGraphDates() {
+        const currentUrl = new URL(window.location.href);
+
+        // Clear the graph date fields
+        document.getElementById("graph_start_date").value = "";
+        document.getElementById("graph_end_date").value = "";
+
+        // Remove the graph date parameters from the query string
+        currentUrl.searchParams.delete('graph_start_date');
+        currentUrl.searchParams.delete('graph_end_date');
+
+        // Redirect to the updated URL with other parameters intact
+        window.location.href = currentUrl.toString();
+    }
+</script>
+
+
+<h4>note: only shows repairs marked complete or incomplete</h4>
+<hr style="height: 10px; background-color: grey; border: none;">
+<p>{{module.children.message}}</p>
 <canvas id="myChart" width="400" height="400"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

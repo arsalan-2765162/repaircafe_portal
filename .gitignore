@@ -33,3 +33,6 @@ Thumbs.db
 
 # Ignore coverage reports
 coverage/
+
+# environment variable
+.env

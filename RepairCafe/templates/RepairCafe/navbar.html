@@ -10,12 +10,14 @@
       {% block title_block %}
         Repair Cafe
       {% endblock %}
-    </title>
+  </title>
+  {% block stylesheets %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-
-    
 </head>
+
+<body class="{% block body_class %}{% endblock %}"></body>
+
 <body>
   <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -32,7 +34,13 @@
     <div class="sidebarbutton">
       <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
     </div>
-    <div class="sidebarbutton end link">
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:volunteer_checkin'%}">Volunteer </br> Check-in</a>
+  </div>
+    <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:settings_page'%}">Settings</a>
+  </div>
+  <div class="sidebarbutton end link">
       <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
         <input class ="btn-primary" type="submit" value="RELOAD DATA">
       </form>
@@ -40,7 +48,17 @@
   </div>
 
 <div id="main">
-  <button class="openbtn" onclick="openNav()">&#9776;</button>
+  <div class="header">
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
+    {% if request.session.repairer_name %}
+      <p class="logged-in-text">Logged in as: {{ request.session.repairer_name }}</p>
+      {% if request.session.repairer_picture %}
+        <img src="{{ request.session.repairer_picture }}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+      {% else %}
+          <img src="{% static 'images/default.jpg' %}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+      {% endif %}
+    {% endif %}
+  </div>
   {% block content %}
   {% endblock %}
 </div>
