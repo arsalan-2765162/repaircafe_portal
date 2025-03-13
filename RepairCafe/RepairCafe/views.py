@@ -1,6 +1,6 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue, Customer, Repairer
-from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm
+from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm, CompleteFeedbackForm
 from django.urls import reverse
 from django.contrib import messages
 import populate_RepairCafe as script
@@ -18,7 +18,7 @@ def send_ticket_update(group_name, repairNumber, status):
     """
     Sends an update to the ticket status WebSocket channel.
 
-    Args: 
+    Args:
         group_name (str): The group name for the WebSocket channel.
         repairNumber (str): The repair number of the ticket
         status(str): The new status of the ticket.
@@ -215,7 +215,7 @@ def repair_ticket(request, repairNumber):
         ticket.repairer = repairer
         ticket.repair_ticket()
         ticket.save()
-        messages.success(request,f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
+        messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, is now being repaired.")
     elif ticket.repairStatus != "WAITING":
         messages.error(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, cannot be accepted as it is not in WAITING status.")
     else:
@@ -260,7 +260,7 @@ def repair_item(request, repairNumber):
 
 
 def complete_ticket(request, repairNumber):
-    ticket = Ticket.objects.get(repairNumber=repairNumber)
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
         ticket.complete_ticket()
         send_ticket_update("ticket_updates", repairNumber, "WAIT_FOR_PAT")
@@ -278,7 +278,23 @@ def complete_ticket(request, repairNumber):
     else:
         messages.error(request, f"Error, ticket {ticket.repairNumber} - {ticket.itemName}, not completed")
 
-    return redirect(reverse('RepairCafe:main_queue'))
+    return redirect('RepairCafe:ticket_feedback', repairNumber=repairNumber)
+
+
+def ticket_feedback(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    context_dict = {}
+
+    if request.method == 'POST':
+        form = CompleteFeedbackForm(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('RepairCafe:main_queue'))
+    else:
+        form = CompleteFeedbackForm(instance=ticket)
+    context_dict['form'] = form
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/ticket_feedback.html', context_dict)
 
 
 def pat_test(request, repairNumber):
@@ -313,7 +329,7 @@ def pat_test(request, repairNumber):
     return HttpResponseBadRequest("Invalid request method")
 
 
-def delete_ticket(request,repairNumber):
+def delete_ticket(request, repairNumber):
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     ticket.delete_ticket()
     messages.success(request, f"Ticket: {ticket.itemName}, has been removed")
@@ -393,9 +409,6 @@ def repairer_logout(request):
 
 def settings_page(request):
     return render(request, 'RepairCafe/settings_page.html')
-
-
-
 
 
 def volunteer_checkin(request):
@@ -548,6 +561,7 @@ def repair_prompt(request, repairNumber):
     repairer = ticket.repairer
     context_dict = {'ticket': ticket, 'repairer': repairer} 
     return render(request,'RepairCafe/repair_prompt.html',context_dict)
+
 
 def wait_for_checkout(request, repairNumber):
     context_dict = {}

@@ -302,3 +302,49 @@ class CheckinForm(forms.Form):
         required=False,
         widget=forms.CheckboxInput
     )
+
+
+class CompleteFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['fault_cause', 'repair_solution']
+        widgets = {
+            'fault_cause': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+            'repair_solution': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fault_cause'].required = True
+        self.fields['repair_solution'].required = True
+        self.fields['fault_cause'].label = "What was the cause of the fault?"
+        self.fields['repair_solution'].label = "How was the fault fixed?"
+
+
+class IncompleteFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['fault_cause', 'repair_solution']
+        widgets = {
+            'fault_cause': forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': 'Describe the cause of the fault',
+                'class': 'form-control'
+            }),
+            'repair_solution': forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': 'Describe how the fault was fixed',
+                'class': 'form-control'
+            }),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fault_cause'].required = True
+        self.fields['repair_solution'].required = True

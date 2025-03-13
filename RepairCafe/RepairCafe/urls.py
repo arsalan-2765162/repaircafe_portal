@@ -18,6 +18,7 @@ urlpatterns = [
         path('checkout_queue', views.checkout_queue, name='checkout_queue'),
         path('accept_ticket/<int:repairNumber>/', views.accept_ticket, name='accept_ticket'),
         path('repair_ticket/<int:repairNumber>/', views.repair_ticket, name='repair_ticket'),
+        path('ticket_feedback/<int:repairNumber>/', views.ticket_feedback, name='ticket_feedback'),
         path('delete-ticket/<int:repairNumber>/', views.delete_ticket, name='delete_ticket'),
         path('checkout_ticket/<int:repairNumber>/', views.checkout_ticket, name='checkout_ticket'),
         path('ticket/<int:repairNumber>/pat-test/', views.pat_test, name='pat_test'),

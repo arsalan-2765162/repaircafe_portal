@@ -701,7 +701,7 @@
 
   .inc-form {
     margin-top: 0px;
-    padding: 15px;
+    padding: 12px;
     margin-bottom: 20px;
     background-color: #c7c7c7; 
     border-radius: 8px; 
@@ -928,6 +928,16 @@
 
   }
 
+  .background-grey{
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    border-color: #333;
+    border-width: 2px;
+    border-style:outset;
+    margin: 15x;
+    margin-bottom: 20px;
+  }
 
     .left{
       float: left;

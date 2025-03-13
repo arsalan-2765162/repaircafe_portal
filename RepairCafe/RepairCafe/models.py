@@ -56,7 +56,8 @@ class Ticket(models.Model):
     ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP', 'Not repairable'),
                                  ('COM_BACK', 'Coming back next time'),
-                                 ('TAKEN_HOME', 'Repairer has taken it home')]
+                                 ('TAKEN_HOME', 'Repairer has taken it home'),
+                                 ('ADVICE_GIVEN', 'Advice given'),]
     ITEM_CATEGORY_CHOICES = [('ELECM', 'Electrical Mains'),
                              ('ELEC', 'Electrical Low-Voltage/Battery'),
                              ('TEXT', 'Clothing & Textiles'),
@@ -80,6 +81,8 @@ class Ticket(models.Model):
     repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
     checkinFormData = models.JSONField(null=True, blank=True)
     checkoutFormData = models.JSONField(null=True, blank=True)
+    fault_cause = models.TextField(blank=True, null=True)
+    repair_solution = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
