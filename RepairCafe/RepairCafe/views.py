@@ -140,7 +140,7 @@ def waiting_list(request):
 
     
     
-    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
+    if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles and activerole is not set, redirect to a page where they select the role they use to access this page
         redirect('RepairCafe:role_selection')
     elif len(request.user.roles) == 1:
         request.user.activerole = request.user.roles[0]
@@ -402,13 +402,17 @@ def enter_password(request):
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
 
+    #very messy here but basically, visitors can only log in once, volunteers and repairers can log in a second time to get the other of those two roles
+    #can be cleaned up later
         if role == "visitor" and request.user.roles == ["visitor"]:
          return render(request, 'RepairCafe/enter_password.html', {'error': 'Visitors can only log in once at a time.'})
         
         else:
          
          if role not in request.user.roles:
+            print("assigning role")
             request.user.roles.append(role)
+            request.user.activerole = role
             request.user.save()
 
         
@@ -462,11 +466,10 @@ Visitor Flow
 
 def house_rules(request):
 
-    
-
     request.user.activerole = "visitor"
     request.user.save()
-    #turn away volunteers and repairers by checking active role
+
+    #still need to find a way to turn away volunteers and repairers by checking active role
 
     if request.method == 'POST':
         form = RulesButton(request.POST)
@@ -518,7 +521,7 @@ def checkin_form(request):
     if request.user.activerole == "visitor":
         return render(request, 'RepairCafe/checkin_form.html', context_dict)
     elif request.user.activerole == "volunteer":
-        return render(request, 'RepairCafe/volunteer_check_in.html', context_dict)
+        return render(request, 'RepairCafe/volunteer_checkin.html', context_dict)
 
 
 
@@ -558,7 +561,7 @@ def wait_for_checkout(request, repairNumber):
     if ticket.isCheckedOut:
         raise Http404("The ticket is not in the desired state.")
     context_dict = {'ticket': ticket}
-    return render(request, 'RepairCafe/wait_for_checkout.html',context_dict)
+    return render(request, 'RepairCafe/wait_for_checkout.html')
 
 
 def checkout(request, repairNumber):

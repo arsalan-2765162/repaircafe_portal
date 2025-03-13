@@ -57,7 +57,8 @@ Repair Queue
                         <h2 class="item-description">Repair Description: {{ ticket.itemDescription}}</h2>
                     </div>
                 </div>
-                {% if ticket.repairStatus == "WAITING" and request.user.activerole == "repairer" %}
+                {% if ticket.repairStatus == "WAITING" %}
+                {%if request.user.activerole == "repairer" %}
                 <button 
                     type="button" 
                     class="btn btn-primary" 
@@ -67,18 +68,29 @@ Repair Queue
                     >
                         Accept Repair
                     </button>
+                    {% else %}
+                    <p>Only repairers can accept repairs.</p>
+                    {% endif %}
                 {% endif %}
 
                 {% if ticket.repairStatus == "NEED_PAT" %}
+                {%if request.user.activerole == "repairer" %}
                     <button 
                         type="button" 
                         class="btn btn-primary" 
                         onclick="openPatModal('{% url 'RepairCafe:pat_test' repairNumber=ticket.repairNumber %}', 
                         '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
-                        '{{ ticket.repairNumber }}')"
+                        '{{ ticket.repairNumber }}',
+                        'accept')"
+
+
+
                     >
                         PAT Test
                     </button>
+                    {% else %}
+                    <p>Only repairers can accept PAT tests.</p>
+                    {% endif %}
                 {% endif %}
             </div>
             </div>

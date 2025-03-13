@@ -16,27 +16,12 @@
 
     
 </head>
-<body>
-  <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    
-    <div class="sidebarbutton">
-      <a href="{% url 'RepairCafe:waiting_list'%}">Check-in</a>
-    </div>
-    <div class="sidebarbutton">
-      <a href="{% url 'RepairCafe:main_queue'%}" >Repair </a>
-    </div>
-    <div class="sidebarbutton">
-      <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
-    </div>
-    <div class="sidebarbutton">
-      <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
-    </div>
-    <div class="sidebarbutton end link">
-      <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
-        <input class ="btn-primary" type="submit" value="RELOAD DATA">
-      </form>
-    </div>
+<body>  
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  
+  <div class="sidebarbutton">
+    <a href="{% url 'RepairCafe:waiting_list'%}">Check-in</a>
   </div>
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:main_queue'%}" >Repair </a>
@@ -53,18 +38,13 @@
   </div>
   {% endif %}
   {% if "volunteer" in request.user.roles and "repairer" in request.user.roles %}
-  <div class="sidebarbutton">
-    <a href="{% url 'RepairCafe:role_selection'%}">Select Role</a>
-  </div>
-  {% endif %}
-  {% if request.user.activerole == "volunteer" %}
+    <div class="sidebarbutton">
+      <a href="{% url 'RepairCafe:role_selection'%}">Select Role</a>
+    </div>
+    {% endif %}
+    {% if request.user.activerole == "volunteer" %}
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:checkin_form'%}">Fill in Visitor's Form</a>
-  </div>
-  {% endif %}
-  {% if "volunteer" in request.user.roles and "repairer" in request.user.roles %}
-  <div class="sidebarbutton">
-    <a href="{% url 'RepairCafe:logout'%}">Log out</a>
   </div>
   {% endif %}
   <div class="sidebarbutton end link">
@@ -73,6 +53,29 @@
     </form>
   </div>
 </div>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    
+    <div class="sidebarbutton">
+      <a href="{% url 'RepairCafe:waiting_list'%}">Check-in</a>
+    </div>
+    <div class="sidebarbutton">
+      <a href="{% url 'RepairCafe:main_queue'%}" >Repair </a>
+    </div>
+    <div class="sidebarbutton">
+      <a href="{% url 'RepairCafe:checkout_queue'%}">Checkout</a>
+    </div>
+    
+
+    <div class="sidebarbutton">
+      <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
+    </div>
+    <div class="sidebarbutton end link">
+      <form action="{% url 'RepairCafe:reset_data' %}" method="GET">
+        <input class ="btn-primary" type="submit" value="RELOAD DATA">
+      </form>
+    </div>
+  </div>
 
 <div id="main">
   <button class="openbtn" onclick="openNav()">&#9776;</button>
