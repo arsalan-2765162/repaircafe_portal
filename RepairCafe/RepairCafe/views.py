@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer, UserRoles
+from .models import Ticket, Queue, Customer, UserRoles, Repairer
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -416,10 +416,10 @@ def enter_password(request):
             role = "visitor"
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
             role = "repairer"
+            return redirect('RepairCafe:repairer_login')
         elif entered_password == settings.VOLUNTEER_PRESET_PASSWORD:
             role = "volunteer"
             request.session['preset_password_verified'] = True
-            return redirect('RepairCafe:repairer_login')
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})
 
@@ -439,12 +439,68 @@ def enter_password(request):
         
         if role == "visitor" and len(request.user.roles) == 1:
             return redirect('RepairCafe:house_rules')
-        else:
-            return redirect('RepairCafe:index')
+        elif role == "volunteer":
+            return redirect('RepairCafe:waiting_list')
+        elif role == "repairer":
+            return redirect('RepairCafe:main_queue')
+        
 
         
     
     return render(request, 'RepairCafe/enter_password.html')
+
+def repairer_login(request):
+    context_dict = {}
+    repairers = Repairer.objects.all()
+    if request.method == "POST":
+        selected_repairer_name = request.POST.get('selected_repairer')
+        if not selected_repairer_name:
+            context_dict['errors'] = "Error: Please select a repairer before confirming."
+        else:
+            repairer = Repairer.objects.filter(name=selected_repairer_name).first()
+            if repairer:
+                request.session['repairer_name'] = repairer.name
+                request.session["repairer_picture"] = (
+                    repairer.picture.url if repairer.picture else "/static/images/default.jpg"
+                ) 
+                return redirect('RepairCafe:main_queue')
+    context_dict['repairers'] = repairers
+
+    return render(request, 'RepairCafe/repairer_login.html', context_dict)
+
+
+def repairer_logout(request):
+    request.session.flush()
+    return redirect("RepairCafe:enter_password")
+
+def settings_page(request):
+    return render(request, 'RepairCafe/settings_page.html')
+
+def volunteer_checkout(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
+        raise Http404("The ticket is not in the desired state.")
+    if not ticket.isCheckedOut:
+        raise Http404("The ticket is not in the desired state.")
+    context_dict = {}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['event_date'] = date.today()
+            print(form_data)
+            return redirect('RepairCafe:volunteer_checkout_success')
+    else:
+        form = CheckoutForm
+        context_dict['form'] = form
+
+    return render(request, 'RepairCafe/volunteer_checkout.html', context_dict)
+
+
+def volunteer_checkout_success(request):
+    return render(request, 'RepairCafe/volunteer_checkout_success.html')
+
+
 
 
 def role_selection(request): #users with multiple roles are redirected here and made to choose a role
@@ -457,10 +513,10 @@ def role_selection(request): #users with multiple roles are redirected here and 
             request.user.activerole = selected
             request.user.save()
 
-            redirect_url = request.GET.get('redirect_to', '/')
+            redirect_url = request.GET.get('redirect_to', 'RepairCafe:main_queue')
             print(f"Redirecting to: {redirect_url}") 
             
-            return redirect('RepairCafe:index')#should redirect to whichever page redirected here, but hardcoded to index for now
+            return redirect(redirect_url)#should redirect to whichever page redirected here, but hardcoded to index for now
 
     return render(request, 'RepairCafe/role_selection.html', {
         'roles': request.user.roles

@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils import timezonefrom django.template.defaultfilters import slugify
+from django.utils import timezone
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser, Group, Permission
 import uuid
 
