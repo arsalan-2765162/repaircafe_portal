@@ -10,11 +10,10 @@
       {% block title_block %}
         Repair Cafe
       {% endblock %}
-    </title>
+  </title>
+  {% block stylesheets %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-
-    
 </head>
 <body>  
 <div id="mySidebar" class="sidebar">
@@ -78,7 +77,17 @@
   </div>
 
 <div id="main">
-  <button class="openbtn" onclick="openNav()">&#9776;</button>
+  <div class="header">
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
+    {% if request.session.repairer_name %}
+      <p class="logged-in-text">Logged in as: {{ request.session.repairer_name }}</p>
+      {% if request.session.repairer_picture %}
+        <img src="{{ request.session.repairer_picture }}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+      {% else %}
+          <img src="{% static 'images/default.jpg' %}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+      {% endif %}
+    {% endif %}
+  </div>
   {% block content %}
   {% endblock %}
 </div>

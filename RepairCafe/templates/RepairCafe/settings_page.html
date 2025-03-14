@@ -1,0 +1,31 @@
+{% extends 'RepairCafe/navbar.html' %}
+{% load static %}
+{% block content %}
+<div class="header"><h1>Settings Page</h1></div>
+
+{% if request.session.repairer_name %}
+<div class="settings">
+    <div class="repair-prof">
+        <div class="repair-prof-content">
+            <h2>Logged in as: {{ request.session.repairer_name }}</h2>
+            {% if request.session.repairer_picture %}
+                <img src="{{  request.session.repairer_picture}}" alt="{{ r.name }}'s picture" style="width: 200px; height: auto;">
+            {% else %}
+                <img src="{% static 'images/default.jpg' %}" alt="{{ r.name }}'s picture" style="width: 200px; height: auto;">
+            {% endif %}
+        </div>
+    </div>
+
+    <form action="{% url 'RepairCafe:repairer_logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-primary">Log Out</button>
+    </form>
+</div>
+{% endif %}
+
+
+
+
+</div>
+
+{% endblock %}

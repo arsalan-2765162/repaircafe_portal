@@ -2,16 +2,13 @@
 {% load static %}
 
 {% block title_block %}
-Meet Your Repairer
+Go to PAT desk
 {% endblock %}
 
 {% block content %}
 <div class="repairbg">
-    <h1>We are ready to see you</h1>
-    <h2 id="status-message">Please make your way to {{ repairer.name }}</h2>
-    {% if ticket.repairer.picture %}
-        <img src="{{ ticket.repairer.picture.url }}" alt="{{ ticket.repairer.name }}'s picture"  class="repairer-prompt-img">
-    {% endif %}
+    <h1>Your item needs PAT testing</h1>
+    <h2 id="status-message">Please make your way to the PAT Testing Desk</h2>
     <div class = "numberSquare">
         <h3>Your Repair Number</h3>
         <p>
@@ -20,8 +17,6 @@ Meet Your Repairer
     </div>  
     <a id="next-page" style="display:none;" href="{% url 'RepairCafe:wait_for_checkout' ticket.repairNumber %}"><h1>Next Page</h1></a>
 </div>
-
-<audio id="chime" src="{% static 'sounds/chime.wav' %}" preload="auto"></audio>
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
@@ -34,22 +29,6 @@ Meet Your Repairer
             document.getElementById('next-page').style.display = 'block';
             const nextPageUrl = document.getElementById('next-page').getAttribute('href');
             window.location.href = nextPageUrl;
-        }
-        if (data.status === 'WAIT_FOR_PAT' && data.repairNumber == repairNumber) {
-            document.getElementById('status-message').textContent = 'You are now ready to have your item PAT tested!';
-            document.getElementById('next-page').style.display = 'block';
-            const nextPageUrl = `/RepairCafe/wait_for_pat/${repairNumber}/`
-            window.location.href = nextPageUrl;
-        }
-    };
-</script>
-<script>
-    window.onload = function() {
-        const chime = document.getElementById('chime');
-        chime.play();
-        
-        if ("vibrate" in navigator) {
-            navigator.vibrate(200) 
         }
     };
 </script>

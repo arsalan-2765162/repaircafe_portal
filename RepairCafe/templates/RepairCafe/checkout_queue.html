@@ -64,7 +64,11 @@ Checkout Queue
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
+                        {% if ticket.isVolunteerCreated %}
+                            Manual Checkout
+                        {% else %}
                             Checkout
+                        {% endif %}
                         </button>
                     </form>
                 {% else %}
@@ -81,11 +85,15 @@ Checkout Queue
     {% endif %}
 
     <script>
+        let isRedirecting = false;
         const mainQueueSocket = new WebSocket(
             'ws://' + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
+            if (isRedirecting) {
+                return;
+            }
             const data = JSON.parse(e.data);
             location.reload(); 
         };

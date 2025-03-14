@@ -3,9 +3,71 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% block module_content %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="statsdiv"><h2> Visitors Checked In Today: <br><h3 class="statnumber">{{ module.children.checkedin }}</h3></h2><br></div>
-<div class="statsdiv"><h2>Visitors Checked Out Today: <br><h3 class="statnumber">{{ module.children.checkedout }}</h3></h2><br></div>
+<form method="get" id="otherStatsFilterForm">
+    <label for="other_stats_start_date">{% trans "Dates after" %}:</label>
+    <input type="datetime-local" id="other_stats_start_date" name="other_stats_start_date" value="{{ request.GET.other_stats_start_date }}">
+    <br>
+
+    <label for="other_stats_end_date">{% trans "Dates before" %}:</label>
+    <input type="datetime-local" id="other_stats_end_date" name="other_stats_end_date" value="{{ request.GET.other_stats_end_date }}">
+    <br>
+
+    <button type="submit">{% trans "Filter" %}</button>
+    <!-- Reset for Other Stats -->
+    <button type="button" onclick="clearOtherStatsDates()">{% trans "Reset" %}</button>
+</form>
+
+<script>
+    // Function to handle the form submission and preserve other query parameters
+    document.getElementById('otherStatsFilterForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const currentUrl = new URL(window.location.href); // Get the current URL
+
+        // Get the other stats date values
+        const otherStatsStartDate = document.getElementById("other_stats_start_date").value;
+        const otherStatsEndDate = document.getElementById("other_stats_end_date").value;
+
+        // Update the URL with the other stats start and end dates
+        if (otherStatsStartDate) {
+            currentUrl.searchParams.set('other_stats_start_date', otherStatsStartDate);
+        } else {
+            currentUrl.searchParams.delete('other_stats_start_date');
+        }
+
+        if (otherStatsEndDate) {
+            currentUrl.searchParams.set('other_stats_end_date', otherStatsEndDate);
+        } else {
+            currentUrl.searchParams.delete('other_stats_end_date');
+        }
+
+        // Now redirect the user to the updated URL with all parameters intact
+        window.location.href = currentUrl.toString();
+    }
+
+    // Function to clear both other stats date fields and preserve other parameters
+    function clearOtherStatsDates() {
+        const currentUrl = new URL(window.location.href);
+
+        // Clear the other stats date fields
+        document.getElementById("other_stats_start_date").value = "";
+        document.getElementById("other_stats_end_date").value = "";
+
+        // Remove the other stats date parameters from the query string
+        currentUrl.searchParams.delete('other_stats_start_date');
+        currentUrl.searchParams.delete('other_stats_end_date');
+
+        // Redirect to the updated URL with other parameters intact
+        window.location.href = currentUrl.toString();
+    }
+</script>
+
+
+
+<hr style="height: 10px; background-color: grey; border: none;">
+{{module.children.message}}
+<div class="statsdiv"><h2> Visitors Checked In: <br><h3 class="statnumber">{{ module.children.checkedin }}</h3></h2><br></div>
+<div class="statsdiv"><h2>Visitors Checked Out: <br><h3 class="statnumber">{{ module.children.checkedout }}</h3></h2><br></div>
 <div class="statsdiv"><h2>Successful Repairs: <br><h3 class="statnumber">{{ module.children.successful }}</h3></h2><br></div>
 <div class="statsdiv"><h2>Unsuccessful Repairs: <br><h3 class="statnumber">{{ module.children.unsuccessful }}</h3></h2><br></div>
 
