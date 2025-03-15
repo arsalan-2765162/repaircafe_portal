@@ -24,6 +24,28 @@ from RepairCafe.models import Ticket
 from datetime import datetime
 from django.utils import timezone
 import json
+from RepairCafe.models import SharedPassword
+
+class ChangePasswordsModule(modules.DashboardModule):
+
+    title = 'Change Passwords'
+
+    def __init__(self, title=None, **kwargs): 
+        super().__init__(title, **kwargs)
+        self.template = 'change_passwords.html'
+
+    def init_with_context(self, context):
+        request=context['request']  
+        if request.POST.get('visitorPassword'):
+            print(request.POST.get('visitorPassword'))
+            SharedPassword.objects.get(user_type='visitor').set_password(request.POST.get('visitorPassword'))
+        elif request.POST.get('repairerPassword'):
+            SharedPassword.objects.get(user_type='repairer').set_password(request.POST.get('repairerPassword'))
+        elif request.POST.get('volunteerPassword'):
+            SharedPassword.objects.get(user_type='volunteer').set_password(request.POST.get('volunteerPassword'))
+    def is_empty(self):
+        return False
+
 
 class SuccessRateCategoriesModule(modules.DashboardModule):
     title = 'Repair Success By Categories'
@@ -230,6 +252,7 @@ class CustomIndexDashboard(Dashboard):
 
         self.children.append(TicketStatsModule())
         
+        self.children.append(ChangePasswordsModule())
         
 
         self.children.append(OtherStatsModule())

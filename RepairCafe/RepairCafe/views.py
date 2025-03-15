@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer, UserRoles, Repairer
+from .models import Ticket, Queue, Customer, UserRoles, Repairer, SharedPassword
 from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton, CheckinForm, CheckoutForm
 from django.urls import reverse
 from django.contrib import messages
@@ -13,7 +13,6 @@ from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponseBadRequest
-from .models import SharedPassword
 from django.core.exceptions import ObjectDoesNotExist
 
 def check_user_password(user_type, provided_password):
@@ -419,7 +418,6 @@ def enter_password(request):
 
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        
         if check_user_password("visitor", entered_password):
             role = "visitor"
         elif check_user_password("repairer", entered_password):
