@@ -3,7 +3,21 @@ from django.utils import timezone
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser, Group, Permission
 import uuid
+from django.contrib.auth.hashers import make_password, check_password
 
+class SharedPassword(models.Model):
+    user_type = models.CharField(max_length=50, unique=True)  # e.g., 'visitor', 'repairer'
+    hashed_password = models.CharField(max_length=255)
+
+    def set_password(self, raw_password):
+        self.hashed_password = make_password(raw_password)
+        self.save()
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.hashed_password)
+
+    def __str__(self):
+        return self.user_type
 
 class UserRoles(AbstractUser):
 

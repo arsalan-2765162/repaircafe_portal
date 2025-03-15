@@ -13,7 +13,15 @@ from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponseBadRequest
+from .models import SharedPassword
+from django.core.exceptions import ObjectDoesNotExist
 
+def check_user_password(user_type, provided_password):
+    try:
+        shared_password = SharedPassword.objects.get(user_type=user_type)
+        return shared_password.check_password(provided_password)
+    except SharedPassword.DoesNotExist:
+        return False
 
 
 def send_ticket_update(group_name, repairNumber, status):
@@ -412,12 +420,12 @@ def enter_password(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
         
-        if entered_password == settings.VISITOR_PRESET_PASSWORD:
+        if check_user_password("visitor", entered_password):
             role = "visitor"
-        elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
+        elif check_user_password("repairer", entered_password):
             role = "repairer"
             return redirect('RepairCafe:repairer_login')
-        elif entered_password == settings.VOLUNTEER_PRESET_PASSWORD:
+        elif check_user_password("volunteer", entered_password):
             role = "volunteer"
             request.session['preset_password_verified'] = True
         else:
