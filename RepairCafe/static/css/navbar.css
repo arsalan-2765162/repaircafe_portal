@@ -372,6 +372,19 @@
 
     } 
 
+    .new-ticket {
+      background-color: #e86312; 
+  }
+    
+    .mid-ticket {
+        background-color: #e83212; 
+    }
+    
+    .old-ticket {
+        background-color: #e81212;
+    }
+    
+
  
 
 
@@ -817,7 +830,7 @@
     color: white;
     font-size: 22px;
     font-weight: 600;
-    line-height: 0.1em;
+    line-height: 0.1em ;
     width: 100%;
     max-width: 1200px;
     align-self: center;
@@ -902,13 +915,14 @@
     font-size:25px;
     border-radius: 1em;
     border-width: .2em;
-    padding:1em 1em;
+    padding:.6em .6em;
     font-weight: 450;
     background-color: #2D2E82;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
     transition: transform 0.3s ease;
+    line-height: 1.5em;
   }
 
   .filter button:hover , .filter2 button:hover {
@@ -1185,9 +1199,11 @@ input[type="checkbox"] {
 }
 
 .statsdiv h2 {
-  
+  line-height: 2em;
   display: inline;
 }
+
+
 
 
 .statnumber {
@@ -1352,6 +1368,15 @@ input[type="checkbox"] {
   border-radius: 5px;
 }
 
+h2 .inline {
+  margin-left: 5px;
+  display: block; 
+}
+@media screen and (max-width: 1000px) {
+  .statsdiv{
+    width: 40%;
+  }
+}
    /*
     Beginning of mobile styling
     */
@@ -1556,6 +1581,15 @@ input[type="checkbox"] {
         margin: 5px 5px;
         font-size:1em;
       }
+
+      .statsdiv {
+        margin: 15px 10px; 
+        width: 80%; 
+    }
+    .statsdiv h2 {
+      line-height: 1.5em;
+      display: inline;
+    }
   
 
     }
