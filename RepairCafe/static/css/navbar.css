@@ -933,8 +933,8 @@
     padding: 10px;
     border-radius: 10px;
     border-color: #333;
-    border-width: 2px;
-    border-style:outset;
+    border-width: 3px;
+    border-style:groove;
     margin: 15x;
     margin-bottom: 20px;
   }

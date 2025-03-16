@@ -324,27 +324,33 @@ class CompleteFeedbackForm(forms.ModelForm):
         self.fields['fault_cause'].required = True
         self.fields['repair_solution'].required = True
         self.fields['fault_cause'].label = "What was the cause of the fault?"
-        self.fields['repair_solution'].label = "How was the fault fixed?"
+        self.fields['repair_solution'].label = "How did you fix it?"
 
 
 class IncompleteFeedbackForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['fault_cause', 'repair_solution']
+        fields = ['fault_cause', 'repair_solution', 'incomplete_cause']
         widgets = {
             'fault_cause': forms.Textarea(attrs={
                 'rows': 3,
-                'placeholder': 'Describe the cause of the fault',
                 'class': 'form-control'
             }),
             'repair_solution': forms.Textarea(attrs={
                 'rows': 3,
-                'placeholder': 'Describe how the fault was fixed',
+                'class': 'form-control'
+            }),
+            'incomplete_cause': forms.Textarea(attrs={
+                'rows': 3,
                 'class': 'form-control'
             }),
         }
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['fault_cause'].required = True
         self.fields['repair_solution'].required = True
+        self.fields['incomplete_cause'].required = True
+        self.fields['fault_cause'].label = "What was the cause of the fault?"
+        self.fields['repair_solution'].label = "How was did you try to fix it?"
+        self.fields['incomplete_cause'].label = "Why did you not manage to fix it?"

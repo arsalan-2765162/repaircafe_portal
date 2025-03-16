@@ -1,6 +1,6 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
 from .models import Ticket, Queue, Customer, Repairer
-from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm, CompleteFeedbackForm
+from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm, CompleteFeedbackForm, IncompleteFeedbackForm
 from django.urls import reverse
 from django.contrib import messages
 import populate_RepairCafe as script
@@ -239,7 +239,7 @@ def mark_incomplete_ticket(request, repairNumber):
             send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
             messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName} marked as incomplete.")
-            return redirect('RepairCafe:main_queue')
+            return redirect('RepairCafe:ticket_feedback', repairNumber=repairNumber)
     else:
         incompleteForm = IncompleteTicketForm()
     context_dict = {'ticket': ticket, 'form': incompleteForm}
@@ -285,13 +285,15 @@ def ticket_feedback(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     context_dict = {}
 
+    FormClass = IncompleteFeedbackForm if ticket.repairStatus == 'INCOMPLETE' else CompleteFeedbackForm
+
     if request.method == 'POST':
-        form = CompleteFeedbackForm(request.POST, instance=ticket)
+        form = FormClass(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
             return redirect(reverse('RepairCafe:main_queue'))
     else:
-        form = CompleteFeedbackForm(instance=ticket)
+        form = FormClass(instance=ticket)
     context_dict['form'] = form
     context_dict['ticket'] = ticket
     return render(request, 'RepairCafe/ticket_feedback.html', context_dict)

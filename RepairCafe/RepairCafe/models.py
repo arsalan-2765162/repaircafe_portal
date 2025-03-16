@@ -21,7 +21,7 @@ class Repairer(models.Model):
     picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} - {self.firstName}  {self.lastName}"
+        return f"{self.id} - {self.name}"
 
 
 class Customer(models.Model):
@@ -63,7 +63,7 @@ class Ticket(models.Model):
                              ('TEXT', 'Clothing & Textiles'),
                              ('CERA', 'Ceramics'),
                              ('OTHER', 'Other'),]
-    
+
     isVolunteerCreated = models.BooleanField(default=False)
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
@@ -83,7 +83,7 @@ class Ticket(models.Model):
     checkoutFormData = models.JSONField(null=True, blank=True)
     fault_cause = models.TextField(blank=True, null=True)
     repair_solution = models.TextField(blank=True, null=True)
-
+    incomplete_cause = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
