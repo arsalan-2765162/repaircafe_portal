@@ -4,6 +4,7 @@ from .forms import TicketFilterForm,TicketForm,IncompleteTicketForm,RulesButton,
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 import populate_RepairCafe as script
 from django.conf import settings
@@ -62,8 +63,9 @@ def send_queue_update(group_name, queue_name, update_type):
         },
     )
 
-
+@login_required
 def index(request):
+    print(request.user.activerole)
     return render(request, 'RepairCafe/index.html', context={})
 
 
@@ -80,6 +82,7 @@ def get_queue_position(request, repairNumber):
     except Ticket.DoesNotExist:
         return JsonResponse({'error': 'Ticket not found'}, status=404)
 
+@login_required
 def reset_data(request):
     script.populate()
     referer_url = request.META.get('HTTP_REFERER')
@@ -140,10 +143,11 @@ def waiting_list(request):
     print(request.user.roles)
     print(request.user.activerole)
 
-    
+    if not request.user.is_authenticated:
+       return redirect('RepairCafe:enter_password')
     
     if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles and activerole is not set, redirect to a page where they select the role they use to access this page
-        redirect('RepairCafe:role_selection')
+       return redirect('RepairCafe:role_selection')
     elif len(request.user.roles) == 1:
         request.user.activerole = request.user.roles[0]
         request.user.save()
@@ -405,7 +409,7 @@ def enter_password(request):
      user = authenticate_roles(request)  
         
     #if user is None:  
-     #       return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
+     #      return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
         
           
 
