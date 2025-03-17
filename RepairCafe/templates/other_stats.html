@@ -75,10 +75,10 @@
 
 {% for cat,per in module.children.catpercentages.items %}
 
-<div class="statsdiv"><h2>Percentage of {{cat.1}} items: <br><h3 class="statnumber">{{per}}</h3></h2><br></div>
+<div class="statsdiv"><h2>Percentage of {{cat.1}} items: <br><h3 class="statnumber">{{per}}%</h3></h2><br></div>
 
 
 {% endfor %}
-
+<div class="statsdiv"><h2>Total carbon footprint of items<br><h3 class="statnumber">{{ module.children.carbon_footprint_sum }}kg</h3></h2><br></div>
 
 {% endblock %}

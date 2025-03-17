@@ -54,7 +54,7 @@ class Repairer(models.Model):
     picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} - {self.firstName}  {self.lastName}"
+        return f"{self.id} - {self.name}"
 
 
 class Customer(models.Model):
