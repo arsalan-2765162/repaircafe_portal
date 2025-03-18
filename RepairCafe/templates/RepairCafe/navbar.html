@@ -31,17 +31,12 @@
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:basic_stats'%}">Stats</a>
   </div>
-  {% if "volunteer" in request.user.roles or "repairer" in request.user.roles %}
+  {% if request.user.activerole == "volunteer" or request.user.activerole == "repairer" %}
   <div class="sidebarbutton">
-    <a href="{% url 'RepairCafe:enter_password'%}">Log in</a>
+    <a href="{% url 'RepairCafe:logout'%}">Log out</a>
   </div>
   {% endif %}
-  {% if "volunteer" in request.user.roles and "repairer" in request.user.roles %}
-    <div class="sidebarbutton">
-      <a href="{% url 'RepairCafe:role_selection'%}">Select Role</a>
-    </div>
-    {% endif %}
-    {% if request.user.activerole == "volunteer" %}
+ {% if request.user.activerole == "volunteer" %}
   <div class="sidebarbutton">
     <a href="{% url 'RepairCafe:checkin_form'%}">Fill in Visitor's Form</a>
   </div>

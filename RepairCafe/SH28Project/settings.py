@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'RepairCafe.middleware.PasswordProtectionMiddleware',
+    'RepairCafe.middleware.PreviousPageMiddleware',
 ]
 
 ROOT_URLCONF = 'SH28Project.urls'

@@ -44,6 +44,7 @@ urlpatterns = [
         path('role_selection',views.role_selection, name='role_selection'),
         path('admin/', admin.site.urls),
         path('admin_tools/', include('admin_tools.urls')),
+        path('logout', views.logout, name="logout"),
         
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

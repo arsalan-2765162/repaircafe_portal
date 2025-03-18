@@ -96,6 +96,7 @@ class TicketModelTest(TestCase):
 class CustomerModelTest(TestCase):
     def setUp(self):
         self.customer = Customer.objects.create(firstName="Jane", lastName="Doe")
+        
 
     def test_customer_creation(self):
         self.assertEqual(self.customer.firstName, "Jane")
@@ -117,7 +118,7 @@ class TestRedirectToEnterPassword(TestCase):
     def setup(self):
         self.client=Client()
 
-   ''' def test_redirect_to_enter_password_index(self):
+    def test_redirect_to_enter_password_index(self):
         # Simulate an unauthenticated request
         response = self.client.get(reverse('RepairCafe:index'))
         self.assertEqual(response.status_code, 302)  # Check for redirect
