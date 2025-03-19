@@ -66,7 +66,6 @@ def send_queue_update(group_name, queue_name, update_type):
 
 
 def index(request):
-    print(request.user.activerole)
     return render(request, 'RepairCafe/index.html', context={})
 
 
@@ -89,6 +88,9 @@ def reset_data(request):
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
     
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
+    
     script.populate()
     referer_url = request.META.get('HTTP_REFERER')
     if referer_url:
@@ -97,35 +99,19 @@ def reset_data(request):
         return HttpResponseRedirect('RepairCafe/main_queue.html')
 
 
-def role_based_redirect(view_func):
-    """Decorator to mark views that perform role-based redirection."""
-    @wraps(view_func)
-    def wrapped_view(request, *args, **kwargs):
-        return view_func(request, *args, **kwargs)
-    wrapped_view.role_based_redirect = True
-    return wrapped_view
 
-@role_based_redirect
+
+
+
 def main_queue(request):
-    # Debugging: Print session data
-    print("Session Data:", request.session.items())
+    
 
     # Check if the user is authenticated and has an active role
     if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
-
-    # Check if the user is a "visitor"
+    
     if request.user.activerole == "visitor":
-        previous_page = request.session.get('previous_page')
-        print(f"Previous page from session: {previous_page}")  # Debugging
-
-        # Ensure the previous_page is safe to redirect to
-        if previous_page and previous_page != request.path:
-            print(f"Redirecting to previous_page: {previous_page}")  # Debugging
-            return redirect(previous_page)
-        else:
-            print("Redirecting to index (no valid previous_page)")  # Debugging
-            return redirect(reverse('RepairCafe:index')) 
+        return redirect(reverse('RepairCafe:index'))
 
 
 
@@ -162,14 +148,11 @@ def main_queue(request):
 
 def waiting_list(request):
 
-    if (not request.user.is_authenticated) or not request.user.activerole:
+    if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
-
     
-    print(request.user.activerole)
-
-    if not request.user.is_authenticated:
-       return redirect('RepairCafe:enter_password')
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     '''if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles and activerole is not set, redirect to a page where they select the role they use to access this page
        return redirect('RepairCafe:role_selection')
@@ -212,8 +195,11 @@ def checkout_queue(request, activerole=""):
         request.user.activerole = request.user.roles[0]
         request.user.save()'''
 
-    if (not request.user.is_authenticated) or not request.user.activerole:
+    if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
 
     context_dict={}
     try:
@@ -238,8 +224,11 @@ def checkout_queue(request, activerole=""):
 
 def basic_stats(request):
 
-    if (not request.user.is_authenticated) or not request.user.activerole:
+    if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
 
     checkedin = Ticket.objects.exclude(repairStatus="WAITING").count()
     checkedout = Ticket.objects.filter(isCheckedOut=True).count()
@@ -263,6 +252,9 @@ def accept_ticket(request, repairNumber):
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
     
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
+    
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     repairNumber = repairNumber
 
@@ -283,6 +275,9 @@ def repair_ticket(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
 
@@ -308,6 +303,9 @@ def mark_incomplete_ticket(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if request.method == 'POST':
@@ -336,6 +334,9 @@ def repair_item(request, repairNumber):
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
     
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
+    
     context_dict = {}
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     incompleteForm = IncompleteTicketForm()
@@ -352,6 +353,9 @@ def complete_ticket(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     if ticket.repairStatus == 'BEING_REPAIRED' and ticket.itemCategory == "ELECM":
@@ -378,6 +382,9 @@ def pat_test(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     if request.method == 'POST':
         ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
@@ -415,6 +422,9 @@ def delete_ticket(request,repairNumber):
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
     
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
+    
     ticket = Ticket.objects.get(repairNumber=repairNumber)
     ticket.delete_ticket()
     messages.success(request, f"Ticket: {ticket.itemName}, has been removed")
@@ -426,6 +436,9 @@ def checkout_ticket(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus == 'COMPLETED' or ticket.repairStatus == 'INCOMPLETE':
@@ -446,6 +459,9 @@ def change_category(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if request.method == 'POST':
@@ -486,6 +502,8 @@ def enter_password(request):
             role = "visitor"
         elif entered_password == settings.REPAIRER_PRESET_PASSWORD:
             role = "repairer"
+            request.user.activerole = role
+            request.user.save()
             return redirect('RepairCafe:repairer_login')
         elif entered_password == settings.VOLUNTEER_PRESET_PASSWORD:
             role = "volunteer"
@@ -515,6 +533,9 @@ def repairer_login(request):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
     
     context_dict = {}
     repairers = Repairer.objects.all()
@@ -550,6 +571,12 @@ def volunteer_checkout(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
+    
+    if request.user.activerole == "visitor":
+        return redirect(reverse('RepairCafe:index'))
+    
+
+
     
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
@@ -624,8 +651,8 @@ def house_rules(request):
     request.user.activerole = "visitor"
     request.user.save()
 
-    #still need to find a way to turn away volunteers and repairers by checking active role
-    request.session['previous_page']
+    
+    
 
     if request.method == 'POST':
         form = RulesButton(request.POST)

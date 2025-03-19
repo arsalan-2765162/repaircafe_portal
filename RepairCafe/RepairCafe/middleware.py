@@ -23,7 +23,7 @@ class PasswordProtectionMiddleware:
         return self.get_response(request)
     
 
-class PreviousPageMiddleware:
+'''class PreviousPageMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -32,11 +32,11 @@ class PreviousPageMiddleware:
             # Resolve the current view function
             view_func = resolve(request.path).func
 
-            # Exclude paths that perform role-based redirection
-            if not hasattr(view_func, 'role_based_redirect'):
+            # Check if the view requires role-based authentication
+            if not hasattr(view_func, 'role_based_authentication'):
                 if 'previous_page' not in request.session or request.session['previous_page'] != request.path:
                     print(f"Storing previous_page: {request.path}")  # Debugging
                     request.session['previous_page'] = request.path
 
         response = self.get_response(request)
-        return response
+        return response'''
