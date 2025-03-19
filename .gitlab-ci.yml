@@ -45,7 +45,12 @@ run_tests:
   script:
     - echo "Running unit tests..."
     - cd RepairCafe
-    - ../venv/bin/pytest
+    - ../venv/bin/pytest --cov=RepairCafe --cov-report=html
+  artifacts:
+    paths:
+      - RepairCafe/htmlcov/index.html
+      - RepairCafe/htmlcov/class_index.html
+      - RepairCafe/htmlcov/function_index.html
   allow_failure: false
   dependencies:
     - build 
