@@ -14,6 +14,7 @@ from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponseBadRequest
+from functools import wraps
 
 
 
@@ -96,17 +97,35 @@ def reset_data(request):
         return HttpResponseRedirect('RepairCafe/main_queue.html')
 
 
-def main_queue(request):
+def role_based_redirect(view_func):
+    """Decorator to mark views that perform role-based redirection."""
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        return view_func(request, *args, **kwargs)
+    wrapped_view.role_based_redirect = True
+    return wrapped_view
 
+@role_based_redirect
+def main_queue(request):
+    # Debugging: Print session data
     print("Session Data:", request.session.items())
 
-    if (not request.user.is_authenticated) or not request.user.activerole:
+    # Check if the user is authenticated and has an active role
+    if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
-    
-    #MUST INCLUDE REDIRECTION TO PREVIOUS PAGE FOR VISITORS
-    
-    
-    print(request.user.activerole)
+
+    # Check if the user is a "visitor"
+    if request.user.activerole == "visitor":
+        previous_page = request.session.get('previous_page')
+        print(f"Previous page from session: {previous_page}")  # Debugging
+
+        # Ensure the previous_page is safe to redirect to
+        if previous_page and previous_page != request.path:
+            print(f"Redirecting to previous_page: {previous_page}")  # Debugging
+            return redirect(previous_page)
+        else:
+            print("Redirecting to index (no valid previous_page)")  # Debugging
+            return redirect(reverse('RepairCafe:index')) 
 
 
 
@@ -606,6 +625,7 @@ def house_rules(request):
     request.user.save()
 
     #still need to find a way to turn away volunteers and repairers by checking active role
+    request.session['previous_page']
 
     if request.method == 'POST':
         form = RulesButton(request.POST)
