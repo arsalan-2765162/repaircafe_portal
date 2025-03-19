@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponseRedirect, render, get_object_or_404, redirect
-from .models import Ticket, Queue, Customer, Repairer
+from .models import Ticket, Queue, Customer, Repairer,  MailingList
 from .forms import TicketFilterForm, TicketForm, IncompleteTicketForm, RulesButton, CheckinForm, CheckoutForm, CompleteFeedbackForm, IncompleteFeedbackForm
 from django.urls import reverse
 from django.contrib import messages
@@ -71,13 +71,13 @@ Repairer/Volunteer Flow
 """
 
 
-
 def get_queue_position(request, repairNumber):
     try:
         ticket = Ticket.objects.get(repairNumber=repairNumber)
         return JsonResponse({'position': ticket.position})
     except Ticket.DoesNotExist:
         return JsonResponse({'error': 'Ticket not found'}, status=404)
+
 
 def reset_data(request):
     script.populate()
@@ -113,14 +113,13 @@ def main_queue(request):
         context_dict['Queue'] = queue
         context_dict['Tickets'] = ticket_list
         context_dict['FilterForm'] = form
-
+        
         for ticket in ticket_list:
             ticket.age_minutes = (timezone.now() - ticket.time_created).total_seconds() / 60
 
     except Queue.DoesNotExist:
         context_dict['Queue'] = None
     return render(request, 'RepairCafe/main_queue.html', context=context_dict)
-
 
 
 def waiting_list(request):
@@ -354,7 +353,7 @@ def checkout_ticket(request, repairNumber):
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
-        messages.error(request,f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
+        messages.error(request, f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     if (ticket.isVolunteerCreated):
         return redirect('RepairCafe:volunteer_checkout', repairNumber=repairNumber)
     return redirect(reverse('RepairCafe:checkout_queue'))
@@ -402,7 +401,7 @@ def repairer_login(request):
                 request.session['repairer_name'] = repairer.name
                 request.session["repairer_picture"] = (
                     repairer.picture.url if repairer.picture else "/static/images/default.jpg"
-                ) 
+                )
                 return redirect('RepairCafe:main_queue')
     context_dict['repairers'] = repairers
 
@@ -436,11 +435,16 @@ def volunteer_checkin(request):
                 itemDescription=form_data['itemDescription'],
                 customer=customer
             )
-            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
+            
+            print(email)
+            print("created!!")
+            if mailingConsent:
+                MailingList.objects.get_or_create(email=email)
+                print("created!!")
             ticket.accept_ticket()
             ticket.isVolunteerCreated = True
             ticket.save()
-   
+
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
 
             return redirect('RepairCafe:volunteer_checkin_success', repairNumber=ticket.repairNumber)
@@ -485,8 +489,6 @@ def volunteer_checkout_success(request):
     return render(request, 'RepairCafe/volunteer_checkout_success.html')
 
 
-
-
 """
 Visitor Flow
 """
@@ -515,7 +517,7 @@ def checkin_form(request):
             form_data = form.cleaned_data
             customer = Customer.objects.create(
                 firstName=form_data['firstName'],
-                lastName=form_data['lastName']
+                lastName=form_data['lastName'],
             )
             ticket = Ticket.objects.create(
                 repairNumber=Ticket.generate_repair_number(),
@@ -525,6 +527,14 @@ def checkin_form(request):
                 customer=customer,
                 checkinFormData=form_data
             )
+            email = form_data['email']
+            mailingConsent = form_data['mailingConsent']
+            print(email)
+            if mailingConsent:
+                MailingList.objects.get_or_create(email=email)
+                print("created")
+            for entry in MailingList.objects.all():
+                print(entry)
             waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
             ticket.add_to_queue(waiting_queue)
             repairNumber = ticket.repairNumber
@@ -543,7 +553,7 @@ def checkin_form(request):
 def wait_for_accept(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING_TO_JOIN":
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     context = {
         'ticket': ticket,
         'repairNumber': repairNumber,  # Adding this explicitly
@@ -555,8 +565,8 @@ def wait_for_repair(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING":
         print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
-        raise Http404("The ticket is not in the desired state.")
-    context_dict = {'ticket': ticket} 
+        return redirect_ticket_status(request, repairNumber)
+    context_dict = {'ticket': ticket}
     return render(request, 'RepairCafe/wait_for_repair.html', context_dict)
 
 
@@ -564,19 +574,19 @@ def repair_prompt(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     repairer = ticket.repairer
     context_dict = {'ticket': ticket, 'repairer': repairer} 
-    return render(request,'RepairCafe/repair_prompt.html',context_dict)
+    return render(request, 'RepairCafe/repair_prompt.html',context_dict)
 
 
 def wait_for_checkout(request, repairNumber):
     context_dict = {}
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     if ticket.isCheckedOut:
-        raise Http404("Ticket is already checked out.")
+        return redirect_ticket_status(request, repairNumber)
     context_dict['ticket'] = ticket
     return render(request, 'RepairCafe/wait_for_checkout.html', context_dict)
 
@@ -585,7 +595,7 @@ def wait_for_pat(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     context_dict = {}
     if ticket.repairStatus != "NEED_PAT":
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     if ticket.isCheckedOut:
         raise Http404("Ticket is already checked out.")
     context_dict['ticket'] = ticket
@@ -595,9 +605,9 @@ def wait_for_pat(request, repairNumber):
 def checkout(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     if not ticket.isCheckedOut:
-        raise Http404("The ticket is not in the desired state.")
+        return redirect_ticket_status(request, repairNumber)
     context_dict = {}
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
@@ -616,3 +626,20 @@ def checkout(request, repairNumber):
 
 def checkout_success(request):
     return render(request, 'RepairCafe/checkout_success.html')
+
+
+def redirect_ticket_status(request, repairNumber):
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    status_redirects = {
+        "WAITING_TO_JOIN": "RepairCafe:wait_for_accept",
+        "WAITING": "RepairCafe:wait_for_repair",
+        "BEING_REPAIRED": "RepairCafe:repair_prompt",
+        "NEED_PAT": "RepairCafe:wait_for_pat",
+        "COMPLETED": "RepairCafe:wait_for_checkout",
+        "INCOMPLETE": "RepairCafe:wait_for_checkout",
+    }
+
+    if ticket.repairStatus in status_redirects:
+        return redirect(status_redirects[ticket.repairStatus], repairNumber=repairNumber)
+
+    raise Http404("No appropriate page for this ticket's status.")

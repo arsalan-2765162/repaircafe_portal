@@ -77,7 +77,7 @@ class Ticket(models.Model):
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=None, null=True, blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT, null=True, blank=True)
     time_created = models.DateTimeField(default=timezone.now)
-    carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories',on_delete=models.SET_DEFAULT,default=None,null=True)
+    carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories',on_delete=models.SET_DEFAULT, default=None, null=True)
     repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
     checkinFormData = models.JSONField(null=True, blank=True)
     checkoutFormData = models.JSONField(null=True, blank=True)
@@ -92,10 +92,7 @@ class Ticket(models.Model):
     def generate_repair_number(cls):
         try:
             all_tickets = cls.objects.all()
-            for ticket in all_tickets:
-                print(f"Repair Number: {ticket.repairNumber}, Item Name: {ticket.itemName}")
             latest_ticket = all_tickets.order_by('repairNumber').last()
-            print(latest_ticket)
             if latest_ticket:
                 last_number = latest_ticket.repairNumber
                 return str(last_number + 1)
@@ -172,7 +169,8 @@ class Ticket(models.Model):
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
+class MailingList(models.Model):
+    email = models.EmailField(unique=True)
 
-
-
-
+    def __str__(self):
+        return self.email

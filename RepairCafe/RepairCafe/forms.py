@@ -94,10 +94,17 @@ class CheckinForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
-    emailPhone = forms.CharField(
-        label="Email or Phone Number",
+    email = forms.EmailField(
+        label="Email",
         max_length=56,
         required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    phone = forms.CharField(
+        label="Phone Number",
+        max_length=15,
+        required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 

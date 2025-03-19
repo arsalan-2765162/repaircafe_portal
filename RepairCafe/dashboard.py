@@ -225,7 +225,7 @@ class CustomIndexDashboard(Dashboard):
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
             _('Modify or delete records'),
-            exclude=('django.contrib.*','repairCafe.Models.Queue'),
+            exclude=('django.contrib.*', 'repairCafe.Models.Queue'),
         ))
 
         self.children.append(TicketStatsModule())
