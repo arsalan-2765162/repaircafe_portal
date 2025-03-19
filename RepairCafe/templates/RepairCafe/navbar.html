@@ -53,9 +53,9 @@
     {% if request.session.repairer_name %}
       <p class="logged-in-text">Logged in as: {{ request.session.repairer_name }}</p>
       {% if request.session.repairer_picture %}
-        <img src="{{ request.session.repairer_picture }}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+        <img src="{{ request.session.repairer_picture }}" alt="" class ="repairer-pfp-icon">
       {% else %}
-          <img src="{% static 'images/default.jpg' %}" alt="{{ r.name }}'s picture" class ="repairer-pfp-icon">
+          <img src="{% static 'images/default.jpg' %}" alt="" class ="repairer-pfp-icon">
       {% endif %}
     {% endif %}
   </div>
