@@ -2,8 +2,8 @@
 {% load i18n %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% block module_content %}
-<h3>filter by date, time and category</h3>
-
+<h3>filter by date and time</h3>
+<h4>Note: if no dates are specified then all data will be exported</h4>
 <form method="post" id="exportDataForm" action="{% url 'RepairCafe:export-csv' %}">
     {% csrf_token %}
     <label for="export_start_date">{% trans "Dates after" %}:</label>

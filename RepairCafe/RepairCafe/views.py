@@ -18,7 +18,8 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import csv
-
+import json
+from datetime import datetime
 
 def check_user_password(user_type, provided_password):
     try:
@@ -795,19 +796,26 @@ def checkout(request, repairNumber):
 
 def checkout_success(request):
     return render(request, 'RepairCafe/checkout_success.html')
-from datetime import datetime
+
 def export_to_csv(request):
-    print("Exporting to CSV")
-    startDate = datetime(2001, 3, 21, 10, 15)
-    endDate = datetime.now()
+    #print(request.POST)
+    #print("Exporting to CSV")
+    
+    startDate = request.POST.get('export_start_date')
+    endDate = request.POST.get('export_end_date')
+    if not startDate:
+        startDate = datetime(1889, 1, 1, 0, 0, 0)
+    if not endDate:
+        endDate = datetime.now()
+    print(startDate, endDate)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="repairCafeData.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Repair Number', 'Item Name', 'Item Category', 'Repair Status', 'Time Created', 'Repairer', 'Checkin Form Data', 'Checkout Form Data', 'Carbon Footprint Category'])
+    writer.writerow(['Repair Number', 'Item Name', 'Item Category', 'Repair Status', 'Time Created', 'Repairer', 'Checkin Form Data', 'Checkout Form Data', 'Carbon Footprint Category', 'Created by volunteer', 'Incomplete Reason','position','queue','Visitor'])
 
     tickets = Ticket.objects.filter(time_created__range=[startDate,endDate])
     for ticket in tickets:
-        writer.writerow([ticket.repairNumber, ticket.itemName, ticket.itemCategory, ticket.repairStatus, ticket.time_created, ticket.repairer, ticket.checkinFormData, ticket.checkoutFormData, ticket.carbon_footprint_category])
+        writer.writerow([ticket.repairNumber, ticket.itemName, ticket.itemCategory, ticket.repairStatus, ticket.time_created, ticket.repairer, ticket.checkinFormData, ticket.checkoutFormData, ticket.carbon_footprint_category,"Yes" if ticket.isVolunteerCreated else "No",ticket.incompleteReason if ticket.incompleteReason else "N/A", ticket.position, ticket.queue, ticket.customer])
 
     return response
