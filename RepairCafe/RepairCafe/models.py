@@ -74,6 +74,14 @@ class Carbon_footprint_categories(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.co2_emission_kg}kg of co2"
+    
+
+def get_default_carbon_category():
+    category, created = Carbon_footprint_categories.objects.get_or_create(
+        name="Default",
+        defaults={"co2_emission_kg": 0}
+    )
+    return category.id
 
 
 class Ticket(models.Model):
@@ -89,13 +97,14 @@ class Ticket(models.Model):
     ]
     REPAIR_INCOMPLETE_CHOICES = [('NOT_REP', 'Not repairable'),
                                  ('COM_BACK', 'Coming back next time'),
-                                 ('TAKEN_HOME', 'Repairer has taken it home')]
+                                 ('TAKEN_HOME', 'Repairer has taken it home'),
+                                 ('ADVICE_GIVEN', 'Advice given'),]
     ITEM_CATEGORY_CHOICES = [('ELECM', 'Electrical Mains'),
                              ('ELEC', 'Electrical Low-Voltage/Battery'),
                              ('TEXT', 'Clothing & Textiles'),
                              ('CERA', 'Ceramics'),
                              ('OTHER', 'Other'),]
-    
+
     isVolunteerCreated = models.BooleanField(default=False)
     repairNumber = models.IntegerField(primary_key=True)
     isCheckedOut = models.BooleanField(default=False)
@@ -109,11 +118,13 @@ class Ticket(models.Model):
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=None, null=True, blank=True,)
     customer = models.OneToOneField(Customer, on_delete=models.PROTECT, null=True, blank=True)
     time_created = models.DateTimeField(default=timezone.now)
-    carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories',on_delete=models.SET_DEFAULT,default=None,null=True)
+    carbon_footprint_category = models.ForeignKey('Carbon_footprint_categories', on_delete=models.SET_DEFAULT, default=get_default_carbon_category, null=True)
     repairer = models.ForeignKey(Repairer, on_delete=models.SET_NULL, null=True, blank=True)
     checkinFormData = models.JSONField(null=True, blank=True)
     checkoutFormData = models.JSONField(null=True, blank=True)
-
+    fault_cause = models.TextField(blank=True, null=True)
+    repair_solution = models.TextField(blank=True, null=True)
+    incomplete_cause = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.repairNumber} - {self.itemName}"
@@ -122,10 +133,7 @@ class Ticket(models.Model):
     def generate_repair_number(cls):
         try:
             all_tickets = cls.objects.all()
-            for ticket in all_tickets:
-                print(f"Repair Number: {ticket.repairNumber}, Item Name: {ticket.itemName}")
             latest_ticket = all_tickets.order_by('repairNumber').last()
-            print(latest_ticket)
             if latest_ticket:
                 last_number = latest_ticket.repairNumber
                 return str(last_number + 1)
@@ -133,6 +141,8 @@ class Ticket(models.Model):
             print(f"Error in generate_repair_number: {e}")
 
         return "1"
+
+   
 
     def add_to_queue(self, queue):
         self.queue = queue
@@ -197,12 +207,12 @@ class Ticket(models.Model):
             self.isCheckedOut = True
             self.save()
             self.decrement_positions(self.queue, self.position)
-
         else:
             raise ValueError("Ticket cannot be checked out as it is not complete or incomplete.")
 
 
+class MailingList(models.Model):
+    email = models.EmailField(unique=True)
 
-
-
-
+    def __str__(self):
+        return self.email

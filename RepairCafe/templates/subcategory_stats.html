@@ -4,6 +4,7 @@
 {% block module_content %}
 
 <form method="get" id="subcategoryStatsFilterForm">
+    
     <label for="subcategory_stats_start_date">{% trans "Dates after" %}:</label>
     <input type="datetime-local" id="subcategory_stats_start_date" name="subcategory_stats_start_date" value="{{ request.GET.subcategory_stats_start_date }}">
     <br>

@@ -13,6 +13,7 @@ Checkout Queue
     {% endif %}
     <div class="center-con">
         <form method="get" class="filter2">
+            
             <p>{{ WaitingForm.itemCategory.label_tag }}
             {{ WaitingForm.itemCategory }}
             </p>
@@ -97,6 +98,14 @@ Checkout Queue
             const data = JSON.parse(e.data);
             location.reload(); 
         };
+
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("form[action*='checkout_ticket']").forEach(form => {
+            form.addEventListener("submit", function () {
+                isRedirecting = true; // Prevent WebSocket reload
+            });
+        });
+    });
     </script>
     <script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}

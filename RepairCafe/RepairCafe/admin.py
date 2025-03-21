@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ticket, Customer, Repairer, Queue, Carbon_footprint_categories, SharedPassword
+from .models import Ticket, Customer, Repairer, Queue, Carbon_footprint_categories, SharedPassword, MailingList
 
 class SharedPasswordAdmin(admin.ModelAdmin):
     list_display = ['user_type', 'hashed_password']
@@ -15,5 +15,6 @@ admin.site.register(Ticket)
 admin.site.register(Customer)
 admin.site.register(Repairer)
 admin.site.register(Queue)
+admin.site.register(MailingList)
 admin.site.register(Carbon_footprint_categories)
 admin.site.register(SharedPassword, SharedPasswordAdmin)

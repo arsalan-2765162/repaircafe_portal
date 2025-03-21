@@ -4,6 +4,7 @@
 {% block module_content %}
 
 <form method="get" id="otherStatsFilterForm">
+    
     <label for="other_stats_start_date">{% trans "Dates after" %}:</label>
     <input type="datetime-local" id="other_stats_start_date" name="other_stats_start_date" value="{{ request.GET.other_stats_start_date }}">
     <br>
