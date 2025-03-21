@@ -2,8 +2,8 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')  # Replace with your project's settings path
 import django
 django.setup()
-
-from RepairCafe.models import Ticket, Customer, Repairer, Queue
+from django.contrib.auth.hashers import make_password
+from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword
 
 def populate():
     for each in [Ticket, Customer, Repairer, Queue]:
@@ -52,6 +52,12 @@ def populate():
         'Waiting List': "The queue for tickets to be checked by the check-in person before adding to the Main Queue.",
         'Checkout Queue': "The queue for tickets to be checked out.",
         'PAT Queue': "The queue for items that need PAT testing."  
+    }
+
+    password_data = {
+        'visitor': 'visitor',
+        'repairer': 'repairer',
+        'volunteer': 'volunteer'
     }
 
     tickets_data = [
@@ -140,6 +146,15 @@ def populate():
     # Adding Repairer objects
     for repairer_data in repairers_data:
         add_repairer(repairer_data['name'], repairer_data.get('picture'))
+
+    for user_type, password in password_data.items():
+        obj, created = SharedPassword.objects.get_or_create(user_type=user_type)
+        print(password)
+        obj.set_password(password)
+        print(obj.check_password(password))
+        print(obj.hashed_password)
+
+
 
     # Printing the results
     for queue in Queue.objects.all():

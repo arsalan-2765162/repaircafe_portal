@@ -1,5 +1,38 @@
 from django.db import models
 from django.utils import timezone
+from django.template.defaultfilters import slugify
+from django.contrib.auth.models import AbstractUser, Group, Permission
+import uuid
+from django.contrib.auth.hashers import make_password, check_password
+
+class SharedPassword(models.Model):
+    user_type = models.CharField(max_length=50, unique=True)  # e.g., 'visitor', 'repairer'
+    hashed_password = models.CharField(max_length=255)
+
+    def set_password(self, raw_password):
+        self.hashed_password = make_password(raw_password)
+        self.save()
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.hashed_password)
+
+    def __str__(self):
+        return self.user_type
+
+class UserRoles(AbstractUser):
+
+    #groups = models.ManyToManyField(Group, related_name="user_roles_set", blank=True)
+    #user_permissions = models.ManyToManyField(Permission, related_name="user_roles_permissions_set", blank=True)
+
+    roles = models.JSONField(default=list)
+    activerole = models.CharField(max_length=50)
+
+    def save(self, *args, **kwargs):
+        
+        if not self.username:
+            self.username = f"user_{uuid.uuid4().hex[:8]}"  
+        super().save(*args, **kwargs)
+
 
 class Queue(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -21,7 +54,7 @@ class Repairer(models.Model):
     picture = models.ImageField(upload_to='repairer_pictures/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} - {self.firstName}  {self.lastName}"
+        return f"{self.id} - {self.name}"
 
 
 class Customer(models.Model):
@@ -37,7 +70,7 @@ class Customer(models.Model):
 class Carbon_footprint_categories(models.Model):
     NAME_MAX_LENGTH = 123
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.name} - {self.co2_emission_kg}kg of co2"

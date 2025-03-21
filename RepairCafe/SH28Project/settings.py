@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'RepairCafe.middleware.PasswordProtectionMiddleware',
+    #'RepairCafe.middleware.PreviousPageMiddleware',
 ]
 
 ROOT_URLCONF = 'SH28Project.urls'
@@ -151,7 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 VISITOR_PRESET_PASSWORD = "visitor"
 REPAIRER_PRESET_PASSWORD = "repairer"
-
+VOLUNTEER_PRESET_PASSWORD = "volunteer"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -175,3 +176,19 @@ STATICFILES_FINDERS = [
 ]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
+
+
+#Authentication settings
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  
+]
+
+AUTH_USER_MODEL = 'RepairCafe.UserRoles'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 3600 
+SESSION_SAVE_EVERY_REQUEST = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+LOGIN_URL = '/RepairCafe/enter_password/'

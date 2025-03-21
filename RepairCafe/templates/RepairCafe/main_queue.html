@@ -62,28 +62,37 @@ Repair Queue
                     </div>
                 </div>
                 {% if ticket.repairStatus == "WAITING" %}
-                    <button 
-                        type="button" 
-                        class="btn btn-primary" 
-                        onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
-                        '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
-                        '{{ ticket.repairNumber }}',
-                        'accept')"
+                {%if request.user.activerole == "repairer" %}
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    onclick="openModal('{% url 'RepairCafe:repair_ticket' ticket.repairNumber %}', 
+                    '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
+                    '{{ ticket.repairNumber }}')"
                     >
                         Accept Repair
                     </button>
+                    {% else %}
+                    <p>Only repairers can accept repairs.</p>
+                    {% endif %}
                 {% endif %}
 
                 {% if ticket.repairStatus == "NEED_PAT" %}
+                {%if request.user.activerole == "repairer" %}
                     <button 
                         type="button" 
                         class="btn btn-primary" 
                         onclick="openPatModal('{% url 'RepairCafe:pat_test' repairNumber=ticket.repairNumber %}', 
                         '{{ ticket.itemName }}', '{{ ticket.get_itemCategory_display }}', 
-                        '{{ ticket.repairNumber }}')"
+                        '{{ ticket.repairNumber }}',
+                        'accept')"
+
                     >
                         PAT Test
                     </button>
+                    {% else %}
+                    <p>Only repairers can accept PAT tests.</p>
+                    {% endif %}
                 {% endif %}
             </div>
             </div>

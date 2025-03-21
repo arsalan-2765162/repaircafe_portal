@@ -1,0 +1,75 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% load i18n %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block module_content %}
+
+<form method="get" id="subcategoryStatsFilterForm">
+    <label for="subcategory_stats_start_date">{% trans "Dates after" %}:</label>
+    <input type="datetime-local" id="subcategory_stats_start_date" name="subcategory_stats_start_date" value="{{ request.GET.subcategory_stats_start_date }}">
+    <br>
+
+    <label for="subcategory_stats_end_date">{% trans "Dates before" %}:</label>
+    <input type="datetime-local" id="subcategory_stats_end_date" name="subcategory_stats_end_date" value="{{ request.GET.subcategory_stats_end_date }}">
+    <br>
+
+    <button type="submit">{% trans "Filter" %}</button>
+    <!-- Reset for Other Stats -->
+    <button type="button" onclick="clearSubcategoryStatsDates()">{% trans "Reset" %}</button>
+</form>
+
+<script>
+    // Function to handle the form submission and preserve other query parameters
+    document.getElementById('subcategoryStatsFilterForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const currentUrl = new URL(window.location.href); // Get the current URL
+
+        // Get the other stats date values
+        const subcategoryStatsStartDate = document.getElementById("subcategory_stats_start_date").value;
+        const subcategoryStatsEndDate = document.getElementById("subcategory_stats_end_date").value;
+
+        // Update the URL with the other stats start and end dates
+        if (subcategoryStatsStartDate) {
+            currentUrl.searchParams.set('subcategory_stats_start_date', subcategoryStatsStartDate);
+        } else {
+            currentUrl.searchParams.delete('subcategory_stats_start_date');
+        }
+
+        if (subcategoryStatsEndDate) {
+            currentUrl.searchParams.set('subcategory_stats_end_date', subcategoryStatsEndDate);
+        } else {
+            currentUrl.searchParams.delete('subcategory_stats_end_date');
+        }
+
+        // Now redirect the user to the updated URL with all parameters intact
+        window.location.href = currentUrl.toString();
+    }
+
+    // Function to clear both other stats date fields and preserve other parameters
+    function clearSubcategoryStatsDates() {
+        const currentUrl = new URL(window.location.href);
+
+        // Clear the other stats date fields
+        document.getElementById("subcategory_stats_start_date").value = "";
+        document.getElementById("subcategory_stats_end_date").value = "";
+
+        // Remove the other stats date parameters from the query string
+        currentUrl.searchParams.delete('subcategory_stats_start_date');
+        currentUrl.searchParams.delete('subcategory_stats_end_date');
+
+        // Redirect to the updated URL with other parameters intact
+        window.location.href = currentUrl.toString();
+    }
+</script>
+
+{{module.children.message}}<br>
+{% for item,co2 in module.children.carbonStats.items%}
+<div class="statsDiv"><h2>{{item}}<br>
+<h3 class="statnumber">co2 per item: {{co2.co2_emission_kg}}kg</h3>
+<h3 class="statnumber">number of items submitted: {{co2.tickets}}kg</h3>
+<h3 class="statnumber">total co2: {{co2.total_co2_emission_kg}}kg</h3>
+</h2><br></div>
+
+{% endfor %}
+
+{% endblock %}
