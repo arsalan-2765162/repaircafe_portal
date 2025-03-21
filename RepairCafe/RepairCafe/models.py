@@ -24,7 +24,7 @@ class UserRoles(AbstractUser):
     #groups = models.ManyToManyField(Group, related_name="user_roles_set", blank=True)
     #user_permissions = models.ManyToManyField(Permission, related_name="user_roles_permissions_set", blank=True)
 
-    
+    roles = models.JSONField(default=list)
     activerole = models.CharField(max_length=50)
 
     def save(self, *args, **kwargs):
@@ -70,7 +70,7 @@ class Customer(models.Model):
 class Carbon_footprint_categories(models.Model):
     NAME_MAX_LENGTH = 123
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    co2_emission_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.name} - {self.co2_emission_kg}kg of co2"

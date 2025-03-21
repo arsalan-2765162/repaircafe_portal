@@ -348,16 +348,16 @@ class CustomIndexDashboard(Dashboard):
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
             _('Modify or delete records'),
-            exclude=('django.contrib.*','repairCafe.Models.Queue'),
+            exclude=('django.contrib.*','repairCafe.Models.Queue','repairCafe.Models.SharedPassword'),
         ))
 
         self.children.append(TicketStatsModule())
         
         self.children.append(ChangePasswordsModule())
         
-        self.children.append(SubcategoryStatsModule())
-        self.children.append(OtherStatsModule())
-        self.children.append(ExportDataModule())
+        
+        
+        
 
         # append an app list module for "Administration"
         self.children.append(modules.AppList(
@@ -368,6 +368,9 @@ class CustomIndexDashboard(Dashboard):
         
 
         self.children.append(SuccessRateCategoriesModule())
+        self.children.append(OtherStatsModule())
+        self.children.append(ExportDataModule())
+        self.children.append(SubcategoryStatsModule())
 
         #self.children.append(TotalSuccessRateModule())
 
