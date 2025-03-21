@@ -16,7 +16,7 @@ Repair Queue
     <div class = "center-con">
         <form method="get" class="filter">
                 {{ FilterForm.as_p }}
-                <button type="submit">Filter</button>
+                <button type="submit">Apply Filter</button>
         </form>
     </div>
     {% if messages %}
@@ -30,7 +30,10 @@ Repair Queue
         <div class = "ticket-feed">
             {% for ticket in Tickets %}
         <div class="center-con">
-        <div class ="ticket-form" data-repair-number="{{ ticket.repairNumber }}">
+            <div class="ticket-form {% if ticket.age_minutes <= 15 %}new-ticket
+                                    {% elif ticket.age_minutes <= 30%}mid-ticket
+                                    {% else%}old-ticket{% endif %}" 
+                data-repair-number="{{ ticket.repairNumber }}">
             {% if ticket.get_itemCategory_display == "Electrical Mains" %}
                         <img src="{% static 'images/plug_icon.png' %}" alt="plug icon">
             {% elif ticket.get_itemCategory_display == "Electrical Low-Voltage/Battery" %}
@@ -50,12 +53,12 @@ Repair Queue
                         <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
                     </div>
                     <div class="dropdown-content">
-                        <h2>Visitor Details: {{ ticket.customer }} </h2>
-                        <h2>Repair Status: {{ ticket.get_repairStatus_display }}</h2>
+                        <h2><div class ="weak">Visitor Details:</div><div class="inline">{{ ticket.customer }}</div></h2>
+                        <h2><div class ="weak">Repair Status:</div><div class="inline">{{ ticket.get_repairStatus_display }}</div></h2>
                         {% if ticket.repairStatus == "INCOMPLETE" %}
-                            <h2>Incomplete Reason: {{ ticket.get_incompleteReason_display }}</h2>
+                            <h2><div class ="weak">Incomplete Reason:</div><div class="inline">{{ ticket.get_incompleteReason_display }}</div></h2>
                         {% endif %}
-                        <h2 class="item-description">Repair Description: {{ ticket.itemDescription}}</h2>
+                        <h2 class="item-description"><div class ="weak">Repair Description:</div> <div class="inline">{{ ticket.itemDescription}}</div></h2>
                     </div>
                 </div>
                 {% if ticket.repairStatus == "WAITING" %}

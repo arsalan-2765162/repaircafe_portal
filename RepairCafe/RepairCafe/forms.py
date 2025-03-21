@@ -272,7 +272,7 @@ class CheckinForm(forms.Form):
     )
 
     itemName = forms.CharField(
-        label="Name of Item to be Repaired",
+        label="Item to be repaired *include brand if known",
         max_length=256,
         required=True,
         widget=forms.TextInput(attrs={'class': 'form-control'})

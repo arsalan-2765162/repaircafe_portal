@@ -16,7 +16,7 @@ Check-in Queue
             <p>{{ WaitingForm.itemCategory.label_tag }}
             {{ WaitingForm.itemCategory }}
             </p>
-            <button type="submit">Filter</button>
+            <button type="submit">Apply Filter</button>
         </form>     
     </div>
     {% if messages %}
@@ -52,8 +52,8 @@ Check-in Queue
             </div>
             <div class="dropdown-content">
                 
-                <h2>Visitor Details: {{ ticket.customer }} </h2>
-                <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
+                <h2><div class="weak">Visitor Details:</div> <div class="inline">{{ ticket.customer }} </div></h2>
+                <h2 class="item-description"><div class="weak">Issue: </div><div class="inline">{{ ticket.itemDescription }}</div></h2>
             </div>
             </div>
             {% if request.user.activerole == "volunteer" %}
