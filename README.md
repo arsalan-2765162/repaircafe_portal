@@ -22,8 +22,8 @@ _This project, aptly named 'Repair Cafe Portal', is a web application that is de
 ## 🎢 Installation
 ### 🔻Prerequisites
 Ensure any of the following listed have been installed:
-- Pythob 3.9
-- Django 2.2.28
+- Python 3.9
+- Django 4.2.18
 - Any other dependencies listed in 'requirements.txt'
 
 ### 🔻Setup
@@ -37,6 +37,7 @@ Ensure any of the following listed have been installed:
 
 
 ## ☕ License 
-❗ DETAIL HERE ONCE LICENSE IS ADDED ❗
+This project is licensed under the MIT License.
+
 
 
