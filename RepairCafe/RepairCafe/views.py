@@ -14,9 +14,10 @@ from django.http import JsonResponse, Http404
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponseBadRequest
-
+from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
+import csv
 
 
 def check_user_password(user_type, provided_password):
@@ -794,3 +795,19 @@ def checkout(request, repairNumber):
 
 def checkout_success(request):
     return render(request, 'RepairCafe/checkout_success.html')
+from datetime import datetime
+def export_to_csv(request):
+    print("Exporting to CSV")
+    startDate = datetime(2001, 3, 21, 10, 15)
+    endDate = datetime.now()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="repairCafeData.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Repair Number', 'Item Name', 'Item Category', 'Repair Status', 'Time Created', 'Repairer', 'Checkin Form Data', 'Checkout Form Data', 'Carbon Footprint Category'])
+
+    tickets = Ticket.objects.filter(time_created__range=[startDate,endDate])
+    for ticket in tickets:
+        writer.writerow([ticket.repairNumber, ticket.itemName, ticket.itemCategory, ticket.repairStatus, ticket.time_created, ticket.repairer, ticket.checkinFormData, ticket.checkoutFormData, ticket.carbon_footprint_category])
+
+    return response

@@ -45,6 +45,7 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('admin_tools/', include('admin_tools.urls')),
         path('logout', views.logout, name="logout"),
+        path('export-csv/', views.export_to_csv, name='export-csv'),
         
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

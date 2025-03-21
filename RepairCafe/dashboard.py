@@ -26,7 +26,39 @@ from django.utils import timezone
 import json
 from RepairCafe.models import SharedPassword
 from django.db import models
+import csv
+from django.http import HttpResponse
+from django.shortcuts import render
 
+
+
+class ExportDataModule(modules.DashboardModule):
+    title = 'Export Data'
+
+    def __init__(self, title=None, **kwargs):
+        super().__init__(title, **kwargs)
+        self.template = 'export_data.html'
+
+    def init_with_context(self, context):
+        request = context['request']
+        startDate = request.GET.get('export_start_date')
+        endDate = request.GET.get('export_end_date')
+
+        if not startDate:
+            startDate = datetime(1870, 1, 1, 0, 0, 0).strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            startDate = startDate.replace("T", " ")
+        
+        if not endDate:
+            endDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            endDate = endDate.replace("T", " ")
+
+        
+        return render(request, 'export_data.html', {'startDate': startDate, 'endDate': endDate})
+        
+    def is_empty(self):
+        return False
 class ChangePasswordsModule(modules.DashboardModule):
 
     title = 'Change Passwords'
@@ -89,7 +121,7 @@ class SubcategoryStatsModule(modules.DashboardModule):
             carbonStats[object.name]["total_co2_emission_kg"]=carbonStats[object.name]["tickets"]*object.co2_emission_kg
 
         self.children={"message":message,"carbonStats":carbonStats}
-        print(carbonStats)
+        
 
         
     
@@ -280,6 +312,8 @@ class OtherStatsModule(modules.DashboardModule):
 
 
 class CustomIndexDashboard(Dashboard):
+    from django.urls import get_resolver
+    #print("\n\n\n"+str(get_resolver().url_patterns)+"\n\n\n")
     """
     Custom index dashboard for RepairCafe.
     """
@@ -300,6 +334,16 @@ class CustomIndexDashboard(Dashboard):
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ]
         ))
+        self.children.append(modules.LinkList(
+            title="Export Data",
+            children=[
+                {
+                    'title': 'Export to CSV',
+                    'url': '/RepairCafe/export-csv/',  # Adjust the URL based on your project's URL configuration
+                    'external': False,
+                },
+            ]
+        ))
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
@@ -313,6 +357,7 @@ class CustomIndexDashboard(Dashboard):
         
         self.children.append(SubcategoryStatsModule())
         self.children.append(OtherStatsModule())
+        self.children.append(ExportDataModule())
 
         # append an app list module for "Administration"
         self.children.append(modules.AppList(
