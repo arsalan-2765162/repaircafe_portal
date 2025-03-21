@@ -24,7 +24,7 @@ class UserRoles(AbstractUser):
     #groups = models.ManyToManyField(Group, related_name="user_roles_set", blank=True)
     #user_permissions = models.ManyToManyField(Permission, related_name="user_roles_permissions_set", blank=True)
 
-    roles = models.JSONField(default=list)
+    
     activerole = models.CharField(max_length=50)
 
     def save(self, *args, **kwargs):
