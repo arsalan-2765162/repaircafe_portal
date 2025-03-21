@@ -20,7 +20,7 @@ except ImportError:
     from django.utils.translation import ugettext_lazy as _
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
-from RepairCafe.models import Ticket,Carbon_footprint_categories
+from RepairCafe.models import Ticket, Carbon_footprint_categories
 from datetime import datetime
 from django.utils import timezone
 import json

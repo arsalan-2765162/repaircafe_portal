@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ticket, Customer, Repairer, Queue, Carbon_footprint_categories, SharedPassword
+from .models import Ticket, Customer, Repairer, Queue, Carbon_footprint_categories, SharedPassword, MailingList
 
 class SharedPasswordAdmin(admin.ModelAdmin):
     list_display = ['user_type', 'hashed_password']

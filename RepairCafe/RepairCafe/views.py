@@ -480,7 +480,6 @@ def checkout_ticket(request, repairNumber):
         send_queue_update("checkout_queue_updates", "Checkout Queue", "ticket_removed")
 
         messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
-        messages.success(request, f"Ticket {ticket.repairNumber} - {ticket.itemName}, has been checked out.")
     else:
         messages.error(request, f"Error checking out Ticket {ticket.repairNumber} - {ticket.itemName}")
     if (ticket.isVolunteerCreated):
@@ -707,6 +706,14 @@ def logout(request):
         
     return render(request, 'RepairCafe/logout.html', {'roles': request.user.activerole})
 
+
+def volunteer_checkin_success(request, repairNumber):
+    context_dict = {}
+
+    ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
+    context_dict['ticket'] = ticket
+    return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
+
 """
 Visitor Flow
 """
@@ -716,9 +723,7 @@ def house_rules(request):
 
     request.user.activerole = "visitor"
     request.user.save()
-
-    
-    
+   
 
     if request.method == 'POST':
         form = RulesButton(request.POST)
@@ -757,18 +762,18 @@ def checkin_form(request):
             print(email)
             if mailingConsent:
                 MailingList.objects.get_or_create(email=email)
-                print("created")
-            for entry in MailingList.objects.all():
-                print(entry)
-            waiting_queue = Queue.objects.get(name='Waiting List')  # Assuming you have this queue
-            ticket.add_to_queue(waiting_queue)
+            
             repairNumber = ticket.repairNumber
 
             send_queue_update("waiting_queue_updates", "Waiting List", "ticket_added")
-            
+
             if request.user.activerole == "volunteer":
-                return redirect('RepairCafe:index')
+                ticket.isVolunteerCreated = True
+                ticket.accept_ticket()
+                return redirect('RepairCafe:volunteer_checkin_success', repairNumber=ticket.repairNumber)
             else:
+                waiting_queue = Queue.objects.get(name='Waiting List')
+                ticket.add_to_queue(waiting_queue)
                 return redirect('RepairCafe:wait_for_accept', repairNumber=repairNumber)
         else:  
             context_dict['form'] = form
