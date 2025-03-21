@@ -66,7 +66,6 @@ def send_queue_update(group_name, queue_name, update_type):
     Returns:
         None
     """
-    print(f"Sending update to group {group_name}")
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         group_name,
@@ -135,7 +134,6 @@ def main_queue(request):
 
         #retrive filter paremeters for queue
         form = TicketFilterForm(request.GET or None)
-        print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
             status_filter = form.cleaned_data.get('repairStatus') or 'WAITING'
             category_filter = form.cleaned_data.get('itemCategory')
@@ -165,26 +163,16 @@ def waiting_list(request):
 
     if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
-    
+
     if request.user.activerole == "visitor":
         return redirect(reverse('RepairCafe:index'))
-    
-    '''if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles and activerole is not set, redirect to a page where they select the role they use to access this page
-       return redirect('RepairCafe:role_selection')
-    elif len(request.user.roles) == 1:
-        request.user.activerole = request.user.roles[0]
-        request.user.save()'''
 
-
-
-
-    context_dict={}
+    context_dict = {}
     try:
         queue = Queue.objects.get(name="Waiting List")
         ticket_list = Ticket.objects.filter(queue=queue, repairStatus='WAITING_TO_JOIN').order_by('position')
 
         form = TicketFilterForm(request.GET or None)
-        print("Form is valid:", form.is_valid())  # This will print if the form is valid
         if form.is_valid():
             category_filter = form.cleaned_data.get('itemCategory')
             if category_filter and category_filter != 'ALL':
@@ -512,20 +500,14 @@ def change_category(request, repairNumber):
 def authenticate_roles(request):
 
     new_roles = UserRoles.objects.create()
-    login(request, new_roles,backend='django.contrib.auth.backends.ModelBackend')
-    
+    login(request, new_roles, backend='django.contrib.auth.backends.ModelBackend')
+
     return new_roles
 
+
 def enter_password(request):
-      
-    
     if not request.user.is_authenticated:
-     user = authenticate_roles(request)  
-        
-    #if user is None:  
-     #      return render(request, 'RepairCafe/enter_password.html', {'error': 'Authentication failed'})
-        
-          
+        user = authenticate_roles(request)       
 
     if request.method == 'POST':
         entered_password = request.POST.get('password')
@@ -542,12 +524,9 @@ def enter_password(request):
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})        
          
-        
-        print("assigning role")
         request.user.activerole = role
         request.user.save()
 
-        
         if role == "visitor":
             return redirect('RepairCafe:house_rules')
         elif role == "volunteer":
@@ -555,9 +534,6 @@ def enter_password(request):
         elif role == "repairer":
             return redirect('RepairCafe:repairer_login')
         
-
-        
-    
     return render(request, 'RepairCafe/enter_password.html')
 
 def repairer_login(request):
@@ -620,7 +596,7 @@ def volunteer_checkout(request, repairNumber):
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['event_date'] = date.today()
-            print(form_data)
+           
             return redirect('RepairCafe:volunteer_checkout_success')
     else:
         form = CheckoutForm
@@ -637,13 +613,11 @@ def role_selection(request): #OBSOLETE
 
     if request.method == 'POST':
         selected = request.POST.get('role')
-        if selected:
-            print(selected)           
+        if selected:         
             request.user.activerole = selected
             request.user.save()
 
             redirect_url = request.GET.get('redirect_to', 'RepairCafe:main_queue')
-            print(f"Redirecting to: {redirect_url}") 
             
             return redirect(redirect_url)#should redirect to whichever page redirected here, but hardcoded to index for now
 
@@ -655,8 +629,7 @@ def logout(request):
 
     if request.method == 'POST':
         selected = request.POST.get('role')
-        if selected:
-            print(selected)      
+        if selected:     
             #request.user.roles.remove(selected)     
             request.user.activerole = ""
             request.user.delete()
@@ -674,13 +647,11 @@ def role_selection(request): #OBSOLETE
 
     if request.method == 'POST':
         selected = request.POST.get('role')
-        if selected:
-            print(selected)           
+        if selected:          
             request.user.activerole = selected
             request.user.save()
 
             redirect_url = request.GET.get('redirect_to', 'RepairCafe:main_queue')
-            print(f"Redirecting to: {redirect_url}") 
             
             return redirect(redirect_url)#should redirect to whichever page redirected here, but hardcoded to index for now
 
@@ -693,7 +664,7 @@ def logout(request):
     if request.method == 'POST':
         selected = request.POST.get('role')
         if selected:
-            print(selected)      
+     
             #request.user.roles.remove(selected)     
             request.user.activerole = ""
             request.user.delete()
@@ -723,7 +694,7 @@ def house_rules(request):
 
     request.user.activerole = "visitor"
     request.user.save()
-   
+
 
     if request.method == 'POST':
         form = RulesButton(request.POST)
@@ -759,7 +730,7 @@ def checkin_form(request):
             )
             email = form_data['email']
             mailingConsent = form_data['mailingConsent']
-            print(email)
+
             if mailingConsent:
                 MailingList.objects.get_or_create(email=email)
             
@@ -802,7 +773,6 @@ def wait_for_accept(request, repairNumber):
 def wait_for_repair(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "WAITING":
-        print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
         return redirect_ticket_status(request, repairNumber)
     context_dict = {'ticket': ticket}
     return render(request, 'RepairCafe/wait_for_repair.html', context_dict)
@@ -810,7 +780,6 @@ def wait_for_repair(request, repairNumber):
 
 def repair_prompt(request, repairNumber):
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
-    print(ticket.repairStatus, ticket.repairNumber, "This is the issue for 404")
     if ticket.repairStatus != "BEING_REPAIRED":
         return redirect_ticket_status(request, repairNumber)
     repairer = ticket.repairer
@@ -868,16 +837,13 @@ def checkout_success(request):
     return render(request, 'RepairCafe/checkout_success.html')
 
 def export_to_csv(request):
-    #print(request.POST)
-    #print("Exporting to CSV")
-    
+   
     startDate = request.POST.get('export_start_date')
     endDate = request.POST.get('export_end_date')
     if not startDate:
         startDate = datetime(1889, 1, 1, 0, 0, 0)
     if not endDate:
         endDate = datetime.now()
-    print(startDate, endDate)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="repairCafeData.csv"'
 

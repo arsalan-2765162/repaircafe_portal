@@ -17,11 +17,11 @@ class PasswordProtectionMiddleware:
             return self.get_response(request)
 
         # Check if password verified
-       # if request.session.get('sessionpassword') not in ["undefined", "visitor", "repairer", "volunteer"]:
-        #    return redirect('RepairCafe:enter_password')
-        
+        if not request.user.is_authenticated or not request.user.activerole:
+            return redirect(reverse('RepairCafe:enter_password'))
+
         return self.get_response(request)
-    
+
 
 '''class PreviousPageMiddleware:
     def __init__(self, get_response):
