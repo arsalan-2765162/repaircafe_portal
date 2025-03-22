@@ -12,5 +12,4 @@ python manage.py collectstatic --no-input
 python manage.py makemigrations RepairCafe
 python manage.py showmigrations
 python manage.py migrate
-python manage.py 
 python manage.py populate_RepairCafe.py
