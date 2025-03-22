@@ -43,7 +43,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1', 'mysite-9mgc.onrender.com']
 
-SITE_ID=1
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -121,7 +121,8 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://sh28_project_user:42JgFHcJC5k4T6es8eChEDhHysPIH2bz@dpg-cuupu3vnoe9s73am8i2g-a.render.com:5432/sh28_project_db',
+        # Replace this value with your local database's connection string.
+        default='postgresql://postgres:postgres@localhost:5432/mysite',
         conn_max_age=600
     )
 }
