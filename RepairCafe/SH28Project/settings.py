@@ -118,7 +118,7 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+ 
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
