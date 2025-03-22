@@ -16,8 +16,10 @@ _This project, aptly named 'Repair Cafe Portal', is a web application that is de
 
 - ⭐ A check out queue for volunteers to be able to manually review and checkout visitors after reviewing the final, processed item ticket
 - ⭐ A basic statistics page for volunteers and repairers to be able to see metrics from the current event - updated live as an event continues
-
-❗ ADD ADMIN FEATURES HERE ONCE FULLY IMPLEMENTED ❗
+- ⭐ Ability to dynamically change passwords for all three user roles from admin page
+- ⭐ Ability to see graphs showing metrics such as ticket status, repair success rate and ammount of items and carbon footprint of each subcategory, with ability to filter these metrics by time and category
+- ⭐ Ability to export data to a spreadsheet between dates specified or all time
+- ⭐ Ability to directly modify, add or delete records for visitors, repairers, tickets and subcategories
 
 ## 🎢 Installation
 ### 🔻Prerequisites
