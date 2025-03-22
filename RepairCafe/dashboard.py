@@ -334,16 +334,7 @@ class CustomIndexDashboard(Dashboard):
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ]
         ))
-        self.children.append(modules.LinkList(
-            title="Export Data",
-            children=[
-                {
-                    'title': 'Export to CSV',
-                    'url': '/RepairCafe/export-csv/',  # Adjust the URL based on your project's URL configuration
-                    'external': False,
-                },
-            ]
-        ))
+
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
