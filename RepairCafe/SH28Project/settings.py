@@ -122,7 +122,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        default='postgresql://sh28_project_user:wH9NeeBWnmPInclIExpghDwqPZ0gStyk@dpg-cvfhn7tds78s73fm0blg-a.oregon-postgres.render.com/sh28_project_db_ujqa',
         conn_max_age=600
     )
 }
