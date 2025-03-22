@@ -121,7 +121,7 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://sh28_project_user:42JgFHcJC5k4T6es8eChEDhHysPIH2bz@dpg-cuupu3vnoe9s73am8i2g-a/sh28_project_db',
+        default='postgresql://sh28_project_user:42JgFHcJC5k4T6es8eChEDhHysPIH2bz@dpg-cuupu3vnoe9s73am8i2g-a.render.com:5432/sh28_project_db',
         conn_max_age=600
     )
 }

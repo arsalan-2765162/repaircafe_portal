@@ -142,7 +142,7 @@ class Ticket(models.Model):
 
         return "1"
 
-   
+
 
     def add_to_queue(self, queue):
         self.queue = queue
