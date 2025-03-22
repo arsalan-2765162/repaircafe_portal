@@ -1,0 +1,25 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% load i18n %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block module_content %}
+<h3>filter by date and time</h3>
+<h4>Note: if no dates are specified then all data will be exported</h4>
+<form method="post" id="exportDataForm" action="{% url 'RepairCafe:export-csv' %}">
+    {% csrf_token %}
+    <label for="export_start_date">{% trans "Dates after" %}:</label>
+    <input type="datetime-local" id="export_start_date" name="export_start_date" >
+    <br>
+    
+    <label for="export_end_date">{% trans "Dates before" %}:</label>
+    <input type="datetime-local" id="export_end_date" name="export_end_date">
+    <br>
+
+    <button type="submit">{% trans "Export" %}</button>
+    
+
+</form>
+
+
+
+
+{% endblock %}

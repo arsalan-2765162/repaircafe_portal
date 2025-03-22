@@ -50,183 +50,24 @@ class TicketForm(forms.ModelForm):
 
 
 class CheckoutForm(forms.Form):
+
     Q1 = forms.CharField(
-        label="Q1 Why did you come to the repair cafe today? What brought you here?",
+        label="How did you hear about us?",
         max_length=512,
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q2 = forms.CharField(
-        label="Q2 How did you hear about us?",
+        label="What item did you bring in today and why did you want it to be fixed? (Can you share something more specific)",
         max_length=512,
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
     Q3 = forms.CharField(
-        label="Q3 How was your experience? What did you get from it? (Learn something new, meet new people etc.)",
+        label="How was your experience? What did you get from it? (Learn something new, meet new people etc.)",
         max_length=512,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-
-    Q4 = forms.ChoiceField(
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        widget=forms.RadioSelect,
-        label="Q4 Would you be interested in learning new repair skills/ attending workshops?",
-        required=True
-    )
-
-    Q4Extra = forms.CharField(
-        label="If yes, what skills/workshops would you be interested in?",
-        max_length=256,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q5 = forms.ChoiceField(
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        widget=forms.RadioSelect,
-        label="Q5 Are you interested in volunteering with us? ",
-        required=True
-    )
-
-    Q5Extra = forms.CharField(
-        label="Q5 If yes please leave your contact details (name and email address)",
-        max_length=256,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q6 = forms.CharField(
-        label="Q6 How did you find out about the repair cafe?",
-        max_length=256,
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q7 = forms.CharField(
-        label="Q7 Item type",
-        max_length=256,
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q8 = forms.CharField(
-        label="Q8 Make of item (if applicable)",
-        max_length=256,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q9 = forms.CharField(
-        label="Q9 Model of item (if applicable)",
-        max_length=256,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q10 = forms.CharField(
-        label="Q10 What was wrong with the item?",
-        max_length=256,
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q11 = forms.ChoiceField(
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        widget=forms.RadioSelect,
-        label="Q11 Were we able to repair your item?",
-        required=True
-    )
-
-    Q11Extra = forms.CharField(
-        label="If no, Q11 Why were we unable to repair your item today?",
-        max_length=256,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q12 = forms.ChoiceField(
-        label="Q12 Did your item have any sentimental attachment for you?",
-        required=True,
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        widget=forms.RadioSelect,
-    )
-
-    Q12Extra = forms.CharField(
-        label="Q12 If yes, please tell us more",
-        max_length=256,
-        required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-
-    )
-
-    Q13 = forms.ChoiceField(
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        label="Q13 Does having your item repaired make your life happier, healthier or more comfortable?",
-        widget=forms.RadioSelect,
-        required=True
-    )
-
-    Q13Extra = forms.CharField(
-        label="Q13 If yes, please tell us more",
-        max_length=256,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-
-    Q14 = forms.ChoiceField(
-        choices=[('yes', 'Yes'), ('no', 'No')],
-        label="Q14 If you couldn't have had your item repaired today would you have bought a new one?",
-        widget=forms.RadioSelect,
-        required=True
-    )
-
-    Q15 = forms.CharField(
-        label="Q15 How much would you have spent on it?",
-        max_length=256,
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-
-    Q16 = forms.CharField(
-        label="Q16 Do you feel more confident tackling a repair yourself in the future?",
-        max_length=256,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-
-    Q17 = forms.CharField(
-        label="Q17 How did you find your experience at the repair cafe?",
-        max_length=256,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-
-    Q18 = forms.CharField(
-        label="Q18 What could be improved?",
-        max_length=512,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-
-    Q19 = forms.CharField(
-        label="Q19 Did you meet anyone new at the repair cafe?",
-        max_length=256,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-    Q19Extra = forms.CharField(
-        label="Q19 If yes, please tell us more?",
-        max_length=256,
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
-    Q20 = forms.CharField(
-        label="Q20 Would you come back if you had something else to fix?",
-        max_length=256,
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control'})
     )
@@ -253,10 +94,17 @@ class CheckinForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
-    emailPhone = forms.CharField(
-        label="Email or Phone Number",
+    email = forms.EmailField(
+        label="Email",
         max_length=56,
         required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    phone = forms.CharField(
+        label="Phone Number",
+        max_length=15,
+        required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
@@ -272,7 +120,7 @@ class CheckinForm(forms.Form):
     )
 
     itemName = forms.CharField(
-        label="Name of Item to be Repaired",
+        label="Item to be repaired *include brand if known",
         max_length=256,
         required=True,
         widget=forms.TextInput(attrs={'class': 'form-control'})
@@ -302,3 +150,55 @@ class CheckinForm(forms.Form):
         required=False,
         widget=forms.CheckboxInput
     )
+
+
+class CompleteFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['fault_cause', 'repair_solution']
+        widgets = {
+            'fault_cause': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+            'repair_solution': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fault_cause'].required = True
+        self.fields['repair_solution'].required = True
+        self.fields['fault_cause'].label = "What was the cause of the fault?"
+        self.fields['repair_solution'].label = "How did you fix it?"
+
+
+class IncompleteFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['fault_cause', 'repair_solution', 'incomplete_cause']
+        widgets = {
+            'fault_cause': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+            'repair_solution': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+            'incomplete_cause': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'form-control'
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fault_cause'].required = True
+        self.fields['repair_solution'].required = True
+        self.fields['incomplete_cause'].required = True
+        self.fields['fault_cause'].label = "What was the cause of the fault?"
+        self.fields['repair_solution'].label = "How was did you try to fix it?"
+        self.fields['incomplete_cause'].label = "Why did you not manage to fix it?"

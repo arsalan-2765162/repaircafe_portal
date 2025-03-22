@@ -13,10 +13,11 @@ Checkout Queue
     {% endif %}
     <div class="center-con">
         <form method="get" class="filter2">
+            
             <p>{{ WaitingForm.itemCategory.label_tag }}
             {{ WaitingForm.itemCategory }}
             </p>
-            <button type="submit">Filter</button>
+            <button type="submit">Apply Filter</button>
         </form>     
     </div>
     {% if messages %}
@@ -50,20 +51,25 @@ Checkout Queue
                     <button class="dropdown-btn"><i data-feather="chevron-down"></i></button>
                 </div>
                 <div class="dropdown-content">
-                    <h2><div class="weak">Category: </div><div class="inline"> &thinsp; {{ ticket.get_itemCategory_display }}</div></h2>
-                    <h2><div class="weak">Repair Status: </div> <div class="inline">&thinsp;{{ ticket.get_repairStatus_display }}</div></h2>
+                    <h2><div class="weak">Category: </div><div class="inline">  {{ ticket.get_itemCategory_display }}</div></h2>
+                    <h2><div class="weak">Repair Status: </div> <div class="inline">{{ ticket.get_repairStatus_display }}</div></h2>
                     {% if ticket.repairStatus == "INCOMPLETE" %}
-                        <h2><div class="weak">Incomplete Reason: </div> <div class="inline">&thinsp; {{ ticket.get_incompleteReason_display }}</div></h2>
+                        <h2><div class="weak">Incomplete Reason: </div> <div class="inline">{{ ticket.get_incompleteReason_display }}</div></h2>
                     {% endif %}
-                    <h2><div class="weak">Repair Description: </div> <div class="inline">&thinsp; {{ ticket.itemDescription}}</div></h2>
+                    <h2><div class="weak">Repair Description: </div> <div class="inline"> {{ ticket.itemDescription}}</div></h2>
                 </div>
             </div>
+
             
-            {% if ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
+            {% if request.user.activerole == "volunteer" and ticket.repairStatus in 'COMPLETED INCOMPLETE' and not ticket.isCheckedOut %}
                     <form method="post" action="{% url 'RepairCafe:checkout_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">
+                        {% if ticket.isVolunteerCreated %}
+                            Manual Checkout
+                        {% else %}
                             Checkout
+                        {% endif %}
                         </button>
                     </form>
                 {% else %}
@@ -80,14 +86,26 @@ Checkout Queue
     {% endif %}
 
     <script>
+        let isRedirecting = false;
         const mainQueueSocket = new WebSocket(
             'wss://' + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
+            if (isRedirecting) {
+                return;
+            }
             const data = JSON.parse(e.data);
             location.reload(); 
         };
+
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("form[action*='checkout_ticket']").forEach(form => {
+            form.addEventListener("submit", function () {
+                isRedirecting = true; // Prevent WebSocket reload
+            });
+        });
+    });
     </script>
     <script src="{% static 'js/dropdown.js' %}" defer></script>
 {% endblock %}

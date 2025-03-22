@@ -16,7 +16,7 @@ Check-in Queue
             <p>{{ WaitingForm.itemCategory.label_tag }}
             {{ WaitingForm.itemCategory }}
             </p>
-            <button type="submit">Filter</button>
+            <button type="submit">Apply Filter</button>
         </form>     
     </div>
     {% if messages %}
@@ -52,10 +52,11 @@ Check-in Queue
             </div>
             <div class="dropdown-content">
                 
-                <h2>Visitor Details: {{ ticket.customer }} </h2>
-                <h2 class="item-description">Issue: {{ ticket.itemDescription }}</h2>
+                <h2><div class="weak">Visitor Details:</div> <div class="inline">{{ ticket.customer }} </div></h2>
+                <h2 class="item-description"><div class="weak">Issue: </div><div class="inline">{{ ticket.itemDescription }}</div></h2>
             </div>
             </div>
+            {% if request.user.activerole == "volunteer" %}
             <div class="button-col">
                 
                 <button 
@@ -69,21 +70,26 @@ Check-in Queue
                     )">
                     <i data-feather="edit-2"></i>
                 </button>
+                
             </div>
+            {% endif %}
             <div class="button-col">
                 
-                {% if ticket.repairStatus == 'WAITING_TO_JOIN' %}
+                {% if ticket.repairStatus == 'WAITING_TO_JOIN' and request.user.activerole == "volunteer" %}
                 <div class = "button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:accept_ticket' ticket.repairNumber %}">
                         {% csrf_token %}
+                        
                         <button type="submit" class="btn btn-primary">
                             <i data-feather="check"></i>
                         </button>
+
                     </form>
                 </div>
                 {% else %}
                     <p>Ticket cannot be accepted</p>
                 {% endif %}
+                {% if request.user.activerole == "volunteer" %}
                 <div class="button-wrapper">
                     <form method="post" action="{% url 'RepairCafe:delete_ticket' ticket.repairNumber %}">     
                         {% csrf_token %}
@@ -92,6 +98,7 @@ Check-in Queue
                         </button>
                     </form>
                 </div>
+                {% endif %}
             </div>
             
         </div>

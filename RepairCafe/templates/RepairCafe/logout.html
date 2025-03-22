@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log out</title>
+</head>
+<body>
+    <h1>Confirm log out</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <ul>
+            {% with roles as role %}
+                <li>
+                    <button type="submit" name="role" value="{{ role }}">{{ role }}</button>
+                </li>
+            {% endwith %}
+        </ul>
+    </form>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends 'RepairCafe/base.html' %}
+{% load static %}
+{% block content %}
+<div class="purp-bg purple">
+    <h1>You’re All Set!</h1>
+    <h1>The Repair Ticket has been succesfully checked out</h1>
+    
+        <a id="next-page" class="btn-primary black" href="{% url 'RepairCafe:checkout_queue' %}">Back to Checkout Queue</a>
+    
+</div>
+{% endblock %}

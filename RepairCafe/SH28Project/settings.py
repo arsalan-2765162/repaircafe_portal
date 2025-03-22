@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import dj_database_url
 import os
 
+
+
+VISITOR_PRESET_PASSWORD="visitor"
+REPAIRER_PRESET_PASSWORD="repairer"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -24,7 +28,7 @@ MEDIA_URL = '/media/'
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
-ADMIN_TOOLS_MENU= 'menu.CustomMenu'
+ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_THEMING_CSS = 'css/admin_theming.css'
 
 
@@ -70,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'RepairCafe.middleware.PasswordProtectionMiddleware',
+    #'RepairCafe.middleware.PreviousPageMiddleware',
 ]
 
 ROOT_URLCONF = 'SH28Project.urls'
@@ -144,9 +149,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-VISITOR_PRESET_PASSWORD = "visitor" # temp preset password, needs to be configured so that on admin page you can change the visitor password every month 
-REPAIRER_PRESET_PASSWORD = "repairer" #same with repairer
 
+
+
+
+VISITOR_PRESET_PASSWORD = "visitor"
+REPAIRER_PRESET_PASSWORD = "repairer"
+VOLUNTEER_PRESET_PASSWORD = "volunteer"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -171,9 +180,17 @@ STATICFILES_FINDERS = [
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#Authentication settings
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  
+]
+
+AUTH_USER_MODEL = 'RepairCafe.UserRoles'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 3600 
+SESSION_SAVE_EVERY_REQUEST = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+LOGIN_URL = '/RepairCafe/enter_password/'
