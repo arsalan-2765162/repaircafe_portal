@@ -154,6 +154,8 @@ VISITOR_PRESET_PASSWORD = "visitor"
 REPAIRER_PRESET_PASSWORD = "repairer"
 VOLUNTEER_PRESET_PASSWORD = "volunteer"
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
