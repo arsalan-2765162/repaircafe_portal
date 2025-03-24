@@ -2,6 +2,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
 import django
 django.setup()
+from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword
 
@@ -163,6 +164,16 @@ def populate():
             print(f'  - Ticket: {ticket.repairNumber} - {ticket.itemName}')
         print()
 
+
+def create_superuser():
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@example.com", "securepassword123")
+        print("Superuser created successfully!")
+    else:
+        print("Superuser already exists.")
+
+
 if __name__ == '__main__':
     print('Starting population script...')
     populate()
+    create_superuser()
