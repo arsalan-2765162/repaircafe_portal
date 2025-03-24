@@ -103,6 +103,7 @@ def reset_data(request):
         return redirect(reverse('RepairCafe:index'))
     
     script.populate()
+    script.create_superuser()
     referer_url = request.META.get('HTTP_REFERER')
     if referer_url:
         return HttpResponseRedirect(referer_url)
