@@ -2,7 +2,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
 import django
 django.setup()
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword
 
@@ -166,6 +166,7 @@ def populate():
 
 
 def create_superuser():
+    User = get_user_model()
     if not User.objects.filter(username="admin").exists():
         User.objects.create_superuser("admin", "admin@example.com", "securepassword123")
         print("Superuser created successfully!")
