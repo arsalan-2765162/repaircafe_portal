@@ -94,7 +94,7 @@ def get_queue_position(request, repairNumber):
         return JsonResponse({'error': 'Ticket not found'}, status=404)
 
 
-def reset_data(request): 
+def reset_data(request):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
@@ -439,7 +439,7 @@ def pat_test(request, repairNumber):
     return HttpResponseBadRequest("Invalid request method")
 
 
-def delete_ticket(request,repairNumber):
+def delete_ticket(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
@@ -868,6 +868,8 @@ def redirect_ticket_status(request, repairNumber):
         "COMPLETED": "RepairCafe:wait_for_checkout",
         "INCOMPLETE": "RepairCafe:wait_for_checkout",
     }
+    if ticket.isCheckedOut:
+        return redirect("RepairCafe:checkout", repairNumber=repairNumber)
 
     if ticket.repairStatus in status_redirects:
         return redirect(status_redirects[ticket.repairStatus], repairNumber=repairNumber)
