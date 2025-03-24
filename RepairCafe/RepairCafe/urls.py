@@ -49,5 +49,5 @@ urlpatterns = [
         path('export-csv/', views.export_to_csv, name='export-csv'),
         
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#if settings.DEBUG:
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -39,7 +39,7 @@ ADMIN_TOOLS_THEMING_CSS = 'css/admin_theming.css'
 SECRET_KEY = 't1#aj@10-snk50%a!&%@p7kh^ky&vviq87x@d48k2(n^cdvmd='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'mysite-9mgc.onrender.com']
 
