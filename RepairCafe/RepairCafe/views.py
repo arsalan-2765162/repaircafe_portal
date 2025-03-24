@@ -742,6 +742,7 @@ def checkin_form(request):
             if request.user.activerole == "volunteer":
                 ticket.isVolunteerCreated = True
                 ticket.accept_ticket()
+                send_queue_update("main_queue_updates", "Main Queue", "ticket_added")
                 return redirect('RepairCafe:volunteer_checkin_success', repairNumber=ticket.repairNumber)
             else:
                 waiting_queue = Queue.objects.get(name='Waiting List')
