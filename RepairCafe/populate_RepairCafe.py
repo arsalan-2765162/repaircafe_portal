@@ -76,7 +76,7 @@ def populate():
         {'repairNumber': 9, 'itemName': 'Lamp', 'itemCategory': 'ELECM', 'itemDescription': 'Light won’t turn on', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Main Queue'},
         {'repairNumber': 10, 'itemName': 'Bowl', 'itemCategory': 'CERA', 'itemDescription': 'Chipped edges of bowl', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Main Queue'},
         {'repairNumber': 11, 'itemName': 'Hair Dryer', 'itemCategory': 'ELECM', 'itemDescription': 'Not turning on', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
-        {'repairNumber': 12, 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': 4, 'queue': 'Main Queue'},
+        {'repairNumber': 12, 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': None, 'queue': 'Main Queue'},
         {'repairNumber': 13, 'itemName': 'Jumper', 'itemCategory': 'TEXT', 'itemDescription': 'Tear on sleeve', 'repairStatus': 'WAITING', 'position': 5, 'queue': 'Main Queue'},
         {'repairNumber': 14, 'itemName': 'Coffee Maker', 'itemCategory': 'OTHER', 'itemDescription': 'Water not heating', 'repairStatus': 'WAITING', 'position': 6, 'queue': 'Main Queue'},
 
