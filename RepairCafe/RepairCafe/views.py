@@ -227,9 +227,14 @@ def basic_stats(request):
     unsuccessful = Ticket.objects.filter(repairStatus="INCOMPLETE").count()
     catpercentages = {}
 
-    for category in Ticket.ITEM_CATEGORY_CHOICES:
-        catpercentages[category] = round(((Ticket.objects.filter(itemCategory=category[0])
-                                           .count()) / (Ticket.objects.count()) * 100), )
+    total_tickets = Ticket.objects.count() 
+
+    if total_tickets > 0:
+        for category in Ticket.ITEM_CATEGORY_CHOICES:
+            catpercentages[category] = round(((Ticket.objects.filter(itemCategory=category[0])
+                                            .count()) / (Ticket.objects.count()) * 100), )
+    else:
+        catpercentages = {category: 0 for category in Ticket.ITEM_CATEGORY_CHOICES}  
 
     context_dict = {"checkedin": checkedin, "checkedout": checkedout,
                     "successful": successful, "unsuccessful": unsuccessful,
@@ -556,11 +561,6 @@ def repairer_login(request):
     return render(request, 'RepairCafe/repairer_login.html', context_dict)
 
 
-def repairer_logout(request):
-    request.session.flush()
-    return redirect("RepairCafe:enter_password")
-
-
 def volunteer_checkout(request, repairNumber):
 
     if (not request.user.is_authenticated) or not request.user.activerole:
@@ -597,7 +597,7 @@ def logout(request):
 
     if request.method == 'POST':
         selected = request.POST.get('role')
-        if selected:     
+        if selected:  
    
             request.user.activerole = ""
             request.user.delete()

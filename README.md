@@ -56,7 +56,15 @@ Ensure any of the following listed have been installed:
    python manage.py makemigrations
    python manage.py migrate
    ```
-6. **Run the development server:**  
+6. **Setup site data:**  
+   ```sh
+   python setup.py
+   ```
+   Alternatively if you wish to populate the site with demo ticket, repairer and customer data, run the following command instead 
+   ```sh
+   python populate_RepairCafe.py
+   ```
+7. **Run the development server:**  
    ```sh
    python manage.py runserver
    ```

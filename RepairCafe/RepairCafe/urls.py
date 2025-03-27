@@ -34,7 +34,6 @@ urlpatterns = [
         path('repair_prompt/<int:repairNumber>/',  views.repair_prompt, name='repair_prompt'),
         path('wait_for_repair/<int:repairNumber>/', views.wait_for_repair, name='wait_for_repair'),
         path('repairer_login/', views.repairer_login, name='repairer_login'),
-        path("repairer_logout/", views.repairer_logout, name="repairer_logout"),
         path('basic_stats/', views.basic_stats,  name='basic_stats'),
         path('queue_position/<int:repairNumber>/', views.get_queue_position, name='queue_position'),
         path('volunteer_checkin_success/<int:repairNumber>/', views.volunteer_checkin_success, name='volunteer_checkin_success'),
