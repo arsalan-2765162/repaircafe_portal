@@ -235,7 +235,9 @@ class RepairCafeViewsTestPasswordEntered(TestCase):
 
     def test_repair_ticket_view(self):
         self.client.get(reverse('RepairCafe:reset_data'))
-        self.ticket_to_repair = Queue.objects.get(name="Main Queue").get_tickets()[0]
+        self.ticket_to_repair = Queue.objects.get(name="Main Queue").get_tickets()[1]
+        print(self.ticket_to_repair)
+        print(self.ticket_to_repair.repairStatus)
         self.client.get(reverse('RepairCafe:repair_ticket', args=[self.ticket_to_repair.repairNumber]))
         self.ticket_to_repair.repair_ticket()
         self.assertEqual(self.ticket_to_repair.repairStatus, "BEING_REPAIRED")

@@ -200,7 +200,7 @@ class Ticket(models.Model):
             Ticket.decrement_positions(self.queue, old_position)
 
         else:
-            raise ValueError("Ticket cannot be repaired as it is not Waiting for repair")
+            raise ValueError("Ticket cannot be repaired as it is not Waiting for repair", self, self.repairStatus)
 
     def checkout(self):
         if self.repairStatus == 'COMPLETED' or 'INCOMPLETE':
