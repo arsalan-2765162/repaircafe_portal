@@ -37,9 +37,10 @@ Waiting Page for Repair
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
-    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const protocol1 = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const mainQsocket = new WebSocket(`${protocol1}${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
-    socket.onmessage = function(event) {
+    mainQsocket.onmessage = function(event) {
         const data = JSON.parse(event.data);
         if (data.status === 'REPAIRING' && data.repairNumber == repairNumber) {
             document.getElementById('status-message').textContent = 'A repairer will see you now!';
@@ -50,18 +51,17 @@ Waiting Page for Repair
     };
 </script>
 <script>
-    const mainQueueSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/main_queue/'
-    );
+    const protocol2 = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const socket = new WebSocket(`${protocol2}${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
-    mainQueueSocket.onmessage = function(e) {
+    socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         updatePosition();
     };
 
     function updatePosition() {
         const repairNumber = "{{ ticket.repairNumber }}";  
-        console.log("Repair Number:", repairNumber);
+       
         fetch(`/RepairCafe/queue_position/${repairNumber}/`)
             .then(response => response.json())
             .then(data => {

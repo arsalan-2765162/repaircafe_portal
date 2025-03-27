@@ -1,29 +1,32 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')  # Replace with your project's settings path
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
 import django
 django.setup()
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword , Carbon_footprint_categories
+from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword
 
-def populate():
-    for each in [Ticket, Customer, Repairer, Queue, Carbon_footprint_categories]:
+
+def setup():
+    for each in [Ticket, Customer, Repairer, Queue]:
         x = each.objects.all()
         for entry in x:
             entry.delete()
+
     def add_queue(name, description):
         queue = Queue.objects.get_or_create(name=name)[0]
         queue.description = description  # Add the description
         queue.save()
         return queue
-    def add_carbon_footprint_category(name, carbon_footprint):
-        category = Carbon_footprint_categories.objects.get_or_create(name=name)[0]
-        category.co2_emission_kg = carbon_footprint
-        category.save()
-        return category
     
+    def add_repairer(name, picture_filename=None):
+        repairer, created = Repairer.objects.get_or_create(name=name)
 
+        if picture_filename:  # Assign image if provided
+            repairer.picture = f'repairer_pictures/{picture_filename}'
+            repairer.save()
 
-
+        return repairer
 
     # Queue descriptions
     queue_data = {
@@ -39,72 +42,40 @@ def populate():
         'volunteer': 'volunteer'
     }
 
-    carbon_items = [
-        "dehumidifier",
-        "battery/charger/adaptor",
-        "bicycle",
-        "clothes/textiles",
-        "coffee maker",
-        "decorative or safety lights",
-        "desktop computer",
-        "dslr/video camera",
-        "digital compact camera",
-        "fan",
-        "flat screen",
-        "food processor",
-        "games console",
-        "hair/beauty item",
-        "hair dryer",
-        "handheld entertainment device",
-        "headphones",
-        "hi-fi integrated",
-        "hi-fi separates",
-        "iron",
-        "jewellery",
-        "kettle",
-        "lamp",
-        "laptop",
-        "large home electrical",
-        "miscellaneous item",
-        "mobile phone",
-        "musical instrument",
-        "paper shredder",
-        "portable radio",
-        "power tool",
-        "printer/scanner",
-        "projector",
-        "sewing machine",
-        "small home electrical (eg, baby monitor, doorbell)",
-        "small kitchen item (eg, bread maker, rice cooker)",
-        "tablet",
-        "toaster",
-        "toy",
-        "tv/gaming related accessory",
-        "watch/clock",
-        "N/A"
+    repairers_data = [
+        {'name': 'Guest Repairer'}
     ]
-
-    carbon_data = {item: 0 for item in carbon_items}
-
-    
-
-    
-
 
     # Adding Queue objects
     queue_objects = {queue: add_queue(queue, description) for queue, description in queue_data.items()}
-    carbon_objects = {item: add_carbon_footprint_category(item, carbon) for item, carbon in carbon_data.items()}
 
-    #set default password for each user type
+    # Adding Repairer objects
+    for repairer_data in repairers_data:
+        add_repairer(repairer_data['name'], repairer_data.get('picture'))
+
     for user_type, password in password_data.items():
         obj, created = SharedPassword.objects.get_or_create(user_type=user_type)
+        print(password)
         obj.set_password(password)
-   
+        print(obj.check_password(password))
+        print(obj.hashed_password)
+
+    # Printing the results
+    for queue in Queue.objects.all():
+        print(f'Queue: {queue.name} - {queue.description}')
+        print()
 
 
-
+def create_superuser():
+    User = get_user_model()
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@example.com", "securepassword123")
+        print("Superuser created successfully!")
+    else:
+        print("Superuser already exists.")
 
 
 if __name__ == '__main__':
     print('Starting setup script...')
-    populate()
+    setup()
+    create_superuser()

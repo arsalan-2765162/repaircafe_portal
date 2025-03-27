@@ -18,9 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalDetails = document.getElementById("modal-item-details");
     const acceptForm = modal.querySelector("form");
 
-    if (!modal) {
-        console.error("Modal element not found in DOM");
-    }
 
     // Function to open the modal
     window.openModal = function (url, itemName, itemCategory, repairNumber) {
@@ -57,13 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.openPATResultModal = function (url, itemName, itemCategory, repairNumber, itemDescription) {
-        console.log("openPATResultModal called with:", {
-            url, 
-            itemName, 
-            itemCategory, 
-            repairNumber, 
-            itemDescription
-        });
 
         modalDetails.innerHTML = `
             <strong>Item:</strong> ${itemName}<br>
@@ -106,9 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const url = form.getAttribute('action');
             const testResult = this.value;
 
-            console.log("PAT Test Result Button Clicked");
-            console.log("Form URL:", url);
-            console.log("Test Result:", testResult);
 
             form.submit();
         });

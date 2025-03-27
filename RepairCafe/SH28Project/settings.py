@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import dj_database_url
 import os
 
 
@@ -40,9 +41,10 @@ SECRET_KEY = 't1#aj@10-snk50%a!&%@p7kh^ky&vviq87x@d48k2(n^cdvmd='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'mysite-9mgc.onrender.com']
 
-SITE_ID=1
+SITE_ID = 1
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,9 +109,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
-    
 }
+
 """
+#Below example of using redis server for production
 'default': {
     'BACKEND': 'channels_redis.core.RedisChannelLayer',
     'CONFIG': {
@@ -127,6 +131,9 @@ DATABASES = {
     }
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mysite-9mgc.onrender.com"
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -147,12 +154,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
-
 VISITOR_PRESET_PASSWORD = "visitor"
 REPAIRER_PRESET_PASSWORD = "repairer"
 VOLUNTEER_PRESET_PASSWORD = "volunteer"
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -176,7 +182,12 @@ STATICFILES_FINDERS = [
 ]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
-
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #Authentication settings
 

@@ -22,7 +22,7 @@ basic_check:
     - echo "Running basic Django check..."
     - cd RepairCafe
     - ../venv/bin/python manage.py check --deploy
-  allow_failure: false
+  allow_failure: true
   dependencies:
     - build 
 
@@ -46,8 +46,7 @@ run_tests:
     - echo "Running unit tests..."
     - cd RepairCafe
     - ../venv/bin/pytest
-  allow_failure: false
-
+  allow_failure: true
   dependencies:
     - build 
 

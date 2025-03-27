@@ -8,7 +8,6 @@ Repair Queue
 
 {% block content %}
     <h1>Repair Queue</h1>
-
     {% if Queue %}  
     {% else %}
         <p>No Queue object found.</p>
@@ -72,8 +71,6 @@ Repair Queue
                     >
                         Accept Repair
                     </button>
-                    {% else %}
-                    <p>Only repairers can accept repairs.</p>
                     {% endif %}
                 {% endif %}
 
@@ -90,8 +87,6 @@ Repair Queue
                     >
                         PAT Test
                     </button>
-                    {% else %}
-                    <p>Only repairers can accept PAT tests.</p>
                     {% endif %}
                 {% endif %}
             </div>
@@ -120,27 +115,6 @@ Repair Queue
         </div>
     </div>
 
-    <!-- PAT Test Modal -->
-    <div id="patTestModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h1>Confirm PAT Test?</h1>
-            <p id="pat-modal-item-details"></p>
-            <div class="buttons">
-                <button class="btn btn-reject cancel-btn">Back</button>
-                <form id="reject-pat-form" action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="reject">
-                    <button type="submit" class="btn btn-reject">Reject PAT</button>
-                </form>
-                <form id="pat-test-form" action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="accept">
-                    <button type="submit" class="btn btn-accept">Approve PAT</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
 <script src="{% static 'js/main_queue_modal.js' %}" defer></script>
 

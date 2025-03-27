@@ -84,7 +84,6 @@ class MainQueueConsumer(AsyncWebsocketConsumer):
 
         Sends the queue update message to the WebSocket client.
         """
-        print(f"Received update: {event}")
         await self.send(text_data=json.dumps({
             'message': event['message']
         }))

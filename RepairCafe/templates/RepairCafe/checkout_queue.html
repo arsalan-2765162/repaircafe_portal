@@ -72,8 +72,6 @@ Checkout Queue
                         {% endif %}
                         </button>
                     </form>
-                {% else %}
-                        <p>Ticket cannot be accepted</p>
                 {% endif %}
             
     </div>
@@ -87,8 +85,9 @@ Checkout Queue
 
     <script>
         let isRedirecting = false;
+        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
         const mainQueueSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/checkout_queue/'
+            protocol  + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
