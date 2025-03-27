@@ -572,8 +572,6 @@ def repairer_logout(request):
     request.session.flush()
     return redirect("RepairCafe:enter_password")
 
-def settings_page(request):
-    return render(request, 'RepairCafe/settings_page.html')
 
 def volunteer_checkout(request, repairNumber):
 

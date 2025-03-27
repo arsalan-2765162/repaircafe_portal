@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isRedirecting = false;
 
+    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
     const mainQueueSocket = new WebSocket(
-        'wss://' + window.location.host + '/ws/main_queue/'
+        protocol + window.location.host + '/ws/main_queue/'
     );
 
     mainQueueSocket.onmessage = function (e) {

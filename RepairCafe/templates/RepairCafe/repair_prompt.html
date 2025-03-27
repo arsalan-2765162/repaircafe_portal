@@ -25,7 +25,8 @@ Meet Your Repairer
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
-    const socket = new WebSocket(`wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const socket = new WebSocket(`${protocol}wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);

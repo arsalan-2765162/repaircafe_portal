@@ -165,8 +165,9 @@ Check-in Queue
         }
     </script>
     <script>
+        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
         const mainQueueSocket = new WebSocket(
-            'wss://' + window.location.host + '/ws/waiting_queue/'
+            protocol + window.location.host + '/ws/waiting_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {

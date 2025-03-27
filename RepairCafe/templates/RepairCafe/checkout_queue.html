@@ -85,8 +85,9 @@ Checkout Queue
 
     <script>
         let isRedirecting = false;
+        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
         const mainQueueSocket = new WebSocket(
-            'wss://' + window.location.host + '/ws/checkout_queue/'
+            protocol  + window.location.host + '/ws/checkout_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {
