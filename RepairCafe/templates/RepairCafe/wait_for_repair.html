@@ -37,7 +37,8 @@ Waiting Page for Repair
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
-    const mainQsocket = new WebSocket(`wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const protocol1 = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const mainQsocket = new WebSocket(`${protocol1}${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
     mainQsocket.onmessage = function(event) {
         const data = JSON.parse(event.data);
@@ -50,8 +51,8 @@ Waiting Page for Repair
     };
 </script>
 <script>
-    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-    const socket = new WebSocket(`${protocol}wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const protocol2 = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const socket = new WebSocket(`${protocol2}${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data);

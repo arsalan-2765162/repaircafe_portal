@@ -111,12 +111,7 @@ def reset_data(request):
         return HttpResponseRedirect('RepairCafe/main_queue.html')
 
 
-
-
-
-
 def main_queue(request):
-    
 
     # Check if the user is authenticated and has an active role
     if not request.user.is_authenticated or not request.user.activerole:
@@ -124,9 +119,6 @@ def main_queue(request):
     
     if request.user.activerole == "visitor":
         return redirect(reverse('RepairCafe:index'))
-
-
-
 
     context_dict={}
     try:
@@ -191,13 +183,8 @@ def waiting_list(request):
         context_dict['Queue'] = None
     return render(request, 'RepairCafe/waiting_list.html', context=context_dict)
 
-def checkout_queue(request, activerole=""):
 
-    '''if len(request.user.roles) > 1 and not request.user.activerole: #if user has multiple roles, redirect to a page where they select the role they use to access this page
-        redirect('RepairCafe:role_selection')
-    elif len(request.user.roles) == 1:
-        request.user.activerole = request.user.roles[0]
-        request.user.save()'''
+def checkout_queue(request, activerole=""):
 
     if not request.user.is_authenticated or not request.user.activerole:
         return redirect(reverse('RepairCafe:enter_password'))
@@ -524,7 +511,7 @@ def enter_password(request):
             request.session['preset_password_verified'] = True
         else:
             return render(request, 'RepairCafe/enter_password.html', {'error': 'Incorrect Password'})        
-         
+     
         request.user.activerole = role
         request.user.save()
 
@@ -536,6 +523,7 @@ def enter_password(request):
             return redirect('RepairCafe:repairer_login')
         
     return render(request, 'RepairCafe/enter_password.html')
+
 
 def repairer_login(request):
 
@@ -580,10 +568,7 @@ def volunteer_checkout(request, repairNumber):
     
     if request.user.activerole == "visitor":
         return redirect(reverse('RepairCafe:index'))
-    
-
-
-    
+       
     ticket = get_object_or_404(Ticket, repairNumber=repairNumber)
     if ticket.repairStatus != "COMPLETED" and ticket.repairStatus != "INCOMPLETE":
         raise Http404("The ticket is not in the desired state.")
@@ -607,70 +592,15 @@ def volunteer_checkout(request, repairNumber):
 def volunteer_checkout_success(request):
     return render(request, 'RepairCafe/volunteer_checkout_success.html')
 
-def role_selection(request): #OBSOLETE
-
-
-    if request.method == 'POST':
-        selected = request.POST.get('role')
-        if selected:         
-            request.user.activerole = selected
-            request.user.save()
-
-            redirect_url = request.GET.get('redirect_to', 'RepairCafe:main_queue')
-            
-            return redirect(redirect_url)#should redirect to whichever page redirected here, but hardcoded to index for now
-
-    return render(request, 'RepairCafe/role_selection.html', {
-        'roles': request.user.roles
-    })
 
 def logout(request):
 
     if request.method == 'POST':
         selected = request.POST.get('role')
         if selected:     
-            #request.user.roles.remove(selected)     
+   
             request.user.activerole = ""
             request.user.delete()
-
-            '''if len(request.user.roles) == 0:
-                request.user.delete()
-                return redirect('RepairCafe:enter_password')'''
-            
-            return redirect('RepairCafe:main_queue')
-        
-    return render(request, 'RepairCafe/logout.html', {'roles': request.user.activerole})
-
-def role_selection(request): #OBSOLETE
-
-
-    if request.method == 'POST':
-        selected = request.POST.get('role')
-        if selected:          
-            request.user.activerole = selected
-            request.user.save()
-
-            redirect_url = request.GET.get('redirect_to', 'RepairCafe:main_queue')
-            
-            return redirect(redirect_url)#should redirect to whichever page redirected here, but hardcoded to index for now
-
-    return render(request, 'RepairCafe/role_selection.html', {
-        'roles': request.user.roles
-    })
-
-def logout(request):
-
-    if request.method == 'POST':
-        selected = request.POST.get('role')
-        if selected:
-     
-            #request.user.roles.remove(selected)     
-            request.user.activerole = ""
-            request.user.delete()
-
-            '''if len(request.user.roles) == 0:
-                request.user.delete()
-                return redirect('RepairCafe:enter_password')'''
             
             return redirect('RepairCafe:main_queue')
         
@@ -684,6 +614,7 @@ def volunteer_checkin_success(request, repairNumber):
     context_dict['ticket'] = ticket
     return render(request, 'RepairCafe/volunteer_checkin_success.html', context_dict)
 
+
 """
 Visitor Flow
 """
@@ -693,7 +624,6 @@ def house_rules(request):
 
     request.user.activerole = "visitor"
     request.user.save()
-
 
     if request.method == 'POST':
         form = RulesButton(request.POST)
@@ -756,7 +686,6 @@ def checkin_form(request):
         return render(request, 'RepairCafe/checkin_form.html', context_dict)
     elif request.user.activerole == "volunteer":
         return render(request, 'RepairCafe/volunteer_checkin.html', context_dict)
-
 
 
 def wait_for_accept(request, repairNumber):
@@ -835,6 +764,7 @@ def checkout(request, repairNumber):
 
 def checkout_success(request):
     return render(request, 'RepairCafe/checkout_success.html')
+
 
 def export_to_csv(request):
    
