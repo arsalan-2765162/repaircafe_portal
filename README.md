@@ -56,14 +56,28 @@ Ensure any of the following listed have been installed:
    python manage.py makemigrations
    python manage.py migrate
    ```
-6. **Setup site data:**  
+6. **Setup site data:**   
    ```sh
-   python setup.py
+   python setup_RepairCafe.py
    ```
    Alternatively if you wish to populate the site with demo ticket, repairer and customer data, run the following command instead 
    ```sh
    python populate_RepairCafe.py
    ```
+   Note: Each of these scripts creates the following superuser  
+      
+      Name: **admin**  
+      Password: **securepassword123**  
+      
+      This can be altered from the create_superuser() function within each script.
+      The call to create_superuser() can be removed from the following code at the bottom of each script inorder not to create this super user. 
+      ```python
+      if __name__ == '__main__':
+         print('Starting setup script...')
+         setup()
+         create_superuser()
+      ```
+   
 7. **Run the development server:**  
    ```sh
    python manage.py runserver
