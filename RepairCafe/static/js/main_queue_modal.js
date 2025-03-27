@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isRedirecting = false;
 
-
     const mainQueueSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/main_queue/'
+        'wss://' + window.location.host + '/ws/main_queue/'
     );
 
     mainQueueSocket.onmessage = function (e) {
@@ -78,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.openPatModal = function (url, itemName, itemCategory, repairNumber) {
-        console.log("Opening PAT Modal with:", { url, itemName, itemCategory, repairNumber });
         
         const patModalDetails = document.getElementById("pat-modal-item-details");
         const patTestForm = document.getElementById("pat-test-form");

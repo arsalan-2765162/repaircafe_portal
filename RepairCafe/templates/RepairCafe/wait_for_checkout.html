@@ -7,7 +7,7 @@ Waiting Page for Checkout
 
 {% block content %}
 <div class="purp-bg purple">
-    <h1>Your repair is now complete {{request.user.roles}}</h1>
+    <h1>Your repair is now complete </h1>
     <h3 id="status-message">Please bring your item to the check out desk</h3>
     <div class = "numberSquare">
         <h3>Your Repair Number</h3>
@@ -20,7 +20,7 @@ Waiting Page for Checkout
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
-    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const socket = new WebSocket(`wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);

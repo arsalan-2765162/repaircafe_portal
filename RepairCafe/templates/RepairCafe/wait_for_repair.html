@@ -37,7 +37,7 @@ Waiting Page for Repair
 
 <script>
     const repairNumber = "{{ ticket.repairNumber }}";
-    const socket = new WebSocket(`ws://${window.location.host}/ws/ticket_status/${repairNumber}/`);
+    const socket = new WebSocket(`wss://${window.location.host}/ws/ticket_status/${repairNumber}/`);
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
@@ -51,7 +51,7 @@ Waiting Page for Repair
 </script>
 <script>
     const mainQueueSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/main_queue/'
+        'wss://' + window.location.host + '/ws/main_queue/'
     );
 
     mainQueueSocket.onmessage = function(e) {
@@ -61,7 +61,7 @@ Waiting Page for Repair
 
     function updatePosition() {
         const repairNumber = "{{ ticket.repairNumber }}";  
-        console.log("Repair Number:", repairNumber);
+       
         fetch(`/RepairCafe/queue_position/${repairNumber}/`)
             .then(response => response.json())
             .then(data => {

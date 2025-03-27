@@ -1,7 +1,8 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')  # Replace with your project's settings path
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SH28Project.settings')
 import django
 django.setup()
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from RepairCafe.models import Ticket, Customer, Repairer, Queue, SharedPassword
 
@@ -75,7 +76,7 @@ def populate():
         {'repairNumber': 9, 'itemName': 'Lamp', 'itemCategory': 'ELECM', 'itemDescription': 'Light won’t turn on', 'repairStatus': 'WAITING', 'position': 1, 'queue': 'Main Queue'},
         {'repairNumber': 10, 'itemName': 'Bowl', 'itemCategory': 'CERA', 'itemDescription': 'Chipped edges of bowl', 'repairStatus': 'WAITING', 'position': 2, 'queue': 'Main Queue'},
         {'repairNumber': 11, 'itemName': 'Hair Dryer', 'itemCategory': 'ELECM', 'itemDescription': 'Not turning on', 'repairStatus': 'WAITING', 'position': 3, 'queue': 'Main Queue'},
-        {'repairNumber': 12, 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': 4, 'queue': 'Main Queue'},
+        {'repairNumber': 12, 'itemName': 'Toaster', 'itemCategory': 'ELEC', 'itemDescription': 'Broken heating element', 'repairStatus': 'NEED_PAT', 'position': None, 'queue': 'Main Queue'},
         {'repairNumber': 13, 'itemName': 'Jumper', 'itemCategory': 'TEXT', 'itemDescription': 'Tear on sleeve', 'repairStatus': 'WAITING', 'position': 5, 'queue': 'Main Queue'},
         {'repairNumber': 14, 'itemName': 'Coffee Maker', 'itemCategory': 'OTHER', 'itemDescription': 'Water not heating', 'repairStatus': 'WAITING', 'position': 6, 'queue': 'Main Queue'},
 
@@ -163,6 +164,17 @@ def populate():
             print(f'  - Ticket: {ticket.repairNumber} - {ticket.itemName}')
         print()
 
+
+def create_superuser():
+    User = get_user_model()
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@example.com", "securepassword123")
+        print("Superuser created successfully!")
+    else:
+        print("Superuser already exists.")
+
+
 if __name__ == '__main__':
     print('Starting population script...')
     populate()
+    create_superuser()

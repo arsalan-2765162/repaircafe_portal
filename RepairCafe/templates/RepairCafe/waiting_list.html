@@ -86,8 +86,6 @@ Check-in Queue
 
                     </form>
                 </div>
-                {% else %}
-                    <p>Ticket cannot be accepted</p>
                 {% endif %}
                 {% if request.user.activerole == "volunteer" %}
                 <div class="button-wrapper">
@@ -168,7 +166,7 @@ Check-in Queue
     </script>
     <script>
         const mainQueueSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/waiting_queue/'
+            'wss://' + window.location.host + '/ws/waiting_queue/'
         );
     
         mainQueueSocket.onmessage = function(e) {

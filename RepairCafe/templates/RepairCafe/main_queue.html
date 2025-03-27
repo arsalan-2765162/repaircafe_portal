@@ -8,7 +8,6 @@ Repair Queue
 
 {% block content %}
     <h1>Repair Queue</h1>
-
     {% if Queue %}  
     {% else %}
         <p>No Queue object found.</p>
@@ -72,8 +71,6 @@ Repair Queue
                     >
                         Accept Repair
                     </button>
-                    {% else %}
-                    <p>Only repairers can accept repairs.</p>
                     {% endif %}
                 {% endif %}
 
@@ -90,8 +87,6 @@ Repair Queue
                     >
                         PAT Test
                     </button>
-                    {% else %}
-                    <p>Only repairers can accept PAT tests.</p>
                     {% endif %}
                 {% endif %}
             </div>
