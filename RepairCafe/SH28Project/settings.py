@@ -42,7 +42,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['joeweir04.pythonanywhere.com', '127.0.0.1']
 
-SITE_ID=1
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -106,7 +106,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
-    
+
 }
 """
 'default': {
@@ -147,12 +147,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
-
 VISITOR_PRESET_PASSWORD = "visitor"
 REPAIRER_PRESET_PASSWORD = "repairer"
 VOLUNTEER_PRESET_PASSWORD = "volunteer"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
